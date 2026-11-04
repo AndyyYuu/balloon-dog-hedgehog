@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>气球狗和刺猬</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap">
+<style>
+/* layout: one column — title, level picker, 16:9 stage, two player cards */
+:root{
+  --bg:#f7f1ec; --fg:#2d2630; --muted:#6f6470; --line:#e4d8cf; --key:#ffffff; --keyb:#d4c5b9; --chip:#ffffff; --chipOn:#f2545b; --chipOnFg:#ffffff;
+  --font-display:"ZCOOL KuaiLe","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --font-body:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1e1a21;--fg:#f2ece6;--muted:#b3a9b4;--line:#3a333f;--key:#2b2530;--keyb:#4a4250;--chip:#2b2530;--chipOn:#f2545b;--chipOnFg:#ffffff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1e1a21;--fg:#f2ece6;--muted:#b3a9b4;--line:#3a333f;--key:#2b2530;--keyb:#4a4250;--chip:#2b2530;--chipOn:#f2545b;--chipOnFg:#ffffff;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 32px}
+.wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.head{display:flex;flex-direction:column;gap:6px}
+h1{font-family:var(--font-display);font-weight:400;font-size:clamp(28px,5vw,40px);margin:0;letter-spacing:.03em;text-wrap:balance}
+.sub{color:var(--muted);margin:0;max-width:62ch;line-height:1.65;font-size:15px}
+.levels{display:flex;flex-wrap:wrap;gap:8px}
+.levels button{font-family:var(--font-display);font-size:15px;border:1px solid var(--line);background:var(--chip);color:var(--fg);border-radius:999px;padding:6px 14px;cursor:pointer}
+.levels button[aria-pressed="true"]{background:var(--chipOn);color:var(--chipOnFg);border-color:var(--chipOn)}
+.levels button:focus-visible{outline:2px solid var(--chipOn);outline-offset:2px}
+.stage{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fbefe6;cursor:pointer}
+canvas{display:block;width:100%;height:100%}
+[hidden]{display:none!important}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(45,38,48,.42)}
+.card{background:#fffaf5;color:#2d2630;border-radius:16px;padding:20px 26px;max-width:min(460px,88%);text-align:center;display:flex;flex-direction:column;gap:8px}
+.ctitle{font-family:var(--font-display);font-size:clamp(24px,4vw,34px)}
+.card p{margin:0;line-height:1.6;font-size:15px}
+.card .small{color:#6f6470;font-size:13px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.player{border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.player h2{font-family:var(--font-display);font-weight:400;font-size:20px;margin:0;display:flex;align-items:center;gap:8px}
+.dot{width:12px;height:12px;border-radius:50%;flex:none}
+ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
+li{display:flex;gap:10px;align-items:center;font-size:14px;line-height:1.45}
+.keys{display:flex;gap:4px;min-width:62px;flex:none}
+kbd{font-family:ui-monospace,Menlo,monospace;font-size:12px;min-width:26px;text-align:center;padding:2px 6px;border:1px solid var(--keyb);border-bottom-width:2px;border-radius:6px;background:var(--key);color:var(--fg)}
+.foot{color:var(--muted);font-size:13px;margin:0;line-height:1.6}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <h1>气球狗和刺猬</h1>
+    <p class="sub">两个人共用一个键盘。气球狗和刺猬被一根绳子拴在一起，刺猬给气球狗打气，一起去右边的旗子那里。气球狗只要碰到刺猬就会炸。</p>
+  </header>
+
+  <nav class="levels" id="levels" aria-label="选关"></nav>
+
+  <div class="stage" id="stage">
+    <canvas id="game" aria-label="气球狗和刺猬游戏画面"></canvas>
+    <div class="overlay" id="start">
+      <div class="card">
+        <div class="ctitle">气球狗和刺猬</div>
+        <p>两个人，一个键盘，六关。<br>先点一下画面，再按任意键开始。</p>
+        <p class="small">打开声音效果更好</p>
+      </div>
+    </div>
+    <div class="overlay" id="win" hidden>
+      <div class="card">
+        <div class="ctitle" id="winTitle">过关！</div>
+        <p id="winBody"></p>
+        <p class="small" id="winNext">按 Enter 下一关，按 R 重来这一关</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <section class="player">
+      <h2><span class="dot" style="background:#f2545b"></span>气球狗 · 左手</h2>
+      <ul>
+        <li><span class="keys"><kbd>A</kbd><kbd>D</kbd></span>左右走，飘着的时候也能控制方向</li>
+        <li><span class="keys"><kbd>W</kbd></span>没气时是跳，有气时是起飞。站在地上不按 W 就不会飘走</li>
+        <li><span class="keys"><kbd>S</kbd></span>放气，会乱喷着往前飞。按住放光就变扁，能钻窄缝</li>
+      </ul>
+    </section>
+    <section class="player">
+      <h2><span class="dot" style="background:#8b5a3c"></span>刺猬 · 右手</h2>
+      <ul>
+        <li><span class="keys"><kbd>←</kbd><kbd>→</kbd></span>左右走</li>
+        <li><span class="keys"><kbd>↑</kbd></span>跳，按得越久跳得越高</li>
+        <li><span class="keys"><kbd>↓</kbd></span>打气：站在打气筒上连按，或者靠近气球狗按住吹气，靠近气球皮按住把它吹活</li>
+        <li><span class="keys"><kbd>0</kbd></span>按住收绳，把两只拉近；松开绳子慢慢放长（小键盘的 0 也行）</li>
+        <li><span class="keys"><kbd>/</kbd></span>按住缩成球：滚得快、会反弹，能撞破气球墙</li>
+      </ul>
+    </section>
+  </div>
+  <p class="foot">按 <kbd>R</kbd> 重来这一关，数字键 <kbd>1</kbd>–<kbd>6</kbd> 直接选关。需要实体键盘，手机上玩不了。</p>
+</div>
+
+<script>
+(()=>{
+const cv=document.getElementById('game'),c=cv.getContext('2d');
+const stageEl=document.getElementById('stage'),startEl=document.getElementById('start'),winEl=document.getElementById('win');
+const winTitle=document.getElementById('winTitle'),winBody=document.getElementById('winBody'),winNext=document.getElementById('winNext'),levelsEl=document.getElementById('levels');
+const W=960,H=540,G=1400,K=3.2,MD=1,MH=1.4,ROPE=110,NAILS=26;
+const DOGC='#f2545b';
+const FONT=n=>`${n}px "ZCOOL KuaiLe","PingFang SC","Microsoft YaHei",sans-serif`;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const approach=(v,t,s)=>v<t?Math.min(t,v+s):Math.max(t,v-s);
+const inRect=(x,y,r)=>x>r.x&&x<r.x+r.w&&y>r.y&&y<r.y+r.h;
+
+/* ---------- levels ---------- */
+const LEVELS=[
+ {name:'第一次起飞',tip:'刺猬站在打气筒上连按 ↓ 充气，一起走到坑边，气球狗按 W 起飞',
+  solids:[{x:-200,y:440,w:670,h:300},{x:660,y:380,w:500,h:400}],
+  pumps:[{x:30,y:400,w:60,h:40,zone:[120,200]}],
+  dogX:160,hogX:60,goal:{x:820,y:300,w:140,h:80}},
+ {name:'仙人掌花园',tip:'头顶有钉子。气别充满，让刺猬在地上拉着气球狗走，按住 0 收绳能让它飞低一点',kite:true,leak:.06,
+  solids:[{x:-200,y:440,w:1400,h:300}],
+  pumps:[{x:30,y:400,w:60,h:40,zone:[120,200]},{x:548,y:400,w:50,h:40,zone:[625,705]}],
+  bars:[{x:330,y:188,w:630}],
+  cacti:[{x:380,base:440,h:75},{x:445,base:440,h:95},{x:510,base:440,h:70},{x:745,base:440,h:90},{x:805,base:440,h:70},{x:862,base:440,h:85}],
+  dogX:160,hogX:60,goal:{x:885,y:360,w:75,h:80}},
+ {name:'气球墙',tip:'刺猬按住 / 缩成球，滚起来撞破气球墙。球会反弹',
+  solids:[{x:-200,y:440,w:840,h:300},{x:800,y:400,w:400,h:300}],
+  pumps:[{x:470,y:400,w:60,h:40,zone:[560,638]}],
+  walls:[{x:250,y:NAILS,w:34,h:440-NAILS},{x:420,y:NAILS,w:34,h:440-NAILS}],
+  dogX:150,hogX:80,goal:{x:840,y:320,w:120,h:80}},
+ {name:'窄缝',tip:'气球狗按住 S 放光气变扁，刺猬缩成球，一起钻过去',
+  solids:[{x:-200,y:440,w:1020,h:300},{x:300,y:NAILS,w:220,h:413-NAILS},{x:820,y:300,w:400,h:400}],
+  pumps:[{x:740,y:400,w:60,h:40,zone:[640,718]}],
+  dogX:150,hogX:70,dogAir:.3,goal:{x:860,y:220,w:100,h:80}},
+ {name:'大风扇',tip:'风会把气球狗往上吹。气不用太满，借风飞过去，别撞到钉子',
+  solids:[{x:-200,y:440,w:500,h:300},{x:500,y:360,w:60,h:300},{x:760,y:400,w:400,h:300}],
+  pumps:[{x:30,y:400,w:60,h:40,zone:[120,200]}],
+  fans:[{x:330,y:NAILS,w:130,h:540-NAILS,dx:0,dy:-1,p:1500},{x:590,y:NAILS,w:130,h:540-NAILS,dx:0,dy:-1,p:1500}],
+  dogX:160,hogX:60,goal:{x:820,y:320,w:140,h:80}},
+ {name:'冷和热',tip:'热灯让气球狗自己变大，冷风让它缩小。最后刺猬要撞开气球墙',
+  solids:[{x:-200,y:440,w:500,h:300},{x:520,y:420,w:160,h:300},{x:820,y:360,w:400,h:300}],
+  pumps:[{x:30,y:400,w:60,h:40,zone:[120,200]},{x:530,y:380,w:50,h:40,zone:[600,675]}],
+  heat:[{x:330,y:NAILS,w:150,h:330,k:.16},{x:690,y:120,w:120,h:420,k:-.15}],
+  cacti:[{x:852,base:360,h:55}],
+  walls:[{x:890,y:NAILS,w:30,h:360-NAILS}],
+  dogX:160,hogX:60,goal:{x:920,y:280,w:40,h:80}},
+];
+
+let idx=0,L,statics,pumps,walls,cacti,fans,heat,bars,solids,needRebuild=false;
+let dog,hog,rope,parts=[],texts=[],stats,time=0,hit=0,shake=0,win=false,started=false,reviveSnd=0,banner=0,ropeLen=110,reelSnd=0;
+
+const rr=a=>22+22*a;
+const isFlat=()=>dog.state==='ok'&&dog.air<.04;
+function anchor(){
+  if(dog.state!=='ok')return{x:dog.x-dog.face*22,y:dog.y};
+  if(isFlat())return{x:dog.x-dog.face*26,y:dog.y+3};
+  const r=rr(dog.air);return{x:dog.x-dog.face*.75*r,y:dog.y+.5*r};
+}
+function rebuildSolids(){
+  solids=[...statics,...pumps,...walls.filter(w=>w.alive),{x:-60,y:-200,w:60,h:900},{x:W,y:-200,w:60,h:900}];
+}
+function overlapAny(cx,cy,hw,hh){
+  for(const s of solids){if(Math.abs(cx-(s.x+s.w/2))<hw+s.w/2&&Math.abs(cy-(s.y+s.h/2))<hh+s.h/2)return true;}
+  return false;
+}
+function groundAt(x){
+  let y=H;for(const s of [...statics,...pumps]){if(x>=s.x&&x<=s.x+s.w&&s.y>40&&s.y<y)y=s.y;}return y;
+}
+function canGrow(){const r=rr(dog.air),bottom=dog.y+7;return!overlapAny(dog.x,bottom-r-1,r*.85,r);}
+
+function loadLevel(i){
+  idx=i;L=LEVELS[i];
+  statics=L.solids.map(s=>({...s}));
+  pumps=L.pumps.map(p=>({...p,pump:true,anim:0}));
+  walls=(L.walls||[]).map(w=>({...w,bwall:true,alive:true}));
+  cacti=L.cacti||[];fans=L.fans||[];heat=L.heat||[];bars=L.bars||[];
+  reset(true);
+  [...levelsEl.children].forEach((b,j)=>b.setAttribute('aria-pressed',j===i?'true':'false'));
+}
+function reset(full){
+  for(const w of walls)w.alive=true;
+  rebuildSolids();
+  const air=L.dogAir??.25;
+  dog={x:L.dogX,y:0,vx:0,vy:0,air,face:1,ground:true,plugged:false,plugPump:null,unplugT:0,state:'ok',squash:0,rot:0,inv:0,near:99,flatPrev:air<.04,lastR:rr(air)};
+  dog.y=groundAt(dog.x)-(air<.04?7:rr(air));
+  hog={x:L.hogX,y:groundAt(L.hogX)-15,vx:0,vy:0,face:1,ground:true,grab:false,revive:0,squash:0,ball:false,spin:0,blow:false,coyote:0,jbuf:0,bob:0,standPump:null};
+  ropeLen=ROPE;rope={x:0,y:0};
+  hit=0;shake=0;win=false;bulges=[];for(const p of pumps){p.anim=0;p.cd=0;}
+  if(full){stats={hog:0,over:0,spike:0,cactus:0,fall:0};time=0;parts=[];texts=[];banner=4;}
+  winEl.hidden=true;
+}
+
+/* ---------- audio ---------- */
+let ac=null,master=null,jetGain=null,nbuf=null;
+function initAudio(){
+  if(ac){if(ac.state==='suspended')ac.resume();return;}
+  try{
+    ac=new (window.AudioContext||window.webkitAudioContext)();
+    master=ac.createGain();master.gain.value=.5;master.connect(ac.destination);
+    const o=ac.createOscillator();o.type='sawtooth';o.frequency.value=150;
+    const lfo=ac.createOscillator();lfo.frequency.value=17;const lg=ac.createGain();lg.gain.value=60;lfo.connect(lg);lg.connect(o.frequency);
+    const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=900;
+    jetGain=ac.createGain();jetGain.gain.value=0;o.connect(f);f.connect(jetGain);jetGain.connect(master);o.start();lfo.start();
+  }catch(e){ac=null;}
+}
+function setJet(on){if(ac&&jetGain)jetGain.gain.setTargetAtTime(on?.16:0,ac.currentTime,.03);}
+function tone(type,f0,f1,dur,vol){if(!ac)return;const t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+dur);g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.02);}
+function noise(dur,vol,type,f0,f1){if(!ac)return;if(!nbuf){nbuf=ac.createBuffer(1,ac.sampleRate,ac.sampleRate);const d=nbuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;}const t=ac.currentTime,s=ac.createBufferSource();s.buffer=nbuf;const f=ac.createBiquadFilter();f.type=type;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+dur);const g=ac.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);s.connect(f);f.connect(g);g.connect(master);s.start(t);s.stop(t+dur+.02);}
+const sPop=()=>{noise(.2,.9,'highpass',1400,400);tone('sine',180,50,.18,.6);};
+const sSmallPop=()=>{noise(.1,.5,'highpass',1800,600);};
+const sPump=()=>noise(.28,.35,'bandpass',500,1600);
+const sThud=()=>tone('sine',110,45,.12,.4);
+const sHop=()=>tone('square',300,520,.08,.05);
+const sBoing=()=>tone('sine',380,760,.14,.18);
+const sSqueak=()=>tone('triangle',900,1400,.09,.15);
+const sGrab=()=>tone('triangle',700,1000,.07,.12);
+const sCurl=()=>tone('triangle',520,300,.09,.12);
+const sBonk=()=>tone('sine',260,140,.07,.18);
+const sCork=()=>{tone('sine',600,200,.08,.3);noise(.05,.3,'bandpass',2000,1000);};
+const sFlat=()=>tone('sawtooth',160,70,.25,.08);
+const sFall=()=>tone('sine',500,90,.5,.2);
+const sCreak=()=>tone('sawtooth',230,170,.12,.04);
+const sWin=()=>[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone('triangle',f,f*1.001,.2,.18),i*110));
+
+/* ---------- input ---------- */
+const down=new Set(),just=new Set();
+function start(){if(started)return;started=true;startEl.hidden=true;initAudio();}
+addEventListener('keydown',e=>{
+  const k=e.code;
+  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space','Slash'].includes(k))e.preventDefault();
+  if(!started){start();return;}
+  initAudio();
+  if(!e.repeat)just.add(k);
+  down.add(k);
+  if(k==='KeyR')reset(true);
+  const m=k.match(/^Digit([1-6])$/);if(m)loadLevel(+m[1]-1);
+  if(win&&(k==='Enter'||k==='NumpadEnter')&&idx<LEVELS.length-1)loadLevel(idx+1);
+});
+addEventListener('keyup',e=>down.delete(e.code));
+addEventListener('blur',()=>down.clear());
+stageEl.addEventListener('click',()=>{window.focus();start();});
+LEVELS.forEach((l,i)=>{const b=document.createElement('button');b.type='button';b.id='lv'+(i+1);b.textContent=`${i+1} ${l.name}`;b.addEventListener('click',()=>{loadLevel(i);start();b.blur();window.focus();});levelsEl.appendChild(b);});
+
+/* ---------- fx ---------- */
+function addText(x,y,txt,col,size=20){texts.push({x,y,txt,col,size,life:1.1});}
+function puff(x,y,n,col){for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*120,vy:-40-Math.random()*80,life:.5+Math.random()*.3,max:.8,col,sz:4+Math.random()*5,rot:0,vr:0,round:true});}
+function confetti(x,y,n,cols,spread){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=150+Math.random()*350;parts.push({x:x+(Math.random()-.5)*spread,y:y+(Math.random()-.5)*spread,vx:Math.cos(a)*v,vy:Math.sin(a)*v-120,life:.9+Math.random()*.5,max:1.4,col:cols[i%cols.length],sz:3+Math.random()*4,rot:Math.random()*6,vr:(Math.random()-.5)*20});}}
+
+/* ---------- physics ---------- */
+function resolve(b,hw,hh,isHog){
+  for(const s of solids){
+    if(s.bwall&&!s.alive)continue;
+    const dx=b.x-(s.x+s.w/2),dy=b.y-(s.y+s.h/2);
+    const ox=hw+s.w/2-Math.abs(dx),oy=hh+s.h/2-Math.abs(dy);
+    if(ox>0&&oy>0){
+      if(oy<ox){
+        if(dy<0){
+          const vyb=b.vy;b.y-=oy;if(b.vy>0)b.vy=0;b.ground=true;
+          if(vyb>220){
+            if(isHog){hog.squash=.25;sThud();if(hog.ball&&vyb>300)b.vy=-vyb*.3;}
+            else if(dog.state==='ok')dog.squash=.22;
+          }
+          if(isHog&&s.pump)hog.standPump=s;
+        }else{b.y+=oy;if(b.vy<0)b.vy=0;}
+      }else{
+        if(s.bwall&&isHog&&hog.ball&&Math.abs(b.vx)>140){breakWall(s);continue;}
+        b.x+=dx<0?-ox:ox;
+        if(isHog&&hog.ball){if(Math.abs(b.vx)>120)sBonk();b.vx=-b.vx*.55;}else b.vx=0;
+      }
+    }
+  }
+}
+function breakWall(s){
+  s.alive=false;needRebuild=true;shake=Math.max(shake,.25);
+  confetti(s.x+s.w/2,s.y+s.h*.6,34,['#4c9be8','#f6c343','#5cc48a','#b07ce8'],s.w);
+  addText(s.x+s.w/2,s.y+s.h*.5,'啪啪啪！','#4c9be8',28);
+  [0,70,140,210].forEach(t=>setTimeout(sSmallPop,t));
+}
+function hosePts(p){
+  const gy=p.y+p.h,p0={x:p.x+p.w,y:p.y+30};
+  if(dog.state==='ok'&&dog.plugPump===p){const a=anchor();return[p0,{x:p.x+p.w+40,y:gy+2},{x:a.x-40,y:gy},a];}
+  return[p0,{x:p.x+p.w+20,y:gy},{x:p.x+p.w+40,y:gy-2},{x:p.zone[0]-10,y:gy-3}];
+}
+function bez(P,t){const u=1-t;return{x:u*u*u*P[0].x+3*u*u*t*P[1].x+3*u*t*t*P[2].x+t*t*t*P[3].x,y:u*u*u*P[0].y+3*u*u*t*P[1].y+3*u*t*t*P[2].y+t*t*t*P[3].y};}
+let bulges=[];
+function pressPump(p){
+  if(p.cd>0)return;
+  p.cd=.12;p.anim=1;hog.squash=.32;sPump();
+  bulges.push({p,t:0});
+}
+function arrive(b){
+  const p=b.p;
+  if(dog.state==='ok'&&dog.plugPump===p){
+    dog.air+=.12;dog.squash=-.2;tone('triangle',520+dog.air*500,720+dog.air*600,.08,.12);
+    addText(dog.x,dog.y-rr(dog.air)-16,'呼','#2f6fb8',22);
+    const a=anchor();puff(a.x,a.y,3,'rgba(220,235,250,.9)');
+  }else{
+    const P=hosePts(p);addText(P[3].x,P[3].y-14,'嘶…','#7f8a96',18);puff(P[3].x,P[3].y-4,8,'rgba(200,206,214,.9)');
+  }
+}
+function pop(reason){
+  if(dog.state!=='ok')return;
+  const flat=isFlat(),r=flat?10:rr(dog.air);
+  dog.state='skin';stats[reason]++;hit=.13;shake=.35;hog.grab=false;hog.revive=0;sPop();setJet(false);
+  confetti(dog.x,dog.y,28,[DOGC,DOGC,'#ffffff'],r);
+  const label={hog:'被刺猬扎破了！',over:'撑爆了！',spike:'扎到天花板了！',cactus:'被仙人掌扎了！'}[reason];
+  addText(dog.x,dog.y-r-14,'啪！',DOGC,36);
+  addText(dog.x,dog.y-r+20,label,'#2d2630',17);
+  dog.y=dog.y+(flat?1:r-6);dog.vx*=.3;dog.vy=0;dog.air=0;dog.rot=0;dog.plugged=false;dog.squash=0;
+}
+function revive(){
+  hog.revive=0;dog.state='ok';dog.air=.25;
+  if(!canGrow()){dog.air=0;dog.flatPrev=true;}
+  else{const r=rr(.25);dog.y=dog.y+6-r;dog.flatPrev=false;dog.lastR=r;}
+  dog.inv=1.3;dog.squash=-.3;dog.vy=0;
+  sSqueak();addText(dog.x,dog.y-30,'活了！',DOGC,20);
+  const a=anchor();rope.x=a.x;rope.y=a.y+20;rope.vx=rope.vy=0;
+}
+function dogDims(){if(dog.state!=='ok')return[26,6];if(isFlat())return[28,7];const r=rr(dog.air);return[r*.85,r];}
+function dogHitsRect(rx,ry,rw,rh){
+  if(isFlat())return dog.x+28>rx&&dog.x-28<rx+rw&&dog.y+7>ry&&dog.y-7<ry+rh;
+  const r=rr(dog.air)*.88,cx=clamp(dog.x,rx,rx+rw),cy=clamp(dog.y,ry,ry+rh);
+  return Math.hypot(dog.x-cx,dog.y-cy)<r;
+}
+
+function update(dt){
+  time+=dt;if(banner>0)banner-=dt;
+
+  /* flat <-> round transitions */
+  if(dog.state==='ok'){
+    let f=isFlat();
+    if(dog.flatPrev&&!f&&!canGrow()){dog.air=.039;f=true;}
+    if(f!==dog.flatPrev){
+      if(f){dog.y+=dog.lastR-7;sFlat();addText(dog.x,dog.y-24,'扁了','#2d2630',16);}
+      else{dog.y-=rr(dog.air)-7;dog.squash=-.25;sSqueak();}
+      dog.flatPrev=f;
+    }
+    if(!f)dog.lastR=rr(dog.air);
+  }
+  const flat=isFlat();
+
+  /* dog */
+  const kL=down.has('KeyA'),kR=down.has('KeyD');
+  if(dog.state==='ok'){
+    const r=rr(dog.air);
+    if(dog.unplugT>0)dog.unplugT-=dt;
+    let pz=null;for(const p of pumps)if(dog.x>p.zone[0]&&dog.x<p.zone[1])pz=p;
+    const was=dog.plugged;
+    dog.plugged=!!pz&&dog.ground&&dog.unplugT<=0;dog.plugPump=dog.plugged?pz:null;
+    if(dog.plugged&&!was)sSqueak();
+    const ix=(kR?1:0)-(kL?1:0);if(ix)dog.face=ix;
+    const max=flat?110:(dog.ground?175:150);
+    const acc=dog.ground?(ix?2600:3200):(ix?650:220);
+    dog.vx=approach(dog.vx,ix*max,acc*dt);
+    let takeoff=false;
+    if(just.has('KeyW')&&!flat){
+      if(dog.plugged){dog.unplugT=.7;dog.plugged=false;dog.plugPump=null;dog.vy=-160;takeoff=true;sCork();addText(dog.x-dog.face*r,dog.y,'啵','#2d2630',18);}
+      else if(dog.ground){
+        if(dog.air>.31){dog.vy=-160;takeoff=true;sCork();addText(dog.x,dog.y-r-10,'起飞','#2d2630',16);}
+        else{dog.vy=-330;sBoing();}
+      }
+    }
+    const held=dog.plugged||flat||(dog.ground&&!takeoff);
+    const ay=held?G:G*(1-K*dog.air)/MD;
+    const jet=down.has('KeyS')&&dog.air>0;
+    if(jet){
+      dog.air=Math.max(0,dog.air-.55*dt);
+      if(!held&&dog.air>.04){
+        const wob=Math.sin(time*23)*.8+Math.sin(time*37)*.4;
+        const ang=(dog.face>0?-.45:Math.PI+.45)+wob;
+        dog.vx+=Math.cos(ang)*1500*dt;dog.vy+=Math.sin(ang)*1500*dt;dog.rot=wob*.35;
+      }
+      if(Math.random()<dt*30){const a=anchor();puff(a.x,a.y,1,'rgba(255,214,218,.9)');}
+    }else dog.rot*=Math.exp(-8*dt);
+    setJet(jet&&!flat);
+    for(const f of fans)if(!held&&inRect(dog.x,dog.y,f)){const m=f.p*(.4+dog.air)*dt;dog.vx+=f.dx*m;dog.vy+=f.dy*m;}
+    for(const z of heat)if(inRect(dog.x,dog.y,z))dog.air=Math.max(0,dog.air+z.k*dt);
+    dog.vy+=ay*dt;
+    dog.vy-=dog.vy*Math.min(1,(2+3*dog.air)*.6*dt);
+    dog.vy=Math.max(-260,Math.min(dog.vy,900));
+    dog.air=Math.max(0,dog.air-(L.leak??.012)*dt);
+    if(dog.air>.88&&Math.random()<dt*1.6)sCreak();
+    if(dog.inv>0)dog.inv-=dt;
+    if(dog.air>1)pop('over');
+  }else{
+    setJet(false);
+    dog.vy+=G*dt;dog.vx*=Math.exp(-3*dt);
+  }
+  dog.squash*=Math.exp(-10*dt);
+  dog.ground=false;
+  dog.x+=dog.vx*dt;dog.y+=dog.vy*dt;
+  {const[hw,hh]=dogDims();resolve(dog,hw,hh,false);}
+
+  /* hedgehog */
+  const hl=down.has('ArrowLeft'),hr=down.has('ArrowRight');
+  const wantBall=down.has('Slash')||down.has('ShiftRight');
+  if(wantBall&&!hog.ball){hog.ball=true;hog.y+=2;sCurl();}
+  else if(!wantBall&&hog.ball&&!overlapAny(hog.x,hog.y-2,15,15)){hog.ball=false;hog.y-=2;}
+  const hx=(hr?1:0)-(hl?1:0);if(hx)hog.face=hx;
+  if(hog.ground)hog.coyote=.1;else hog.coyote-=dt;
+  if(just.has('ArrowUp'))hog.jbuf=.13;else hog.jbuf-=dt;
+  if(hog.ball){
+    hog.vx=approach(hog.vx,hx*380,(hx?(hog.ground?1300:500):(hog.ground?160:30))*dt);
+    hog.spin+=hog.vx*dt/13;
+  }else{
+    hog.vx=approach(hog.vx,hx*220,(hog.ground?(hx?3200:3800):(hx?2200:1200))*dt);
+    if(hog.jbuf>0&&hog.coyote>0){hog.vy=-480;hog.jbuf=0;hog.coyote=0;hog.squash=-.2;sHop();}
+    if(!down.has('ArrowUp')&&hog.vy<0&&!hog.taut)hog.vy+=G*1.3*dt;
+    if(hog.vy>0&&!hog.taut)hog.vy+=G*.35*dt;
+    if(hog.ground&&hx)hog.bob+=dt*18;
+  }
+  const canBlow=()=>dog.state==='ok'&&!hog.ball&&!hog.standPump&&dog.near<40;
+  if(just.has('ArrowDown')&&hog.standPump&&!hog.ball){pressPump(hog.standPump);}
+  const reel=down.has('Digit0')||down.has('Numpad0');
+  const prevLen=ropeLen;
+  ropeLen=reel?Math.max(36,ropeLen-170*dt):Math.min(ROPE,ropeLen+90*dt);
+  hog.reel=reel&&ropeLen<prevLen;
+  if(hog.reel){reelSnd-=dt;if(reelSnd<=0){reelSnd=.09;tone('square',1100,900,.025,.03);}}
+  for(const f of fans)if(inRect(hog.x,hog.y,f)){hog.vx+=f.dx*f.p*.12*dt;hog.vy+=f.dy*f.p*.12*dt;}
+  hog.vy+=G*dt;hog.vy=Math.min(hog.vy,1000);
+  hog.squash*=Math.exp(-10*dt);
+  hog.ground=false;hog.standPump=null;
+  hog.x+=hog.vx*dt;hog.y+=hog.vy*dt;
+  const hh=hog.ball?13:15;
+  resolve(hog,hh,hh,true);
+
+  /* rope: always tied */
+  {
+    {
+      const a=anchor();const dx=hog.x-a.x,dy=(hog.y-12)-a.y,d=Math.hypot(dx,dy);
+      hog.taut=d>ropeLen-2;
+      if(d>ropeLen){
+        const mD=dog.state==='ok'?MD:.6;
+        const nx=dx/d,ny=dy/d,wD=1/mD,wH=1/MH,corr=(d-ropeLen)/(wD+wH);
+        dog.x+=nx*corr*wD;dog.y+=ny*corr*wD;hog.x-=nx*corr*wH;hog.y-=ny*corr*wH;
+        const vr=(hog.vx-dog.vx)*nx+(hog.vy-dog.vy)*ny;
+        if(vr>0){const j=vr/(wD+wH);dog.vx+=nx*j*wD;dog.vy+=ny*j*wD;hog.vx-=nx*j*wH;hog.vy-=ny*j*wH;}
+        const[dw,dh]=dogDims();resolve(dog,dw,dh,false);resolve(hog,hh,hh,true);
+      }
+    }
+  }
+
+  /* contact, hazards, blowing */
+  hog.blow=false;
+  if(dog.state==='ok'){
+    const hR=hog.ball?16:19;
+    if(isFlat()){const cx=clamp(hog.x,dog.x-28,dog.x+28),cy=clamp(hog.y,dog.y-7,dog.y+7);dog.near=Math.hypot(hog.x-cx,hog.y-cy)-hR;}
+    else dog.near=Math.hypot(dog.x-hog.x,dog.y-hog.y)-(rr(dog.air)*.9+hR);
+    if(dog.near<0&&dog.inv<=0)pop('hog');
+    else if(!isFlat()&&dog.y-rr(dog.air)<NAILS)pop('spike');
+    else if(bars.some(b=>dogHitsRect(b.x,b.y,b.w,18)))pop('spike');
+    else for(const k of cacti){if(dogHitsRect(k.x-14,k.base-k.h,28,k.h)){pop('cactus');break;}}
+    if(dog.state==='ok'&&!down.has('ArrowDown')){}
+    else if(dog.state==='ok'&&!canBlow()&&!hog.standPump&&!hog.ball){
+      hog.blow=true;reviveSnd-=dt;if(reviveSnd<=0){reviveSnd=.35;puff(hog.x+hog.face*16,hog.y-2,1,'rgba(220,235,250,.7)');}
+    }
+    else if(dog.state==='ok'&&canBlow()){
+      hog.face=Math.sign(dog.x-hog.x)||hog.face;
+      dog.air+=.24*dt;hog.blow=true;
+      reviveSnd-=dt;if(reviveSnd<=0){noise(.16,.18,'bandpass',700,1300);reviveSnd=.28;puff(hog.x+hog.face*14,hog.y-4,2,'rgba(220,235,250,.9)');}
+    }
+  }else{
+    const near=Math.abs(hog.x-dog.x)<64&&Math.abs(hog.y-dog.y)<44;
+    if(near&&down.has('ArrowDown')&&!hog.ball){
+      hog.revive+=dt;reviveSnd-=dt;
+      if(reviveSnd<=0){noise(.16,.18,'bandpass',700,1300);reviveSnd=.28;}
+      if(hog.revive>=1)revive();
+    }else hog.revive=Math.max(0,hog.revive-dt*2);
+  }
+  for(const p of pumps){p.anim*=Math.exp(-8*dt);if(p.cd>0)p.cd-=dt;}
+  for(const b of bulges){b.t+=dt/.28;if(b.t>=1)arrive(b);}
+  bulges=bulges.filter(b=>b.t<1);
+  if(needRebuild){rebuildSolids();needRebuild=false;}
+
+  if(hog.y>H+60||dog.y>H+60){stats.fall++;sFall();reset(false);addText(W/2,220,'掉坑了，从头来','#2d2630',24);return;}
+
+  const g=L.goal;
+  if(!win&&dog.state==='ok'&&inRect(hog.x,hog.y,g)&&hog.ground&&dog.x>g.x-90){
+    win=true;sWin();setJet(false);
+    const total=stats.hog+stats.over+stats.spike+stats.cactus;
+    const last=idx===LEVELS.length-1;
+    winTitle.textContent=last?'全部通关！':`第 ${idx+1} 关过了！`;
+    winBody.innerHTML=`用时 ${time.toFixed(1)} 秒<br>气球狗一共炸了 ${total} 次，其中被刺猬误伤 <b>${stats.hog}</b> 次<br>撑爆 ${stats.over} · 扎破 ${stats.spike+stats.cactus} · 掉坑 ${stats.fall}`;
+    winNext.textContent=last?'按 R 重来这一关，或按数字键选关':'按 Enter 下一关，按 R 重来这一关';
+    winEl.hidden=false;
+  }
+}
+
+function effects(dt){
+  for(const p of parts){p.vy+=(p.round?-30:600)*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.rot+=p.vr*dt;p.life-=dt;}
+  parts=parts.filter(p=>p.life>0);
+  for(const t of texts){t.y-=34*dt;t.life-=dt;}
+  texts=texts.filter(t=>t.life>0);
+  shake=Math.max(0,shake-dt);
+}
+
+/* ---------- drawing ---------- */
+function ell(x,y,rx,ry){c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill();}
+function rrPath(x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function capsule(cx,cy,w,h,ang){
+  c.save();c.translate(cx,cy);c.rotate(ang);const r=Math.min(w,h)/2;c.beginPath();
+  if(w>=h){c.moveTo(-w/2+r,-h/2);c.lineTo(w/2-r,-h/2);c.arc(w/2-r,0,r,-Math.PI/2,Math.PI/2);c.lineTo(-w/2+r,h/2);c.arc(-w/2+r,0,r,Math.PI/2,Math.PI*1.5);}
+  else{c.moveTo(w/2,-h/2+r);c.lineTo(w/2,h/2-r);c.arc(0,h/2-r,r,0,Math.PI);c.lineTo(-w/2,-h/2+r);c.arc(0,-h/2+r,r,Math.PI,0);}
+  c.closePath();c.fill();c.restore();
+}
+const DOG_PARTS=[[-46,-19,12,30,-25],[-4,1,72,26,0],[-31,23,14,34,0],[-15,23,14,34,0],[13,23,14,34,0],[27,23,14,34,0],[27,-24,14,36,18],[43,-46,38,20,0],[31,-63,11,22,-15],[41,-63,11,22,12]];
+function drawDog(){
+  const r=rr(dog.air),s=r/57,t=.8+.45*dog.air;
+  const scared=dog.near<26||dog.air>.86;
+  const shv=scared?Math.sin(time*70)*1.6:0;
+  const alpha=dog.inv>0&&Math.floor(time*12)%2?.45:1;
+  c.save();c.globalAlpha=alpha;c.translate(dog.x+shv,dog.y);c.rotate(dog.rot);
+  c.scale(dog.face*s*(1+dog.squash),s*(1-dog.squash));c.translate(-5,17);
+  c.fillStyle=DOGC;
+  for(const p of DOG_PARTS){let[px,py,w,h,a]=p;if(w<h)w*=t;else h*=t;capsule(px,py,w,h,a*Math.PI/180);}
+  c.fillStyle='rgba(0,0,0,.13)';ell(23,-6,4,4);ell(33,-38,3.5,3.5);ell(-38,-7,3.5,3.5);
+  c.fillStyle='rgba(255,255,255,.6)';ell(-16,-5,14,3.5*t);ell(38,-51,7,2.5*t);
+  c.fillStyle='#2b2b2b';
+  if(dog.near<12){c.font=FONT(12);c.textAlign='center';c.fillText('>',50,-42);c.fillText('<',62,-42);}
+  else{ell(50,-46,2.6,2.6);ell(62,-46,2.2,2.2);}
+  c.restore();
+  warnMarks(dog.y-r);
+}
+function warnMarks(topY){
+  if(dog.near<26){
+    const sx=dog.x+dog.face*8,sy=topY-4;
+    c.fillStyle='#7cc4f0';c.beginPath();c.moveTo(sx,sy-9);c.quadraticCurveTo(sx+6,sy,sx,sy+4);c.quadraticCurveTo(sx-6,sy,sx,sy-9);c.fill();
+  }
+  if(dog.near<12){c.font=FONT(26);c.textAlign='center';c.lineWidth=4;c.strokeStyle='#ffffff';c.strokeText('！',dog.x,topY-14);c.fillStyle=DOGC;c.fillText('！',dog.x,topY-14);}
+}
+function flatPath(){
+  c.beginPath();c.moveTo(-28,6);c.bezierCurveTo(-24,-4,-14,0,-8,-4);c.bezierCurveTo(0,-9,8,-2,14,-6);c.bezierCurveTo(20,-9,26,-2,30,6);c.closePath();c.fill();
+}
+function drawFlatDog(){
+  const alpha=dog.inv>0&&Math.floor(time*12)%2?.45:1;
+  c.save();c.globalAlpha=alpha;c.translate(dog.x+(dog.near<26?Math.sin(time*70)*1.4:0),dog.y);c.scale(dog.face,1);
+  c.fillStyle=DOGC;flatPath();capsule(22,-7,6,10,.3);capsule(17,-7,6,10,-.3);
+  c.fillStyle='rgba(255,255,255,.5)';ell(-6,-1,8,1.5);
+  c.fillStyle='#2b2b2b';ell(16,1,1.8,1.8);ell(23,1,1.6,1.6);
+  c.restore();
+  warnMarks(dog.y-10);
+}
+function drawSkin(){
+  c.save();c.translate(dog.x,dog.y);c.fillStyle=DOGC;flatPath();
+  c.fillStyle='rgba(255,255,255,.5)';ell(-6,-1,8,1.5);
+  c.fillStyle='#2b2b2b';c.font=FONT(11);c.textAlign='center';c.fillText('x x',13,3);
+  c.restore();
+}
+function drawHog(){
+  c.save();c.translate(hog.x,hog.y);
+  if(hog.ball){
+    c.rotate(hog.spin);c.fillStyle='#5e3a26';
+    for(let i=0;i<14;i++){const a=i*Math.PI*2/14,a0=a-.18,a1=a+.18;c.beginPath();c.moveTo(Math.cos(a0)*11,Math.sin(a0)*11);c.lineTo(Math.cos(a)*19,Math.sin(a)*19);c.lineTo(Math.cos(a1)*11,Math.sin(a1)*11);c.closePath();c.fill();}
+    c.fillStyle='#8b5a3c';ell(0,0,13,13);
+    c.fillStyle='#f3d7b4';ell(5,4,5,4);c.fillStyle='#2b2b2b';ell(9,4,1.8,1.8);
+    c.restore();return;
+  }
+  if(hog.ground&&Math.abs(hog.vx)>30)c.translate(0,-Math.abs(Math.sin(hog.bob))*2.5);
+  c.scale(hog.face*(1+hog.squash),1-hog.squash);
+  c.fillStyle='#5e3a26';
+  for(let i=0;i<9;i++){const a=-Math.PI-.35+i*(Math.PI-.25)/8,a0=a-.2,a1=a+.2;c.beginPath();c.moveTo(Math.cos(a0)*14,Math.sin(a0)*13);c.lineTo(Math.cos(a)*24,Math.sin(a)*22);c.lineTo(Math.cos(a1)*14,Math.sin(a1)*13);c.closePath();c.fill();}
+  c.fillStyle='#8b5a3c';ell(0,0,17,15);
+  c.fillStyle='#5e3a26';ell(-7,14,5,3);ell(7,14,5,3);
+  c.fillStyle='#f3d7b4';ell(9,3,10,9);
+  c.fillStyle='rgba(242,140,140,.55)';ell(6,8,3,2);
+  c.fillStyle='#2b2b2b';ell(19,2,2.6,2.6);ell(10,-3,2.2,2.2);
+  if(hog.blow){c.fillStyle='#2b2b2b';ell(20,6,2.4,2.4);}
+  c.fillStyle='#f3d7b4';ell(2,-14,4,4);if(hog.reel)ell(-4,-12,3.5,3.5);
+  c.restore();
+  if(hog.revive>0){
+    c.strokeStyle='#ffffff';c.lineWidth=6;c.beginPath();c.arc(hog.x,hog.y-36,12,0,Math.PI*2);c.stroke();
+    c.strokeStyle=DOGC;c.lineWidth=4;c.beginPath();c.arc(hog.x,hog.y-36,12,-Math.PI/2,-Math.PI/2+Math.PI*2*hog.revive);c.stroke();
+  }
+}
+function drawCactus(k){
+  const top=k.base-k.h;
+  c.fillStyle='#4f9e62';
+  c.fillRect(k.x-9,top+9,18,k.h-9);ell(k.x,top+9,9,9);
+  const ay=top+k.h*.45;c.fillRect(k.x-20,ay,12,7);capsule(k.x-17,ay-6,7,20,0);
+  if(k.h>70){const by=top+k.h*.62;c.fillRect(k.x+8,by,12,7);capsule(k.x+17,by-7,7,22,0);}
+  c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=1.2;
+  for(let y=top+14;y<k.base-6;y+=11){c.beginPath();c.moveTo(k.x-9,y);c.lineTo(k.x-13,y-2);c.moveTo(k.x+9,y+5);c.lineTo(k.x+13,y+3);c.stroke();}
+  c.fillStyle='#f28cb1';ell(k.x,top+1,4.5,3.5);
+}
+function drawWall(w){
+  if(!w.alive)return;
+  const cols=['#4c9be8','#f6c343','#5cc48a','#b07ce8'],rad=w.w/2;let i=0;
+  for(let y=w.y+w.h-rad;y>w.y-rad/2;y-=rad*1.55){
+    c.fillStyle=cols[i%4];ell(w.x+rad,y,rad,rad*1.05);
+    c.fillStyle='rgba(255,255,255,.55)';ell(w.x+rad*.65,y-rad*.4,rad*.28,rad*.16);i++;
+  }
+}
+function drawFan(f){
+  c.save();
+  c.strokeStyle='rgba(110,160,215,.4)';c.lineWidth=2;c.lineCap='round';
+  for(let i=0;i<7;i++){const x=f.x+(i+.5)*f.w/7,y=f.y+f.h-((time*280+i*73)%f.h);c.beginPath();c.moveTo(x,y);c.lineTo(x,y+20);c.stroke();}
+  c.fillStyle='#8d96a0';c.fillRect(f.x+12,H-18,f.w-24,18);
+  c.fillStyle='#6c7580';const cx=f.x+f.w/2,sp=Math.sin(time*30)*.5+.5;ell(cx,H-18,(f.w/2-18)*sp+6,4);
+  c.restore();
+}
+function drawHeat(z){
+  if(z.k>0){
+    c.fillStyle='rgba(255,170,60,.14)';c.fillRect(z.x,z.y,z.w,z.h);
+    const cx=z.x+z.w/2;c.strokeStyle='#8d96a0';c.lineWidth=2;c.beginPath();c.moveTo(cx,10);c.lineTo(cx,z.y+18);c.stroke();
+    c.fillStyle='#e8814c';c.beginPath();c.moveTo(cx-22,z.y+40);c.lineTo(cx-10,z.y+18);c.lineTo(cx+10,z.y+18);c.lineTo(cx+22,z.y+40);c.closePath();c.fill();
+    c.fillStyle='#ffd36b';ell(cx,z.y+42,9,5);
+    c.fillStyle='#e8814c';c.font=FONT(13);c.textAlign='center';c.fillText('热灯',cx,z.y+66);
+  }else{
+    c.fillStyle='rgba(120,190,255,.15)';c.fillRect(z.x,z.y,z.w,z.h);
+    c.fillStyle='rgba(255,255,255,.9)';
+    for(let i=0;i<14;i++){const x=z.x+((i*53+Math.sin(time+i)*12)%z.w+z.w)%z.w,y=z.y+((time*40+i*61)%z.h);ell(x,y,2,2);}
+    c.fillStyle='#4c88c9';c.font=FONT(13);c.textAlign='center';c.fillText('冷风',z.x+z.w/2,z.y+18);
+  }
+}
+
+function hint(){
+  if(win)return'';
+  if(banner>0)return`第${idx+1}关 · ${L.name}　${L.tip}`;
+  if(dog.state==='skin')return'刺猬：走到气球皮旁边，按住 ↓ 把它吹活';
+  if(isFlat())return'气球狗扁了，能钻窄缝。去打气筒，或让刺猬靠近按住 ↓ 吹气';
+  if(dog.plugged&&dog.air<(L.kite?.4:.75))return'刺猬：站到打气筒上，连按 ↓ 打气';
+  if(dog.ground&&dog.air<.31)return'气不够：去打气筒，或者刺猬靠近气球狗按住 ↓ 吹气';
+  if(dog.plugged)return L.kite?'气球狗：按 W 拔管子，像风筝一样飘起来':'气够了：气球狗按 W 拔管子起飞';
+  if(dog.ground)return'气球狗：按 W 起飞';
+  if(ropeLen<60)return'绳子收得太短，小心扎到！松开 0 放长';
+  return L.kite?'刺猬拉着走，按住 0 收绳能让气球狗飞低一点':'气球狗：A / D 控制方向，S 放气下降。刺猬按住 0 收绳';
+}
+
+function render(){
+  const dpr=Math.min(2,window.devicePixelRatio||1);
+  const w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
+  const sc=cv.width/W;
+  c.setTransform(sc,0,0,sc,0,0);
+  if(shake>0)c.translate((Math.random()-.5)*shake*24,(Math.random()-.5)*shake*24);
+
+  c.fillStyle='#fbefe6';c.fillRect(-20,-20,W+40,H+40);
+  c.fillStyle='#f6e5d8';for(let x=0;x<W;x+=48)c.fillRect(x,0,24,H);
+  for(const z of heat)drawHeat(z);
+  for(const f of fans)drawFan(f);
+  c.fillStyle='#8d96a0';c.fillRect(0,0,W,10);
+  c.fillStyle='#b4bcc5';for(let x=0;x<W;x+=24){c.beginPath();c.moveTo(x,10);c.lineTo(x+12,NAILS);c.lineTo(x+24,10);c.closePath();c.fill();}
+  for(const b of bars){
+    c.strokeStyle='#8d96a0';c.lineWidth=2;for(let x=b.x+30;x<b.x+b.w;x+=120){c.beginPath();c.moveTo(x,10);c.lineTo(x,b.y);c.stroke();}
+    c.fillStyle='#8d96a0';c.fillRect(b.x,b.y,b.w,8);
+    c.fillStyle='#b4bcc5';for(let x=b.x;x<b.x+b.w-1;x+=20){c.beginPath();c.moveTo(x,b.y+8);c.lineTo(x+10,b.y+18);c.lineTo(x+20,b.y+8);c.closePath();c.fill();}
+  }
+  c.fillStyle='#4a3d50';c.fillRect(0,H-12,W,12);
+  for(const s of statics){
+    c.fillStyle='#e2b98f';c.fillRect(s.x,s.y,s.w,s.h);
+    c.fillStyle='#c99466';if(s.y>40)c.fillRect(s.x,s.y,s.w,8);
+    if(s.y<=40){c.fillRect(s.x,s.y+s.h-6,s.w,6);}
+  }
+  for(const wl of walls)drawWall(wl);
+  for(const k of cacti)drawCactus(k);
+  const g=L.goal,fx=g.x+g.w-24,fy=g.y+g.h;
+  c.fillStyle='#8d96a0';c.fillRect(fx-2,fy-82,4,82);
+  c.fillStyle='#5cc48a';c.beginPath();c.moveTo(fx+2,fy-80);c.lineTo(fx+40,fy-66);c.lineTo(fx+2,fy-52);c.closePath();c.fill();
+  if(dog.state==='ok'&&!dog.plugged){
+    for(const p of pumps){const zx=(p.zone[0]+p.zone[1])/2,zy=groundAt(zx);
+      c.save();c.strokeStyle='#4c9be8';c.globalAlpha=.75;c.setLineDash([6,5]);c.lineWidth=2;c.beginPath();c.ellipse(zx,zy+1,(p.zone[1]-p.zone[0])/2,7,0,0,Math.PI*2);c.stroke();c.restore();
+      c.fillStyle='#2f6fb8';c.font=FONT(13);c.textAlign='center';c.fillText('接管子',zx,zy+26);}
+  }
+  for(const p of pumps){
+    c.fillStyle='#4c9be8';c.fillRect(p.x,p.y+12,p.w,p.h-12);
+    c.fillStyle='#2f6fb8';c.fillRect(p.x+4,p.y+p.anim*8,p.w-8,10);
+    c.fillStyle='#ffffff';c.font=FONT(14);c.textAlign='center';c.fillText('打气',p.x+p.w/2,p.y+34);
+    const P=hosePts(p);
+    c.strokeStyle='#7f8a96';c.lineWidth=5;c.lineCap='round';c.beginPath();c.moveTo(P[0].x,P[0].y);c.bezierCurveTo(P[1].x,P[1].y,P[2].x,P[2].y,P[3].x,P[3].y);c.stroke();
+    for(const b of bulges)if(b.p===p){const q=bez(P,b.t);c.fillStyle='#9aa6b2';ell(q.x,q.y,7,6);c.fillStyle='rgba(255,255,255,.6)';ell(q.x-2,q.y-2,2.5,1.6);}
+  }
+  {
+    const a=anchor(),ex=hog.x,ey=hog.y-12;const d=Math.hypot(ex-a.x,ey-a.y);const sag=Math.max(0,ropeLen-d)*.5;
+    c.strokeStyle=hog.taut?'#4f4842':'#6f675e';c.lineWidth=hog.taut?2.2:1.8;c.beginPath();c.moveTo(a.x,a.y);c.quadraticCurveTo((a.x+ex)/2,(a.y+ey)/2+sag,ex,ey);c.stroke();
+  }
+  if(dog.state==='ok'){drawHog();if(isFlat())drawFlatDog();else drawDog();}else{drawSkin();drawHog();}
+  for(const p of parts){c.save();c.globalAlpha=Math.max(0,Math.min(1,p.life/p.max*1.6));c.fillStyle=p.col;c.translate(p.x,p.y);c.rotate(p.rot);if(p.round)ell(0,0,p.sz,p.sz);else c.fillRect(-p.sz/2,-p.sz/4,p.sz,p.sz/2);c.restore();}
+  for(const t of texts){c.save();c.globalAlpha=Math.min(1,t.life*2);c.font=FONT(t.size);c.textAlign='center';c.lineWidth=5;c.strokeStyle='#ffffff';c.lineJoin='round';c.strokeText(t.txt,t.x,t.y);c.fillStyle=t.col;c.fillText(t.txt,t.x,t.y);c.restore();}
+
+  c.setTransform(sc,0,0,sc,0,0);
+  const x0=28,y0=58,bw=176,bh=12;
+  c.fillStyle='rgba(255,255,255,.88)';rrPath(16,34,bw+24,64,10);c.fill();
+  c.fillStyle='#2d2630';c.font=FONT(14);c.textAlign='left';c.fillText(`第${idx+1}关 · 气球狗的气`,x0,y0-8);
+  c.fillStyle='#eadfd6';c.fillRect(x0,y0,bw,bh);
+  c.fillStyle=dog.air>.86?'#d93a44':DOGC;c.fillRect(x0,y0,bw*Math.min(1,dog.state==='ok'?dog.air:0),bh);
+  c.font=FONT(11);c.textAlign='center';
+  for(const[v,lab]of[[.31,'能飘'],[.75,'带得动刺猬'],[1,'炸']]){const mx=x0+bw*v;c.fillStyle='#2d2630';c.fillRect(mx-1,y0-3,2,bh+6);c.fillText(lab,Math.min(mx,x0+bw-4),y0+bh+15);}
+  const st=`误伤 ${stats.hog} · 撑爆 ${stats.over} · 扎破 ${stats.spike+stats.cactus} · 掉坑 ${stats.fall}`;
+  c.font=FONT(14);const sw=c.measureText(st).width;
+  c.fillStyle='rgba(255,255,255,.88)';rrPath(W-16-sw-24,34,sw+24,30,10);c.fill();
+  c.fillStyle='#2d2630';c.textAlign='right';c.fillText(st,W-28,54);
+  const hn=hint();
+  if(hn){c.font=FONT(16);const hw=c.measureText(hn).width;c.fillStyle='rgba(45,38,48,.82)';rrPath(W/2-hw/2-16,108,hw+32,32,16);c.fill();c.fillStyle='#ffffff';c.textAlign='center';c.fillText(hn,W/2,130);}
+}
+
+let last=performance.now(),acc=0;
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(started&&!win){
+    if(hit>0)hit-=dt;
+    else{
+      acc+=dt;let first=true;
+      while(acc>=1/120){update(1/120);acc-=1/120;if(first){just.clear();first=false;}if(hit>0||win)break;}
+    }
+  }else just.clear();
+  effects(dt);
+  render();
+  requestAnimationFrame(frame);
+}
+loadLevel(0);
+if(document.fonts&&document.fonts.load)document.fonts.load(FONT(16)).catch(()=>{});
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
