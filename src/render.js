@@ -1,18 +1,19 @@
 function currentZone(){return [...L.zones].reverse().find(z=>Math.max(hog.x,dog.x-60)>=z.x)||L.zones[0];}
 function hint(){
+ if(L.memo)return memoHint();
  if(win)return'';
  if(hurt>0)return hurtReason==='timeout'?'接力超时。回到蓝旗，先安排位置，再让狗出发。':'两位都怕刺，回蓝旗再试一次。';
  if(dog.state==='skin')return`${dog.lastPop}。W 沿气管把它重新吹起来。`;
  if(dog.blocked>0)return'这里太窄：S 放扁狗，再让它钻过去。';
- if(dog.air>.90)return'快撑爆了！S 放气，或在空闲处长按 F 把气借给刺猬。';
- if(hog.backflow)return'倒灌中：狗变小、刺猬变重。松开 F 保留体型，S 把气还给狗。';
+ if(dog.air>.90)return'快撑爆了！S 放气，或在空闲处长按 / 把气借给刺猬。';
+ if(hog.backflow)return'倒灌中：狗变小、刺猬变重。松开 / 保留体型，S 把气还给狗。';
  if(hog.returnAir)return'把气还给狗，刺猬正在缩小。继续 S 才会给狗放气。';
  if(noticeTime>0)return interactNotice;
- if(dog.docked)return device(dog.docked)?.on?'狗正在留守。你去接管机关；F 叫狗回来。':'气量不合适，W / S 调整；F 叫回来。';
- if(dog.task){const p=device(dog.task.id);return p.flatOK?'狗走高处，你走下面。到窄窗用 S 放扁，别急着收短绳。':'狗正在行动。W / S 调气量，E 调绳长；F 取消。';}
+ if(dog.docked)return device(dog.docked)?.on?'狗正在留守。你去接管机关；/ 叫狗回来。':'气量不合适，W / S 调整；/ 叫回来。';
+ if(dog.task){const p=device(dog.task.id);return p.flatOK?'狗走高处，你走下面。到窄窗用 S 放扁，别急着收短绳。':'狗正在行动。W / S 调气量，E 调绳长；/ 取消。';}
  if(hog.bloat>.65)return'巨大刺猬更重：能压重机关、撞厚墙。S 还气才能钻矮洞。';
  if(hog.jet)return'喷气消耗狗的气量；A / D 转向，W 补气。';
- return currentZone().hint;
+ return classicControlHint(currentZone().hint);
 }
 function drawCheckpoint(){
  L.checkpoints.forEach((p,i)=>{const y=groundAt(p.x),saved=checkpoint&&checkpoint.index>=i;
@@ -29,7 +30,7 @@ function drawMechanisms(){
   c.restore();
  }
  for(const p of switches){const dogOnly=p.type.startsWith('dog');c.save();
-  if(dogOnly){c.strokeStyle='#b6aaa0';c.lineWidth=2;c.beginPath();c.moveTo(p.x,8);c.lineTo(p.x,p.y-24);c.stroke();c.fillStyle=p.on?'#f5b5b4':'#f5ded5';c.strokeStyle=p.on?'#d96973':'#ccaaa0';c.lineWidth=3;c.beginPath();c.arc(p.x,p.y,24,0,Math.PI*2);c.fill();c.stroke();c.fillStyle=p.on?'#b84e5b':'#ba8684';ell(p.x,p.y+5,8,6);for(const [x,y]of[[-10,-5],[-4,-11],[4,-11],[10,-5]])ell(p.x+x,p.y+y,3,4);c.font=FONT(12);c.textAlign='center';c.fillStyle='#ae6970';c.fillText(p.label,p.x,p.y+45);c.font=FONT(10);c.fillText(p.on?(dog.docked===p.id?'F 松开':p.remaining>0?`${p.remaining.toFixed(1)} 秒`:'已按下'):'F 叫狗来操作',p.x,p.y+61);if(p.flatOK)c.fillText('放扁穿过高窗',p.x,p.y+77);else if(p.minAir)c.fillText('气量 45%–68%',p.x,p.y+77);}
+  if(dogOnly){c.strokeStyle='#b6aaa0';c.lineWidth=2;c.beginPath();c.moveTo(p.x,8);c.lineTo(p.x,p.y-24);c.stroke();c.fillStyle=p.on?'#f5b5b4':'#f5ded5';c.strokeStyle=p.on?'#d96973':'#ccaaa0';c.lineWidth=3;c.beginPath();c.arc(p.x,p.y,24,0,Math.PI*2);c.fill();c.stroke();c.fillStyle=p.on?'#b84e5b':'#ba8684';ell(p.x,p.y+5,8,6);for(const [x,y]of[[-10,-5],[-4,-11],[4,-11],[10,-5]])ell(p.x+x,p.y+y,3,4);c.font=FONT(12);c.textAlign='center';c.fillStyle='#ae6970';c.fillText(p.label,p.x,p.y+45);c.font=FONT(10);c.fillText(p.on?(dog.docked===p.id?'/ 松开':p.remaining>0?`${p.remaining.toFixed(1)} 秒`:'已按下'):'/ 狗操作',p.x,p.y+61);if(p.flatOK)c.fillText('放扁穿过高窗',p.x,p.y+77);else if(p.minAir)c.fillText('气量 45%–68%',p.x,p.y+77);}
   else{c.fillStyle=p.on?'#73a28a':'#ba8b4b';rrPath(p.x,p.y-7,p.w,8,3);c.fill();c.fillStyle=p.on?'#99c1a9':'#e4c282';c.fillRect(p.x+7,p.y-10+(p.on?5:0),p.w-14,5);c.font=FONT(11);c.textAlign='center';c.fillStyle=p.on?'#618875':'#937048';c.fillText(p.label,p.x+p.w/2,p.y+31);if(p.type==='hogWeight'){c.fillStyle='#b38949';c.font=FONT(10);c.fillText('体型 ≥ 65% · 压住 1 秒',p.x+p.w/2,p.y+46);c.fillRect(p.x,p.y+52,p.w*(p.progress||0),3);}if(p.requires&&!p.requires.every(powered)&&!p.on){c.font=FONT(9);c.fillText('需要 A 先供电',p.x+p.w/2,p.y+45);}}
   c.restore();
  }
@@ -55,7 +56,7 @@ function drawHogJet(){
 }
 function drawRoleFocus(){
  const top=hog.y-25*hogScale();c.save();c.fillStyle='#80563c';c.beginPath();c.moveTo(hog.x-5,top-12);c.lineTo(hog.x+5,top-12);c.lineTo(hog.x,top-5);c.fill();c.font=FONT(10);c.textAlign='center';c.fillText(hog.bloat>.05?`你 · 刺猬 ×${hogScale().toFixed(1)}`:'你 · 刺猬',hog.x,top-19);
- if(dog.task||dog.docked){c.fillStyle=DOGC;c.fillText(dog.docked?'留守 · F 叫回来':'行动中 · F 取消',dog.x,dog.y-rr(dog.air)-18);}c.restore();
+ if(dog.task||dog.docked){c.fillStyle=DOGC;c.fillText(dog.docked?'留守 · / 叫回来':'行动中 · / 取消',dog.x,dog.y-rr(dog.air)-18);}c.restore();
 }
 function drawFan(f){
  c.save();const duct=f.ductY!==undefined;c.fillStyle=duct?'#a5cdd419':'#9ac4e811';c.fillRect(f.x,f.y,f.w,f.h);c.strokeStyle=duct?'#88b5c18c':'#8caec77a';c.lineWidth=1.5;
@@ -67,7 +68,7 @@ function drawAdventureWall(w){
  if(!w.heavy){drawWall(w);return;}if(!w.alive)return;c.save();c.fillStyle='#a78362';c.fillRect(w.x,w.y,w.w,w.h);c.strokeStyle='#e5be7e';c.lineWidth=3;for(let y=w.y+15;y<w.y+w.h;y+=36){c.strokeRect(w.x+5,y,w.w-10,24);c.fillStyle='#775b48';ell(w.x+9,y+12,2,2);ell(w.x+w.w-9,y+12,2,2);}c.translate(w.x+w.w/2,w.y+w.h/2);c.rotate(-Math.PI/2);c.font=FONT(11);c.fillStyle='#fff0d2';c.textAlign='center';c.fillText('巨大刺猬 · 滚动撞开',0,4);c.restore();
 }
 function drawHose(){
- const a=anchor(),b={x:hog.x,y:hog.y-10},path=ropeRoute(a,b),d=pathLength(path),sag=Math.max(0,ropeLen-d)*.45;
+ const a=anchor(),b={x:hog.x,y:hog.y-10},path=L.memo&&memo?.rail&&!memo.rail.done?[a,{x:memo.rail.x,y:memo.rail.y},b]:ropeRoute(a,b),d=pathLength(path),sag=Math.max(0,ropeLen-d)*.45;
  c.strokeStyle=hog.backflow?'#bc984e':hog.blow?'#cc8c65':hog.reel?'#789ca7':'#8d796a';c.lineWidth=(hog.blow||hog.backflow)?3.5:2.5;c.lineCap='round';c.beginPath();c.moveTo(a.x,a.y);
  if(path.length===2)c.quadraticCurveTo((a.x+b.x)/2,(a.y+b.y)/2+sag,b.x,b.y);else for(const p of path.slice(1))c.lineTo(p.x,p.y);c.stroke();
  for(const p of path.slice(1,-1)){c.fillStyle='#c9ae7b';ell(p.x,p.y,3,3);}
@@ -81,21 +82,21 @@ function render(){
  c.fillStyle='#fbefe6';c.fillRect(cameraX-20,-20,W+40,H+40);
  c.fillStyle='#f7e8dc';for(let x=Math.floor(cameraX/64)*64;x<cameraX+W;x+=64)c.fillRect(x,0,32,H);
  c.strokeStyle='#ead6c4';c.lineWidth=1;for(let y=180;y<H;y+=100){c.beginPath();c.moveTo(cameraX,y);c.lineTo(cameraX+W,y);c.stroke();}
- for(const z of heat)drawHeat(z);for(const f of fans)if(fanOn(f))drawFan({...f,base:Math.min(H,groundAt(f.x+f.w/2))});
+ drawMemoBackdrop();for(const z of heat)if(!L.memo||(!z.until||!memoObj(z.until)?.done)&&(!z.when||memoObj(z.when)?.done))drawHeat(L.memo?{...z,k:(z.temp??1)>1?.1:-.1}:z);for(const f of fans)if(fanOn(f))drawFan({...f,base:Math.min(H,groundAt(f.x+f.w/2))});
  c.fillStyle=L.softSky?'#d1bd9f':'#9da29e';c.fillRect(cameraX,0,W,8);c.fillStyle=L.softSky?'#e6d1b3':'#bcc2bc';if(L.softSky){for(let x=Math.floor(cameraX/24)*24;x<cameraX+W;x+=24){c.beginPath();c.arc(x+12,8,12,0,Math.PI);c.fill();}}else for(const t of spikeTeeth)if(t.kind==='ceiling'&&t.x+t.w>cameraX&&t.x<cameraX+W)paintSpikeTooth(t);
  bars.forEach((b,i)=>{c.strokeStyle='#9da29e';c.lineWidth=2;for(let x=b.x+20;x<b.x+b.w;x+=85){c.beginPath();c.moveTo(x,8);c.lineTo(x,b.y);c.stroke();}c.fillStyle='#9da29e';c.fillRect(b.x,b.y,b.w,8);c.fillStyle='#bcc2bc';for(const t of spikeTeeth)if(t.kind===i)paintSpikeTooth(t);});
  c.fillStyle='#c7b6ab';c.fillRect(cameraX,H-9,W,9);
  for(const s of statics){c.fillStyle='#dfbd9d';c.fillRect(s.x,s.y,s.w,s.h);c.fillStyle='#bf9672';if(s.y>40){c.fillRect(s.x,s.y,s.w,6);c.fillStyle='#d5ae89';for(let x=Math.max(cameraX-40,s.x)+15;x<Math.min(cameraX+W,s.x+s.w);x+=45)c.fillRect(x,s.y+25,14,2);}else c.fillRect(s.x,s.y+s.h-5,s.w,5);}
- for(const wl of walls)drawAdventureWall(wl);drawMechanisms();for(const b of L.beds||[]){c.fillStyle='#698b6050';c.fillRect(b.x,b.base-4,b.w,5);c.font=FONT(11);c.textAlign='center';c.fillStyle='#78936c';c.fillText('她也得从上面过',b.x+b.w/2,b.base+26);}for(const k of cacti)drawCactus(k);drawCheckpoint();
+ drawMemoObjects();for(const wl of walls)drawAdventureWall(wl);drawMechanisms();for(const b of L.beds||[]){c.fillStyle='#698b6050';c.fillRect(b.x,b.base-4,b.w,5);c.font=FONT(11);c.textAlign='center';c.fillStyle='#78936c';c.fillText('她也得从上面过',b.x+b.w/2,b.base+26);}for(const k of cacti)drawCactus(k);drawCheckpoint();
  const g=L.goal,fx=g.x+g.w-24,fy=g.y+g.h;
  c.fillStyle='#7e8979';c.fillRect(fx-2,fy-80,3,80);c.fillStyle='#70a48a';c.beginPath();c.moveTo(fx+1,fy-79);c.lineTo(fx+31,fy-67);c.lineTo(fx+1,fy-53);c.fill();c.font=FONT(10);c.textAlign='center';c.fillText('一起到这里',fx,fy+26);
  drawHose();
  if(hog.ball&&Math.abs(hog.vx)>220&&hog.ground){c.fillStyle='#c7aa8e55';for(let i=0;i<3;i++)ell(hog.x-hog.face*(23+i*12),hog.y+9,5-i,3-i*.5);}
- c.save();if(hurt>0)c.globalAlpha=.5+Math.sin(hurt*50)*.3;drawHogJet();if(dog.state==='ok'){drawHog();if(isFlat())drawFlatDog();else drawDog();}else{drawSkin();drawHog();}c.restore();drawRoleFocus();
+ c.save();if(hurt>0)c.globalAlpha=.5+Math.sin(hurt*50)*.3;drawHogJet();if(dog.state==='ok'){drawHog();drawMemoSeat();if(isFlat())drawFlatDog();else drawDog();}else{drawSkin();drawHog();}c.restore();drawRoleFocus();drawMemoHUD();
  for(const p of parts){c.save();c.globalAlpha=clamp(p.life/p.max*1.6,0,1);c.fillStyle=p.col;c.translate(p.x,p.y);c.rotate(p.rot);if(p.round)ell(0,0,p.sz,p.sz);else c.fillRect(-p.sz/2,-p.sz/4,p.sz,p.sz/2);c.restore();}
  for(const t of texts){c.save();c.globalAlpha=Math.min(1,t.life*2);c.font=FONT(t.size);c.textAlign='center';c.lineWidth=4;c.strokeStyle='#fffaf5';c.strokeText(t.txt,t.x,t.y);c.fillStyle=t.col;c.fillText(t.txt,t.x,t.y);c.restore();}
  c.setTransform(sc,0,0,sc,0,0);if(hurt>0){c.fillStyle='#a4512920';c.fillRect(0,0,W,H);}
- c.fillStyle='#fffaf5eb';rrPath(18,40,190,65,9);c.fill();c.font=FONT(12);c.textAlign='left';c.fillStyle='#89715e';c.fillText(`0${idx+1} / 0${LEVELS.length}    一套操作 · 两位朋友`,30,58);
+ c.fillStyle='#fffaf5eb';rrPath(18,40,190,65,9);c.fill();c.font=FONT(12);c.textAlign='left';c.fillStyle='#89715e';c.fillText(`${String(idx+1).padStart(2,'0')} / ${LEVELS.length}    F 刺猬 · / 气球狗`,30,58);
  const bx=30,by=69,bw=163;c.fillStyle='#e9d9c9';c.fillRect(bx,by,bw,7);c.fillStyle=dog.air>.90?'#c44450':DOGC;c.fillRect(bx,by,bw*clamp(dog.air,0,1),7);
  c.font=FONT(9);c.fillStyle='#9a806d';for(const [v,t]of[[.32,'狗能飘'],[.71,'一起飞'],[1,'会爆']]){c.fillRect(bx+bw*v,by-2,1,11);c.textAlign='center';c.fillText(t,Math.min(184,bx+bw*v),90);}
  c.font=FONT(14);c.textAlign='left';c.fillStyle='#826a58';c.fillText(currentZone().title,265,54);drawOverview();

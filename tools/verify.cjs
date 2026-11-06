@@ -10,7 +10,7 @@ const context2d=new Proxy({measureText:s=>({width:String(s).length*10})},{get:(o
 function element(id){if(!elements.has(id))elements.set(id,{id,children:[],value:0,hidden:false,textContent:'',innerHTML:'',style:{},dataset:{},classList:{remove(){},add(){}},getContext:()=>context2d,addEventListener(){},setAttribute(){},appendChild(b){this.children.push(b)},focus(){}});return elements.get(id)}
 Object.assign(ctx,{document:{getElementById:element,querySelectorAll:()=>[],createElement:()=>element('new'+Math.random()),addEventListener(){}},window:{},performance:{now:()=>0},requestAnimationFrame(){},addEventListener(){},setTimeout(){},console,Math});
 vm.createContext(ctx);vm.runInContext(source,ctx);const s=ctx.sim;
-function action(seconds,...codes){s.clearHeld();for(const k of codes)s.setHeld(k,'test',true);for(let i=0;i<Math.round(seconds*120);i++){s.update(1/120);s.just.clear();if(s.win)break;}s.clearHeld();return snap();}
+function action(seconds,...codes){s.clearHeld();for(const k of codes)s.setHeld(({KeyD:'ArrowRight',KeyA:'ArrowLeft',KeyF:'Slash',Space:'ArrowUp'})[k]||k,'test',true);for(let i=0;i<Math.round(seconds*120);i++){s.update(1/120);s.just.clear();if(s.win)break;}s.clearHeld();return snap();}
 function snap(){return {hog:[s.hog.x,s.hog.y,s.hog.vx,s.hog.vy].map(Math.round),dog:[s.dog.x,s.dog.y].map(Math.round),air:+s.dog.air.toFixed(2),state:s.dog.state,ball:s.hog.ball,walls:s.walls.map(w=>w.alive),cp:s.checkpoint?.index??null,sw:s.switches.map(p=>p.on),hurt:+s.hurt.toFixed(2),stats:{...s.stats},win:s.win};}
 function log(label){console.log(label,JSON.stringify(snap()));}
 function settle(){action(.12)}

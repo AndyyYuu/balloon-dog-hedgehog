@@ -1,5 +1,5 @@
 function device(id){return switches.find(p=>p.id===id);}
-function powered(rule){if(!rule)return true;if(typeof rule==='string')return !!device(rule)?.on;if(rule.any)return rule.any.some(powered);if(rule.all)return rule.all.every(powered);if(rule.charge)return !!charges.find(p=>p.id===rule.charge)?.done;return false;}
+function powered(rule){if(!rule)return true;if(typeof rule==='string')return !!device(rule)?.on||!!(L?.memo&&memoObj(rule)?.done);if(rule.any)return rule.any.some(powered);if(rule.all)return rule.all.every(powered);if(rule.charge)return !!charges.find(p=>p.id===rule.charge)?.done;return false;}
 function say(t){interactNotice=t;noticeTime=2.6;syncHUD();}
 function syncRoleUI(){} // Movement always belongs to the hedgehog.
 function setActor(){activeRole='hog';}
@@ -10,7 +10,7 @@ function interactionPoint(p){return p.type.startsWith('dog')?{x:p.x,y:p.y}:{x:p.
 function nearDevice(p,role='dog'){const b=role==='dog'?dog:hog,q=interactionPoint(p);return Math.hypot(b.x-q.x,b.y-q.y)<72;}
 function availableDogAction(){return switches.filter(p=>p.type.startsWith('dog')&&!p.latched&&(!p.requires||p.requires.every(powered))&&Math.hypot(p.x-hog.x,p.y-hog.y)<380).sort((a,b)=>Math.hypot(a.x-hog.x,a.y-hog.y)-Math.hypot(b.x-hog.x,b.y-hog.y))[0];}
 function activateDog(p){
- if(p.type==='dogDock'){dog.docked=p.id;dog.x=p.x;dog.y=p.y;dog.vx=dog.vy=0;dog.ground=false;say(`${p.letter} 已接通。狗会留守，你可以继续走；F 叫回来。`);}
+ if(p.type==='dogDock'){dog.docked=p.id;dog.x=p.x;dog.y=p.y;dog.vx=dog.vy=0;dog.ground=false;say(`${p.letter} 已接通。狗会留守，你可以继续走；/ 叫回来。`);}
  else{p.remaining=p.duration||0;p.latched=!p.duration;p.on=true;say(p.duration?`${p.letter} 已按到，${p.duration} 秒接力开始。`:`${p.letter} 接力完成。`);}
  dog.task=null;dog.taskTarget=null;dog.inv=Math.max(dog.inv,.4);stats.commands++;sGrab();needRebuild=true;
 }
@@ -19,10 +19,10 @@ function interact(){
  if(dog.docked){const p=device(dog.docked);dog.docked='';if(p)p.on=false;dog.task=null;dog.inv=Math.max(dog.inv,.5);dog.fContext=true;say('回来啦。绳子和浮力会重新把两位连起来。');return;}
  if(dog.task){dog.task=null;dog.taskTarget=null;dog.fContext=true;say('取消这次行动，狗回来跟随。');return;}
  const p=availableDogAction();
- if(p){dog.fContext=true;if(dog.state!=='ok'){say('先 W 把狗吹回来。');return;}if(ropeShort&&Math.hypot(p.x-hog.x,p.y-hog.y)>140){say('目标够得着，但绳子太短：E 放长，再按 F。');return;}
+ if(p){dog.fContext=true;if(dog.state!=='ok'){say('先 W 把狗吹回来。');return;}if(ropeShort&&Math.hypot(p.x-hog.x,p.y-hog.y)>140){say('目标够得着，但绳子太短：E 放长，再按 /。');return;}
   dog.task={id:p.id,step:0,clock:0};say(p.flatOK?'狗出发走高窗。到窄缝前用 S 放扁，风管会托着它。':'狗出发。你继续控制刺猬，W / S 仍能调它的气量。');return;
  }
- say('空闲时长按 F：狗把气借给刺猬；S 把气还给狗。');
+ say('空闲时长按 /：狗把气借给刺猬；S 把气还给狗。');
 }
 function updateDogTask(dt){
  dog.taskTarget=null;
@@ -32,17 +32,17 @@ function updateDogTask(dt){
  if(Math.hypot(dog.x-q.x,dog.y-q.y)<23&&dog.task.step<route.length-1){dog.task.step++;q=route[dog.task.step];}
  dog.taskTarget=q;
  if(dog.task.step===route.length-1&&Math.hypot(dog.x-p.x,dog.y-p.y)<32&&(p.flatOK||dog.air>=.12)){activateDog(p);return;}
- if(dog.task.clock>22){dog.task=null;say('路线被挡住了。调整气量、绳长或位置，再按 F。');}
+ if(dog.task.clock>22){dog.task=null;say('路线被挡住了。调整气量、绳长或位置，再按 /。');}
 }
 function updateTransfer(dt){
  hog.backflow=false;hog.returnAir=false;
- if(held('KeyF'))dog.fClock=(dog.fClock||0)+dt;else{dog.fClock=0;dog.fContext=false;}
- if(held('KeyF')&&!dog.fContext&&!dog.task&&!dog.docked&&dog.fClock>.32&&dog.state==='ok'&&dog.air>.06&&(hog.bloat||0)<1){
+ if(held('Slash','NumpadDivide'))dog.fClock=(dog.fClock||0)+dt;else{dog.fClock=0;dog.fContext=false;}
+ if(held('Slash','NumpadDivide')&&!dog.fContext&&!dog.task&&!dog.docked&&dog.fClock>.32&&dog.state==='ok'&&dog.air>.06&&(hog.bloat||0)<1){
   const amount=Math.min(.28*dt,dog.air-.06,(1-(hog.bloat||0))/1.8);if(amount>0&&setBloat((hog.bloat||0)+amount*1.8)){setAir(dog.air-amount);hog.backflow=true;stats.transfer+=amount;}
  }
- if(held('KeyS','ArrowDown')&&(hog.bloat||0)>0){const amount=Math.min(.8*dt,hog.bloat);setBloat(hog.bloat-amount);if(dog.state==='ok')setAir(dog.air+amount*.3);hog.returnAir=true;}
+ if(held('KeyS')&&(hog.bloat||0)>0){const amount=Math.min(.8*dt,hog.bloat);setBloat(hog.bloat-amount);if(dog.state==='ok')setAir(dog.air+amount*.3);hog.returnAir=true;}
 }
-function devicesSummary(){const t=switches.find(p=>p.remaining>0);if(t)return `${t.letter} ${t.remaining.toFixed(1)} 秒`;if(dog.task)return'狗正在行动 · F 取消';if(hog.backflow)return`倒灌中 · 体型 ${Math.round((hog.bloat||0)*100)}%`;return switches.map(p=>`${p.letter}${p.on?'●':'○'}`).join('  ')||'风 / 温度 / 绳长';}
+function devicesSummary(){const t=switches.find(p=>p.remaining>0);if(t)return `${t.letter} ${t.remaining.toFixed(1)} 秒`;if(dog.task)return'狗正在行动 · / 取消';if(hog.backflow)return`倒灌中 · 体型 ${Math.round((hog.bloat||0)*100)}%`;return switches.map(p=>`${p.letter}${p.on?'●':'○'}`).join('  ')||'风 / 温度 / 绳长';}
 function updateDevices(dt){
  if(dog.docked&&(dog.state!=='ok'||(!device(dog.docked)?.flatOK&&dog.air<.04)))dog.docked='';
  for(const p of switches){
