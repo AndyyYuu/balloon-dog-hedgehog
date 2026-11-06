@@ -91,6 +91,8 @@ function updateMemoRail(dt){
 function updateMemo(dt){
  if(hurt>0){hurt-=dt;if(hurt<=0){reset(false);say('回到房间入口，气量和物品都已恢复。');}return;}
  time+=dt;noticeTime=Math.max(0,noticeTime-dt);dog.inv=Math.max(0,dog.inv-dt);memo.noise=0;
+ // Landing deformation is transient, including while riding or on the pulley.
+ hog.squash*=Math.exp(-10*dt);dog.squash*=Math.exp(-10*dt);
  if(pressed('KeyF'))memoPigAction();if(pressed('Slash','NumpadDivide'))memoDogAction();memoTransfer(dt);updateMemoWater(dt);
  const hx=(held('ArrowRight')?1:0)-(held('ArrowLeft')?1:0),dx=(held('KeyD')?1:0)-(held('KeyA')?1:0),wasBall=hog.ball;
  if(updateMemoRail(dt)){finishMemoFrame(dt);return;}

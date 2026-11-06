@@ -50,3 +50,19 @@ s.loadLevel(13);Object.assign(s.hog,{x:600,y:445});Object.assign(s.dog,{x:500,y:
 s.loadLevel(14);action(.1);const dogY=s.dog.y,hogY=s.hog.y;action(1.8,'Digit0');assert(s.dog.y>dogY+70&&s.hog.y<hogY-100,'reeling changes both sides of the pulley');assert(Math.hypot(s.dog.x-s.hog.x,s.dog.y-s.hog.y)>85);
 console.log('Independent F and / controls, fixed air, thermal volume, apple fragility, stable work, long spines, static discharge, cat noise and pulley coupling passed');
 
+
+// Regression: landing animation must not leave either character flattened.
+s.loadLevel(8);
+action(.08,'ArrowUp');
+for(let i=0;i<240&&!s.hog.ground;i++)action(1/120);
+assert(s.hog.ground&&s.hog.squash>.1,'landing should still have a brief squash');
+action(.65);
+assert(Math.abs(s.hog.squash)<.001,'hedgehog must recover its normal proportions after landing');
+s.loadLevel(8);Object.assign(s.dog,{y:320,vy:350,ground:false});
+for(let i=0;i<240&&!s.dog.ground;i++)action(1/120);
+assert(s.dog.ground&&s.dog.squash>.1,'dog landing should still animate');
+action(.65);
+assert(Math.abs(s.dog.squash)<.001,'dog must recover its proportions after landing');
+s.loadLevel(14);s.hog.squash=.25;s.dog.squash=.2;action(.65);
+assert(Math.abs(s.hog.squash)<.001&&Math.abs(s.dog.squash)<.001,'pulley motion must also recover the animation');
+console.log('Landing squash recovers for both characters, including pulley motion');
