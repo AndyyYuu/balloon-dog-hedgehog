@@ -3,14 +3,14 @@ const vm=require('node:vm');
 const assert=require('node:assert/strict');
 const html=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8');
 let source=html.split('<script>')[1].split('</script>')[0];
-source=source.replace('loadLevel(0);requestAnimationFrame(frame);','globalThis.sim={ropeRoute,pathLength,hogScale,hogHalf,fanOn,setBloat,loadLevel,update,setHeld,clearHeld,pop,revive,reset,setAir,render,resolve,dogTouchesSpikes,hogTouchesSpikes,dogCollisionCapsules,capsuleHitsTriangle,setActor,interact,device,powered,get charges(){return charges},get activeRole(){return activeRole},get ropeShort(){return ropeShort},get spikeTeeth(){return spikeTeeth},get solids(){return solids},get dog(){return dog},get hog(){return hog},get walls(){return walls},get stats(){return stats},get checkpoint(){return checkpoint},get win(){return win},get ropeLen(){return ropeLen},get level(){return L},get just(){return just},get hurt(){return hurt},get switches(){return switches},get gates(){return gates},get cameraX(){return cameraX}};loadLevel(0);');
+source=source.replace('loadLevel(16);requestAnimationFrame(frame);','globalThis.sim={ropeRoute,pathLength,hogScale,hogHalf,fanOn,setBloat,loadLevel,update,setHeld,setPlayerHeld,clearHeld,pop,revive,reset,setAir,render,resolve,dogTouchesSpikes,hogTouchesSpikes,dogCollisionCapsules,capsuleHitsTriangle,setActor,interact,device,powered,get charges(){return charges},get activeRole(){return activeRole},get ropeShort(){return ropeShort},get spikeTeeth(){return spikeTeeth},get solids(){return solids},get dog(){return dog},get hog(){return hog},get walls(){return walls},get stats(){return stats},get checkpoint(){return checkpoint},get win(){return win},get ropeLen(){return ropeLen},get level(){return L},get just(){return just},get hurt(){return hurt},get switches(){return switches},get gates(){return gates},get cameraX(){return cameraX}};loadLevel(0);');
 const elements=new Map();
 const ctx={};
 const context2d=new Proxy({measureText:s=>({width:String(s).length*10})},{get:(o,k)=>o[k]||(()=>{})});
 function element(id){if(!elements.has(id))elements.set(id,{id,children:[],value:0,hidden:false,textContent:'',innerHTML:'',style:{},dataset:{},classList:{remove(){},add(){}},getContext:()=>context2d,addEventListener(){},setAttribute(){},appendChild(b){this.children.push(b)},focus(){}});return elements.get(id)}
 Object.assign(ctx,{document:{getElementById:element,querySelectorAll:()=>[],createElement:()=>element('new'+Math.random()),addEventListener(){}},window:{},performance:{now:()=>0},requestAnimationFrame(){},addEventListener(){},setTimeout(){},console,Math});
 vm.createContext(ctx);vm.runInContext(source,ctx);const s=ctx.sim;
-function action(seconds,...codes){s.clearHeld();for(const k of codes)s.setHeld(({KeyD:'ArrowRight',KeyA:'ArrowLeft',KeyF:'Slash',Space:'ArrowUp'})[k]||k,'test',true);for(let i=0;i<Math.round(seconds*120);i++){s.update(1/120);s.just.clear();if(s.win)break;}s.clearHeld();return snap();}
+function action(seconds,...codes){s.clearHeld();for(const k of codes)s.setPlayerHeld(k,'test',true);for(let i=0;i<Math.round(seconds*120);i++){s.update(1/120);s.just.clear();if(s.win)break;}s.clearHeld();return snap();}
 function snap(){return {hog:[s.hog.x,s.hog.y,s.hog.vx,s.hog.vy].map(Math.round),dog:[s.dog.x,s.dog.y].map(Math.round),air:+s.dog.air.toFixed(2),state:s.dog.state,ball:s.hog.ball,walls:s.walls.map(w=>w.alive),cp:s.checkpoint?.index??null,sw:s.switches.map(p=>p.on),hurt:+s.hurt.toFixed(2),stats:{...s.stats},win:s.win};}
 function log(label){console.log(label,JSON.stringify(snap()));}
 function settle(){action(.12)}
@@ -34,7 +34,7 @@ flyTo=function(x,y=280,_unused=false,max=30){let t=0;while(s.hog.x<x&&!s.win&&t<
  }return snap();};
 function rope(short){if(s.ropeShort!==short)action(.02,'KeyE');}
 function commandTo(id,{flat=false}={}){
- const p=s.device(id);rope(false);pumpTo(.54);action(.03,'KeyF');assert(s.dog.task||s.dog.docked===id||p.on,'F should launch a nearby action: '+id);
+ const p=s.device(id);rope(false);pumpTo(.54);action(.03,'Slash');assert(s.dog.task||s.dog.docked===id||p.on,'F should launch a nearby action: '+id);
  for(let t=0;t<18&&s.dog.task&&!s.hurt;t+=.05){const keys=[];
   if(flat&&s.dog.task.step>=1&&s.dog.air>.001)keys.push('KeyS');
   else if(!flat&&s.dog.air<.48)keys.push('KeyW');
@@ -42,8 +42,8 @@ function commandTo(id,{flat=false}={}){
  }
  assert(p.on||s.dog.docked===id,'dog must physically reach '+id);return snap();
 }
-function recall(){if(s.dog.docked||s.dog.task)action(.03,'KeyF');}
-function grow(a=.85){rope(true);pumpTo(.8);action((a/(.28*1.8))+.38,'KeyF');assert(s.hog.bloat>a-.05,'backflow should grow the hedgehog');}
+function recall(){if(s.dog.docked||s.dog.task)action(.03,'Slash');}
+function grow(a=.85){rope(true);pumpTo(.8);action((a/(.28*1.8))+.38,'ArrowDown');assert(s.hog.bloat>a-.05,'backflow should grow the hedgehog');}
 function finish(label){if(!s.win)action(1.5);log(label);assert(s.win,label+' must finish');for(const k of ['hog','over','spike','cactus','thorn','fall','timeout'])assert.equal(s.stats[k],0,label+' safe route: '+k);}
 
 for(let n=0;n<8;n++){s.loadLevel(n);
@@ -61,11 +61,11 @@ s.render();
 // Behavioral checks complement complete keyboard-only routes.
 
 for(let i=0;i<8;i++){s.loadLevel(i);action(.35);s.render();assert.equal(s.activeRole,'hog');assert.equal(s.stats.hog,0);assert.equal(s.stats.fall,0);}
-s.loadLevel(0);pumpTo(.54);action(.03,'KeyF');assert(s.dog.task);const before=s.hog.x;action(.25,'KeyD');assert(s.hog.x>before+20,'F must never transfer movement controls to the dog');assert.equal(s.activeRole,'hog');assert.equal(s.stats.swaps,0);action(.03,'KeyF');assert(!s.dog.task&&!s.dog.docked,'F again recalls/cancels');
-s.loadLevel(0);rope(true);action(.03,'KeyF');assert(!s.dog.task,'short hose must not silently extend to reach a high target');assert(s.ropeShort);
-s.loadLevel(2);walkTo(620);rope(false);pumpTo(.54);action(.03,'KeyF');action(4);assert(!s.device('window').on,'a full-sized dog must not bypass the narrow high vent');assert(s.dog.x<520,'the physical wall must block the dog');action(1.2,'KeyS');action(4);assert(s.dog.docked==='window','a flat dog must fit through the high vent');
+s.loadLevel(0);pumpTo(.54);action(.03,'Slash');assert(s.dog.task);const before=s.hog.x;action(.25,'KeyD');assert(s.hog.x>before+20,'F must never transfer movement controls to the dog');assert.equal(s.activeRole,'hog');assert.equal(s.stats.swaps,0);action(.03,'Slash');assert(!s.dog.task&&!s.dog.docked,'F again recalls/cancels');
+s.loadLevel(0);rope(true);action(.03,'Slash');assert(!s.dog.task,'short hose must not silently extend to reach a high target');assert(s.ropeShort);
+s.loadLevel(2);walkTo(620);rope(false);pumpTo(.54);action(.03,'Slash');action(4);assert(!s.device('window').on,'a full-sized dog must not bypass the narrow high vent');assert(s.dog.x<520,'the physical wall must block the dog');action(1.2,'KeyS');action(4);assert(s.dog.docked==='window','a flat dog must fit through the high vent');
 s.loadLevel(3);const a={x:600,y:185},b={x:620,y:445},route=s.ropeRoute(a,b);assert(route.length>2,'the hose must wrap around the crossbeam');assert(s.pathLength(route)>Math.hypot(b.x-a.x,b.y-a.y)+10);
-s.loadLevel(5);const feet=s.hog.y+s.hogHalf();pumpTo(.8);const air=s.dog.air;action(1,'KeyF');assert(s.hog.bloat>.25&&s.hogScale()>1.3);assert(s.dog.air<air-.15,'growing must consume actual balloon air');assert(Math.abs(s.hog.y+s.hogHalf()-feet)<1,'growing must preserve ground contact');const size=s.hog.bloat;action(.5,'KeyS');assert(s.hog.bloat<size-.2,'S must shrink the hedgehog');
+s.loadLevel(5);const feet=s.hog.y+s.hogHalf();pumpTo(.8);const air=s.dog.air;action(1,'ArrowDown');assert(s.hog.bloat>.25&&s.hogScale()>1.3);assert(s.dog.air<air-.15,'growing must consume actual balloon air');assert(Math.abs(s.hog.y+s.hogHalf()-feet)<1,'growing must preserve ground contact');const size=s.hog.bloat;action(.5,'KeyS');assert(s.hog.bloat<size-.2,'S must shrink the hedgehog');
 // Ordinary rolling cannot open the counterweight press or reinforced wall.
 s.loadLevel(5);Object.assign(s.hog,{x:610,y:445,vx:0,vy:0,ground:true});action(1.2);assert(!s.device('weight').on);
 Object.assign(s.hog,{x:1080,y:447,vx:250,vy:0,ground:true,ball:true});Object.assign(s.dog,{x:990,y:453,air:0,ground:true});action(.4,'KeyD','ShiftLeft');assert(s.walls[0].alive,'reinforced walls require giant rolling');

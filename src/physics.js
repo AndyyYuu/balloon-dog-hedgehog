@@ -8,7 +8,7 @@ function setHeld(code,source,on){
 function clearHeld(){down.clear();just.clear();heldSources.clear();document.querySelectorAll('.touch .active').forEach(b=>b.classList.remove('active'));}
 const held=(...keys)=>keys.some(k=>down.has(k));
 const pressed=(...keys)=>keys.some(k=>just.has(k));
-function start(){started=true;paused=false;startEl.hidden=true;pauseEl.hidden=true;initAudio();stageEl.focus({preventScroll:true});}
+function start(){started=true;paused=false;document.getElementById('pauseBtn').textContent='暂停 P';startEl.hidden=true;pauseEl.hidden=true;initAudio();stageEl.focus({preventScroll:true});}
 function togglePause(force){if(!started||win)return;paused=force??!paused;clearHeld();pauseEl.hidden=!paused;document.getElementById('pauseBtn').textContent=paused?'继续 P':'暂停 P';setJet(false);if(!paused){initAudio();stageEl.focus({preventScroll:true});}}
 function toggleSound(){muted=!muted;if(ac&&master)master.gain.value=muted?0:.32;document.getElementById('soundBtn').textContent=muted?'声音 关':'声音 开';document.getElementById('soundBtn').setAttribute('aria-pressed',String(!muted));}
 const gameKeys=['KeyA','KeyD','KeyW','KeyS','KeyE','KeyF','Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','ShiftLeft','ShiftRight','Slash','NumpadDivide','Digit0','Numpad0'];
@@ -17,25 +17,25 @@ addEventListener('keydown',e=>{
  if(k==='KeyP'||k==='Escape'){if(!e.repeat)togglePause();return;}
  if(k==='KeyM'){if(!e.repeat)toggleSound();return;}
  if(k==='KeyR'&&started){reset(true);return;}
- const m=k.match(/^Digit([1-9])$/);if(m){loadLevel(+m[1]-1);start();return;}if(k==='BracketRight'){loadLevel((idx+1)%LEVELS.length);start();return;}if(k==='BracketLeft'){loadLevel((idx+LEVELS.length-1)%LEVELS.length);start();return;}
- if(win&&(k==='Enter'||k==='NumpadEnter')){loadLevel((idx+1)%LEVELS.length);start();return;}
+ const m=k.match(/^Digit([1-9])$/);if(m){loadLevel(+m[1]-1);start();return;}if(k==='BracketRight'){loadLevel(nextRoomIndex());start();return;}if(k==='BracketLeft'){loadLevel((idx+LEVELS.length-1)%LEVELS.length);start();return;}
+ if(win&&(k==='Enter'||k==='NumpadEnter')){loadLevel(nextRoomIndex());start();return;}
  if(!gameKeys.includes(k)||paused||win)return;
- if(!started)start();initAudio();setHeld(k,'keyboard',true);
+ if(!started)start();initAudio();setPlayerHeld(k,'keyboard',true);
 });
-addEventListener('keyup',e=>setHeld(e.code,'keyboard',false));
+addEventListener('keyup',e=>setPlayerHeld(e.code,'keyboard',false));
 addEventListener('blur',()=>{clearHeld();if(started&&!win)togglePause(true);});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&started&&!win)togglePause(true);});
-document.getElementById('startBtn').addEventListener('click',start);
+document.getElementById('startBtn').addEventListener('click',()=>{loadLevel(16);start();});
 document.getElementById('resumeBtn').addEventListener('click',()=>togglePause(false));
 document.getElementById('pauseBtn').addEventListener('click',()=>togglePause());
 document.getElementById('restartBtn').addEventListener('click',()=>{reset(true);start();});
 document.getElementById('soundBtn').addEventListener('click',()=>{initAudio();toggleSound();});
-document.getElementById('nextBtn').addEventListener('click',()=>{loadLevel((idx+1)%LEVELS.length);start();});
+document.getElementById('nextBtn').addEventListener('click',()=>{loadLevel(nextRoomIndex());start();});
 stageEl.addEventListener('click',e=>{if(e.target===cv){if(!started)start();else stageEl.focus({preventScroll:true});}});
-LEVELS.forEach((l,i)=>{const b=document.createElement('button');b.type='button';b.id='lv'+(i+1);b.textContent=`${String(i+1).padStart(2,'0')} ${l.name}`;b.addEventListener('click',()=>{loadLevel(i);start();});levelsEl.appendChild(b);});
+LEVELS.forEach((l,i)=>{const b=document.createElement('button');b.type='button';b.id='lv'+(i+1);b.textContent=l.practice?`练习 ${i-15}  ${l.name}`:`${String(i+1).padStart(2,'0')} ${l.name}`;b.title=l.name;b.addEventListener('click',()=>{loadLevel(i);closeLevelPanel();start();});levelsEl.appendChild(b);});
 document.querySelectorAll('[data-code]').forEach(b=>{
- b.addEventListener('pointerdown',e=>{e.preventDefault();if(win)return;if(!started)start();if(paused)togglePause(false);b.setPointerCapture(e.pointerId);setHeld(b.dataset.code,e.pointerId,true);b.classList.add('active');});
- const release=e=>{setHeld(b.dataset.code,e.pointerId,false);b.classList.remove('active');};b.addEventListener('pointerup',release);b.addEventListener('pointercancel',release);b.addEventListener('lostpointercapture',release);
+ b.addEventListener('pointerdown',e=>{e.preventDefault();if(win)return;if(!started)start();if(paused)togglePause(false);b.setPointerCapture(e.pointerId);setPlayerHeld(b.dataset.code,e.pointerId,true);b.classList.add('active');});
+ const release=e=>{setPlayerHeld(b.dataset.code,e.pointerId,false);b.classList.remove('active');};b.addEventListener('pointerup',release);b.addEventListener('pointercancel',release);b.addEventListener('lostpointercapture',release);
 });
 function addText(x,y,txt,col,size=20){texts.push({x,y,txt,col,size,life:1.1});}
 function puff(x,y,n,col){for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*120,vy:-40-Math.random()*80,life:.5+Math.random()*.3,max:.8,col,sz:3+Math.random()*4,rot:0,vr:0,round:true});}
@@ -83,14 +83,15 @@ function hurtHog(reason){if(hurt>0)return;stats[reason]++;hurt=.55;hurtReason=re
 function fanOn(f){return f.rule?powered(f.rule):f.switch===undefined||switches[f.switch].on;}
 function pressSwitch(p){if(p.latched||(p.requires&&!p.requires.every(powered)))return;p.on=true;p.latched=true;needRebuild=true;sGrab();sThud();confetti(p.x+p.w/2,p.y-15,16,['#cfaa67','#7aa99c','#e6cb98'],p.w);addText(p.x+p.w/2,p.y-55,'接过来了！','#8e774b',20);}
 function update(dt){
+ prepareCompanion(dt);
  if(L.memo){updateMemo(dt);return;}
  if(hurt>0){hurt-=dt;if(hurt<=0){const txt=hurtReason==='thorn'?'她也怕刺，要让小狗把她吊高再过':hurtReason==='timeout'?'接力超时，重新安排两位的位置':'回到蓝旗，再试一次';reset(false);addText(cameraX+W*.5,215,txt,'#9b7252',19);}return;}
  time+=dt;banner=Math.max(0,banner-dt);dog.blocked=Math.max(0,dog.blocked-dt);dog.inv=Math.max(0,dog.inv-dt);
  noticeTime=Math.max(0,noticeTime-dt);
  if(pressed('KeyE')){ropeShort=!ropeShort;sGrab();}
- if(pressed('Slash','NumpadDivide'))interact();if(pressed('KeyF'))say('F 是刺猬的动作：按住吹气给狗；铜色机关用 Shift 滚压。');
+ if(pressed('Slash','NumpadDivide'))interact();if(pressed('KeyF'))say('F 只操作附近物品；W 给狗气，Shift 滚压铜色机关。');
  updateTransfer(dt);updateDogTask(dt);
- const move=(held('ArrowRight')?1:0)-(held('ArrowLeft')?1:0),ix=move,dogIx=(held('KeyD')?1:0)-(held('KeyA')?1:0),inflate=held('KeyW','KeyF'),deflate=held('KeyS');
+ const move=(held('ArrowRight')?1:0)-(held('ArrowLeft')?1:0),ix=move,dogIx=(held('KeyD')?1:0)-(held('KeyA')?1:0),inflate=held('KeyW'),deflate=held('KeyS');
  const shiftHeld=held('ShiftLeft','ShiftRight'),wasJet=hog.jet;
  const wantBall=shiftHeld&&hog.ground;
  if(wantBall&&!hog.ball){hog.ball=true;hog.y+=2*hogScale();sCurl();}
@@ -190,22 +191,23 @@ function update(dt){
  const g=L.goal;
  const arrived=g.pair?(!!charges.find(p=>p.id===g.pair)?.done&&(!g.requires||g.requires.every(powered))):(hog.ground&&hog.x>=g.x&&hog.x<=g.x+g.w+16&&hog.y>g.y&&hog.y<g.y+g.h&&dog.x>g.x-115&&(!g.requires||g.requires.every(powered)));
  if(!win&&dog.state==='ok'&&arrived&&walls.every(w=>!w.alive)){
-  win=true;clearHeld();setJet(false);sWin();syncHUD();
+  win=true;clearHeld();setJet(false);sWin();syncHUD();rememberCompletion();
   winTitle.textContent=idx===LEVELS.length-1?'我们一起走完了！':'一起到了！';
   const pops=stats.hog+stats.over+stats.spike+stats.cactus;
   winBody.innerHTML=`第 ${idx+1} 关 · ${L.name}<br>${time.toFixed(1)} 秒 · 狗行动 ${stats.commands} 次<br>小狗爆掉 ${pops} 次 · 接力超时 ${stats.timeout} 次<br>一个人，也把两位都照顾到了。`;
   document.getElementById('nextBtn').textContent=idx===LEVELS.length-1?'再走一遍 ↻':'下一关 →';winNext.textContent=idx===LEVELS.length-1?'选择关卡继续冒险 · R 再试这一关':'Enter 下一关 · R 再试一次';winEl.hidden=false;
  }
  hudClock+=dt;if(hudClock>.1){syncHUD();hudClock=0;}
+ updateExperience(dt);
  const camTarget=clamp((activeRole==='hog'?hog.x*.7+dog.x*.3:dog.x*.7+hog.x*.3)-W*.38,0,L.width-W);cameraX=approach(cameraX,camTarget,Math.max(90,Math.abs(camTarget-cameraX)*7)*dt);
 }
 function syncHUD(){
  if(L?.memo&&memo){syncMemoHUD();return;}
  airMeter.value=dog.state==='ok'?clamp(dog.air,0,1):0;airText.textContent=`${Math.round(airMeter.value*100)}%`;
- stateText.textContent=win?'两位都到了！':hurt>0?'回蓝旗，重新接应':dog.state==='skin'?`${dog.lastPop} · W 吹回来`:noticeTime>0?interactNotice:hog.backflow?'倒灌中：狗变小，刺猬变大':hog.returnAir?'把气还给狗：刺猬缩小':dog.docked?`狗留在 ${device(dog.docked)?.letter} · / 叫回来`:dog.task?'狗正在行动 · W/S 调气量 · / 取消':hog.jet?'喷气中 · W 补气':hog.bloat>.05?`刺猬体型 ${Math.round(hog.bloat*100)}% · S 还气`:'方向键控制刺猬 · A/D 控制狗 · F / 各自动作';
- saveText.textContent=`${ropeShort?'短绳':'长绳'} · ${devicesSummary()}`;
+ stateText.textContent=win?'两位都到了！':hurt>0?'回蓝旗，重新接应':dog.state==='skin'?`${dog.lastPop} · W 吹回来`:noticeTime>0?interactNotice:hog.backflow?'倒灌中：狗变小，刺猬变大':hog.returnAir?'把气还给狗：刺猬缩小':dog.docked?`狗留在 ${device(dog.docked)?.letter} · / 叫回来`:dog.task?'狗正在行动 · W/S 调气量 · / 取消':hog.jet?'喷气中 · W 补气':hog.bloat>.05?`刺猬体型 ${Math.round(hog.bloat*100)}% · S 还气`:'A/D 控制刺猬 · 狗自动跟随 · ↓ 倒灌气';
+ saveText.textContent=`${ropeShort?'短绳':'长绳'} · ${devicesSummary()}`;syncExperience();
 }
 function effects(dt){for(const p of parts){p.vy+=(p.round?-30:600)*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;p.rot+=p.vr*dt;}parts=parts.filter(p=>p.life>0);for(const t of texts){t.y-=26*dt;t.life-=dt;}texts=texts.filter(t=>t.life>0);shake=Math.max(0,shake-dt);}
 
-document.getElementById('memoChapter').addEventListener('click',()=>{[...levelsEl.children].forEach((b,i)=>b.hidden=i<8);loadLevel(8);start();});
-document.getElementById('classicChapter').addEventListener('click',()=>{[...levelsEl.children].forEach((b,i)=>b.hidden=i>=8);loadLevel(0);start();});
+document.getElementById('memoChapter').addEventListener('click',()=>selectChapter('memo'));
+document.getElementById('classicChapter').addEventListener('click',()=>selectChapter('classic'));

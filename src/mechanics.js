@@ -22,7 +22,7 @@ function interact(){
  if(p){dog.fContext=true;if(dog.state!=='ok'){say('先 W 把狗吹回来。');return;}if(ropeShort&&Math.hypot(p.x-hog.x,p.y-hog.y)>140){say('目标够得着，但绳子太短：E 放长，再按 /。');return;}
   dog.task={id:p.id,step:0,clock:0};say(p.flatOK?'狗出发走高窗。到窄缝前用 S 放扁，风管会托着它。':'狗出发。你继续控制刺猬，W / S 仍能调它的气量。');return;
  }
- say('空闲时长按 /：狗把气借给刺猬；S 把气还给狗。');
+ say('↓ 把狗的气给刺猬；S 把刺猬缩小。');
 }
 function updateDogTask(dt){
  dog.taskTarget=null;
@@ -37,7 +37,7 @@ function updateDogTask(dt){
 function updateTransfer(dt){
  hog.backflow=false;hog.returnAir=false;
  if(held('Slash','NumpadDivide'))dog.fClock=(dog.fClock||0)+dt;else{dog.fClock=0;dog.fContext=false;}
- if(held('Slash','NumpadDivide')&&!dog.fContext&&!dog.task&&!dog.docked&&dog.fClock>.32&&dog.state==='ok'&&dog.air>.06&&(hog.bloat||0)<1){
+ if(held('ArrowDown')&&dog.state==='ok'&&dog.air>.06&&(hog.bloat||0)<1){
   const amount=Math.min(.28*dt,dog.air-.06,(1-(hog.bloat||0))/1.8);if(amount>0&&setBloat((hog.bloat||0)+amount*1.8)){setAir(dog.air-amount);hog.backflow=true;stats.transfer+=amount;}
  }
  if(held('KeyS')&&(hog.bloat||0)>0){const amount=Math.min(.8*dt,hog.bloat);setBloat(hog.bloat-amount);if(dog.state==='ok')setAir(dog.air+amount*.3);hog.returnAir=true;}

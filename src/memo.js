@@ -5,7 +5,7 @@ const memoObj=id=>memo?.objects.find(p=>p.id===id);
 function initMemo(){
  memo=null;if(!memoOn())return;
  memo={level:idx,apples:(L.apples||[]).map(p=>({...p,vy:0,ignore:0})),stack:0,objects:(L.objects||[]).map(p=>({...p,done:false,progress:0})),cats:(L.cats||[]).map(p=>({...p,vx:0,alert:0,awake:false,flee:0})),water:L.water?{...L.water,frozen:false,freeze:0,plugged:false}:null,rail:L.rail?{...L.rail,done:false}:null,keys:0,noise:0,work:null,slashContext:false,slashClock:0,pigContext:false};
- dog.gas=L.dogGas??.15;hog.gas=Math.max(0,L.budget-dog.gas);dog.temp=1;dog.air=dog.gas;hog.bloat=clamp((hog.gas-.16)/.64,0,1);dog.riding=false;dog.cling=null;dog.charge=0;
+ dog.gas=L.dogGas??.15;hog.gas=Math.max(0,L.budget-dog.gas);dog.temp=1;dog.air=dog.gas;hog.bloat=clamp((hog.gas-.16)/.64,0,1);dog.riding=false;dog.seatOptOut=false;dog.cling=null;dog.charge=0;
  dog.x=L.dogX;dog.y=L.dogY??((L.world==='bath'?500:460)-rr(dog.air));hog.x=L.hogX;hog.y=L.hogY??((L.world==='bath'?500:460)-hogHalf());
  dog.ground=hog.ground=true;ropeLen=L.rail?.long??300;ropeShort=false;
  Object.assign(stats,{apples:0,scares:0,cat:0,rail:0,spent:0});rebuildSolids();
@@ -19,6 +19,16 @@ function memoExtraSolids(){
 function memoTotalAir(){return memoOn()?dog.gas+hog.gas:dog.air+(hog.bloat||0)/1.8;}
 function memoHogMass(){return MH*(1-.58*(hog.bloat||0))+.2*(memo?.stack||0);}
 function memoSeatY(){return hog.y-17*hogScale()-22*(memo?.stack||0);}
+function leaveAppleSeat(vx=0){dog.riding=false;dog.seatOptOut=true;dog.seatCooldown=.65;dog.vx=vx;dog.vy=-180;dog.inv=.3;memo.work=null;}
+function autoAppleSeat(dx,dt){
+ dog.seatCooldown=Math.max(0,(dog.seatCooldown||0)-dt);
+ if(dog.riding){if(!dx)dog.seatInputReleased=true;return;}
+ if(dog.seatOptOut||!memo.stack||!hog.ground||hog.ball||dog.state!=='ok'||dog.cling||dog.seatCooldown>0||dog.air>=.29||pressed('Space'))return;
+ if(Math.abs(dog.x-hog.x)>86||dog.y<memoSeatY()-80||dog.y>hog.y+30||Math.abs(dog.vy)>210)return;
+ const [hw,hh]=dogDims(),seatY=memoSeatY()-hh;if(overlapAny(hog.x,seatY,hw,hh))return;
+ dog.seatOptOut=false;dog.riding=true;dog.x=hog.x;dog.y=seatY;dog.vx=dog.vy=0;dog.ground=true;dog.inv=.2;dog.seatInputReleased=!dx;
+ say('狗坐好了。现在用 → 慢慢驮它走；/ 让狗下座。');
+}
 function dropApples(){
  if(!memo?.stack)return;for(let i=0;i<memo.stack;i++)memo.apples.push({x:hog.x+(i-(memo.stack-1)/2)*25,y:memoSeatY()+i*16,vy:-100,ignore:.6});memo.stack=0;dog.riding=false;memo.work=null;say('苹果掉了，座位也没了！');
 }
@@ -29,11 +39,11 @@ function memoDogAction(){
  memo.slashClock=0;memo.slashContext=true;
  const work=memo.objects.find(p=>p.type==='lamp'&&!p.done&&Math.hypot(p.x-dog.x,p.y-dog.y)<75);
  if(work){memo.work=work.id;say('狗按住 / 作业；刺猬必须停稳，苹果座位要够高。');return;}
- if(dog.riding){dog.riding=false;dog.vx=dog.face*150;dog.vy=-180;dog.inv=.25;say('狗跳下座位。苹果只护住上面那一点。');return;}
+ if(dog.riding){leaveAppleSeat(-hog.face*180);say('狗下来了。小狗会在地面跟随；再按 / 可以重新上座。');return;}
+ if(dog.seatOptOut&&memo.stack){dog.seatOptOut=false;say('小狗准备重新上座，停稳等它靠近。');return;}
  if(dog.cling){dog.cling=null;dog.inv=.2;say('松开静电，重新受风和重力影响。');return;}
- const cling=nearestCling();if(dog.air<.16&&dog.charge>.08&&cling&&cling.d<60){dog.cling={path:cling.j,s:cling.s};dog.riding=false;dog.vx=dog.vy=0;say('贴住了。A / D 沿墙爬，/ 或空格松开；电量会减少。');return;}
- if(memo.stack&&hog.ground&&!hog.ball&&dog.air<.29&&Math.hypot(dog.x-hog.x,dog.y-hog.y)<120){dog.riding=true;dog.vx=dog.vy=0;dog.inv=.15;say('狗坐好了。刺猬别跳、别重新缩球；气大了也坐不住。');return;}
- memo.slashContext=false;say('狗长按 / 倒灌给刺猬；在苹果或带电墙边，/ 是狗自己的操作。');
+ const cling=nearestCling();if(dog.air<.16&&dog.charge>.08&&cling&&cling.d<60){dog.cling={path:cling.j,s:cling.s};dog.riding=false;dog.vx=dog.vy=0;say('贴住了。小狗会自己往上爬，/ 让它松开；电量会减少。');return;}
+ memo.slashContext=false;say('↓ 把气给刺猬。狗会自己跟随；带电墙边按 / 让它贴住。');
 }
 function memoPigAction(){
  memo.pigContext=false;
@@ -48,17 +58,17 @@ function memoPigAction(){
  if(key){memo.pigContext=true;key.key=null;memo.keys++;sGrab();say('刺猬拿到钥匙了，去门边按 F。');return;}
  const pump=(L.pumps||[]).find(p=>Math.hypot(hog.x-p.x,hog.y-(p.y-15))<75);
  if(pump){memo.pigContext=true;say('按住 F 用打气筒补总气量。W 只把已有的气给狗。');return;}
- say('刺猬按住 F / W 把自己的气给狗；Shift 滚动，↑ 跳跃。');
+ say('这里没有可操作的物品。W 给狗输气；F 只操作附近的物品。');
 }
 function memoTransfer(dt){
  const before=memoTotalAir();hog.blow=false;hog.backflow=false;hog.returnAir=false;memo.ventThrust=false;
  const pump=(L.pumps||[]).find(p=>Math.hypot(hog.x-p.x,hog.y-(p.y-15))<75);
  if(held('KeyF')&&memo.pigContext&&pump){const q=Math.min(.24*dt,Math.max(0,pump.cap-memoTotalAir()));hog.gas+=q;memo.noise=Math.max(memo.noise,.9);}
- if((held('KeyW')||(held('KeyF')&&!memo.pigContext))&&dog.state==='ok'){const q=Math.min(hog.gas,.28*dt,1.05-dog.gas);hog.gas-=q;dog.gas+=q;hog.blow=q>0;if(q>0)memo.noise=Math.max(memo.noise,.8);}
+ if(held('KeyW')&&dog.state==='ok'){const q=Math.min(hog.gas,.28*dt,1.05-dog.gas);hog.gas-=q;dog.gas+=q;hog.blow=q>0;if(q>0)memo.noise=Math.max(memo.noise,.8);}
  if(held('Slash','NumpadDivide'))memo.slashClock+=dt;else{memo.slashClock=0;memo.slashContext=false;memo.work=null;}
- if((held('ArrowDown')||(held('Slash','NumpadDivide')&&!memo.slashContext&&memo.slashClock>.25))&&dog.state==='ok'){const q=Math.min(dog.gas,.33*dt,1-hog.gas);dog.gas-=q;hog.gas+=q;hog.backflow=q>0;}
+ if(held('ArrowDown')&&dog.state==='ok'){const q=Math.min(dog.gas,.33*dt,1-hog.gas);dog.gas-=q;hog.gas+=q;hog.backflow=q>0;}
  if(held('KeyS')&&dog.state==='ok'){const q=Math.min(dog.gas,.34*dt);dog.gas-=q;stats.spent+=q;memo.ventThrust=q>0;if(q>0)memo.noise=Math.max(memo.noise,.9);}
- if(dog.state==='skin'&&(held('KeyW')||held('KeyF'))&&hog.gas>.045){hog.revive+=dt;if(hog.revive>.7){dog.state='ok';dog.gas=Math.min(.12,hog.gas);hog.gas-=dog.gas;dog.inv=1;dog.lastPop='';hog.revive=0;}}
+ if(dog.state==='skin'&&held('KeyW')&&hog.gas>.045){hog.revive+=dt;if(hog.revive>.7){dog.state='ok';dog.gas=Math.min(.12,hog.gas);hog.gas-=dog.gas;dog.inv=1;dog.lastPop='';hog.revive=0;}}
  const oldHalf=hogHalf();hog.bloat=clamp((hog.gas-.16)/.64,0,1);if(hog.ground)hog.y-=hogHalf()-oldHalf;
  let temp=1;for(const z of heat)if(inRect(dog.x,dog.y,z)&&(!z.until||!memoObj(z.until)?.done)&&(!z.when||memoObj(z.when)?.done))temp=z.temp??1;
  dog.temp=approach(dog.temp,temp,dt*.7);const oldR=isFlat()?7:rr(dog.air),oldFlat=isFlat();dog.air=dog.gas*dog.temp;const newR=isFlat()?7:rr(dog.air);if(dog.ground||oldFlat!==isFlat())dog.y-=newR-oldR;
@@ -99,8 +109,8 @@ function updateMemo(dt){
  const ball=held('ShiftLeft','ShiftRight');if(ball&&!wasBall){dropApples();hog.ball=true;hog.y+=2*hogScale();}else if(!ball&&wasBall&&!overlapAny(hog.x,hog.y-2*hogScale(),15*hogScale(),15*hogScale())){hog.ball=false;hog.y-=2*hogScale();}
  if(hx)hog.face=hx;if(dx)dog.face=dx;
  if(pressed('ArrowUp')&&hog.ground&&!hog.plugged){dropApples();hog.vy=-420/(1+hog.bloat*.45);hog.ground=false;memo.noise=1;}
- if(pressed('Space')){if(dog.cling){dog.cling=null;dog.vy=-180;}else if(dog.riding){dog.riding=false;dog.vy=-300;dog.inv=.3;}else if(dog.ground){dog.vy=-350;dog.ground=false;}}
- if(dog.riding&&(dx||dog.air>.29||hog.ball||!memo.stack)){dog.riding=false;dog.vx=dx*140;dog.vy=-130;}
+ if(pressed('Space')){if(dog.cling){dog.cling=null;dog.vy=-180;}else if(dog.riding){leaveAppleSeat(dog.face*100);dog.vy=-300;}else if(dog.ground){dog.vy=-350;dog.ground=false;}}
+ if(dog.riding&&((dx&&dog.seatInputReleased)||dog.air>.29||hog.ball||!memo.stack))leaveAppleSeat(dx*140);
  const w=memo.water,hWater=w&&!w.frozen&&hog.x>w.x&&hog.x<w.x+w.w&&hog.y+hogHalf()>w.y,dWater=w&&!w.frozen&&dog.x>w.x&&dog.x<w.x+w.w&&dog.y+dogDims()[1]>w.y;
  hog.vx=approach(hog.vx,hx*(hog.ball?350:185)/(1+hog.bloat*.4),dt*(hx?1800:2600));hog.vy+=G*(hWater?(hog.bloat>.35?-.4-2*hog.bloat:1.2):1-.22*hog.bloat)*dt;
  if(hWater){hog.vx*=Math.exp(-dt);hog.vy*=Math.exp(-dt*2.5);}
@@ -113,9 +123,10 @@ function updateMemo(dt){
  for(const c of L.carpets||[])if(dog.x>c.x&&dog.x<c.x+c.w&&dog.air<.16&&dog.ground&&dx)dog.charge=Math.min(1,dog.charge+dt*.8);
  dog.charge=Math.max(0,dog.charge-dt*.045);if(dWater){dog.charge=0;dog.cling=null;}
  if(dog.cling&&(dog.charge<=0||dog.air>=.16))dog.cling=null;
+ autoAppleSeat(dx,dt);
  if(dog.riding){dog.x=hog.x;dog.y=memoSeatY()-dogDims()[1];dog.vx=hog.vx;dog.vy=hog.vy;dog.ground=true;}
  else if(dog.cling){dog.cling.s=clamp(dog.cling.s+dx*120*dt,0,clingLength(dog.cling.path));const p=clingPoint(dog.cling.path,dog.cling.s);dog.x=p.x;dog.y=p.y;dog.vx=dog.vy=0;dog.ground=false;}
- else{dog.vx=approach(dog.vx,dx*165+(memo.ventThrust?dog.face*65:0),dt*(dx?1300:1800));let ay=G*(1-K*dog.air);if(dWater)ay=dog.air>.04?-G*(1+Math.min(1.8,dog.air*4)):650;dog.vy+=ay*dt;if(memo.ventThrust)dog.vy+=Math.sin(time*19)*55*dt;dog.vy*=Math.exp(-dt*(dWater?4:2.5));for(const f of fans)if(fanOn(f)&&inRect(dog.x,dog.y,f)&&dog.air>.04){dog.vx+=f.dx*f.p*dog.air*1.4*dt;dog.vy+=f.dy*f.p*dog.air*1.4*dt;}dog.vy=clamp(dog.vy,-360,750);dog.ground=false;dog.x+=dog.vx*dt;dog.y+=dog.vy*dt;const[a,b]=dogDims();resolve(dog,a,b,false);}
+ else{dog.vx=approach(dog.vx,dx*(heldSources.get('KeyA')?.has('companion')||heldSources.get('KeyD')?.has('companion')?Math.max(165,Math.abs(hog.vx)+35):165)+(memo.ventThrust?dog.face*65:0),dt*(dx?1300:1800));let ay=G*(1-K*dog.air);if(dWater)ay=dog.air>.04?-G*(1+Math.min(1.8,dog.air*4)):650;dog.vy+=ay*dt;if(memo.ventThrust)dog.vy+=Math.sin(time*19)*55*dt;dog.vy*=Math.exp(-dt*(dWater?4:2.5));for(const f of fans)if(fanOn(f)&&inRect(dog.x,dog.y,f)&&dog.air>.04){dog.vx+=f.dx*f.p*dog.air*1.4*dt;dog.vy+=f.dy*f.p*dog.air*1.4*dt;}dog.vy=clamp(dog.vy,-360,750);dog.ground=false;dog.x+=dog.vx*dt;dog.y+=dog.vy*dt;const[a,b]=dogDims();resolve(dog,a,b,false);}
  ropeLen=approach(ropeLen,held('Digit0','Numpad0')?85:300,180*dt);ropeShort=held('Digit0','Numpad0');hog.reel=ropeShort;
  if(!dog.riding){for(let i=0;i<5;i++){const a=anchor(),x=hog.x-a.x,y=hog.y-10-a.y,d=Math.hypot(x,y);if(d<=ropeLen)break;const wd=dog.cling?0:1,wh=hog.plugged?0:1/memoHogMass();if(!wd&&!wh)break;const c=Math.min(24,d-ropeLen)/(wd+wh),nx=x/d,ny=y/d;dog.x+=nx*c*wd;dog.y+=ny*c*wd;hog.x-=nx*c*wh;hog.y-=ny*c*wh;const v=(hog.vx-dog.vx)*nx+(hog.vy-dog.vy)*ny;if(v>0){dog.vx+=nx*v*wd/(wd+wh);dog.vy+=ny*v*wd/(wd+wh);hog.vx-=nx*v*wh/(wd+wh);hog.vy-=ny*v*wh/(wd+wh);}if(!dog.cling){const[a,b]=dogDims();resolve(dog,a,b,false);}if(!hog.plugged)resolve(hog,hogHalf(),hogHalf(),true);}}
  if(L.softSky&&dog.y-dogDims()[1]<26){dog.y=26+dogDims()[1];dog.vy=Math.max(0,dog.vy);}
@@ -126,9 +137,10 @@ function updateMemo(dt){
  finishMemoFrame(dt);
 }
 function finishMemoFrame(dt){
+ updateExperience(dt);
  // Material jobs power only their room's supporting doors.
  for(const g of gates){const on=powered(g.rule);if(on!==g.on){g.on=on;needRebuild=true;}g.open=approach(g.open,g.on?1:0,dt*2.4);}if(needRebuild)rebuildSolids();
- const g=L.goal;if(dog.state==='ok'&&hog.ground&&hog.x>=g.x&&hog.x<=g.x+g.w+20&&dog.x>g.x-115&&(!g.requires||g.requires.every(powered))){win=true;clearHeld();sWin();winTitle.textContent='两位一起出来了！';winBody.innerHTML=`第 ${idx+1} 关 · ${L.name}<br>${time.toFixed(1)} 秒 · 总气量 ${Math.round(memoTotalAir()*100)}%<br>苹果 ${memo.stack} 个 · 猫醒了 ${memo.cats.some(c=>c.awake)?'是':'否'}`;winEl.hidden=false;document.getElementById('nextBtn').textContent=idx===LEVELS.length-1?'再走一遍':'下一关 →';}
+ const g=L.goal;if(dog.state==='ok'&&hog.ground&&hog.x>=g.x&&hog.x<=g.x+g.w+20&&dog.x>g.x-115&&(!g.requires||g.requires.every(powered))){win=true;clearHeld();sWin();rememberCompletion();winTitle.textContent='两位一起出来了！';winBody.innerHTML=`第 ${idx+1} 关 · ${L.name}<br>${time.toFixed(1)} 秒 · 总气量 ${Math.round(memoTotalAir()*100)}%<br>苹果 ${memo.stack} 个 · 猫醒了 ${memo.cats.some(c=>c.awake)?'是':'否'}`;winEl.hidden=false;document.getElementById('nextBtn').textContent=L.practice?(idx===18?'开始房间冒险 →':'下一个练习 →'):idx===15?'练习与更多关卡 →':'下一关 →';}
  const target=clamp((hog.x+dog.x)/2-W*.4,0,L.width-W);cameraX=approach(cameraX,target,Math.max(100,Math.abs(target-cameraX)*7)*dt);hudClock+=dt;if(hudClock>.1){syncHUD();hudClock=0;}
 }
 

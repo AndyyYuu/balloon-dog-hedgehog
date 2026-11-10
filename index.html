@@ -6,36 +6,41 @@
 <meta name="theme-color" content="#f7f1ec">
 <title>气球狗和刺猬 · 房间冒险</title>
 <style>
-:root{color-scheme:light;--bg:#f7f1ec;--ink:#352e32;--muted:#84776f;--line:#e5d9cf;--pink:#ed646b;--brown:#80563c;--font:system-ui,-apple-system,"Microsoft YaHei","PingFang SC",sans-serif}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);padding:28px max(18px,env(safe-area-inset-right)) 30px}button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid #bd6c45;outline-offset:4px}[hidden]{display:none!important}
-.wrap{max-width:min(1160px,calc(max(340px,100svh - 345px)*16/9));margin:auto}.heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:24px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#a58269;font-weight:750;margin:0 0 10px}.heading h1{font-size:clamp(27px,3.5vw,42px);font-weight:850;letter-spacing:-.04em;margin:0;line-height:1.25}.heading h1 span{color:var(--pink)}.sub{font-size:14px;color:var(--muted);line-height:1.8;margin:9px 0 0}.edition{border:1px solid #dcc4b0;border-radius:8px;color:#946d50;font-size:12px;white-space:nowrap;padding:8px 12px;margin-bottom:5px}
-.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.levels{display:flex;flex-wrap:wrap;gap:6px}.levels button{border:1px solid var(--line);border-radius:7px;padding:9px 13px;background:#fffaf5;color:#8c7b70;font-size:12px}.levels button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fffaf5}.tools{display:flex;gap:6px}.tools button{border:1px solid var(--line);border-radius:7px;padding:9px 12px;background:transparent;color:var(--muted);font-size:12px;white-space:nowrap}
-.stage{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid #d9c7b8;border-radius:14px;background:#fbefe6;box-shadow:0 12px 40px #60412d0a;outline:none}canvas{display:block;width:100%;height:100%;touch-action:none}.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#40352c55;backdrop-filter:blur(3px)}.card{text-align:center;padding:30px;max-width:min(470px,90%);border:1px solid #ffffffa0;border-radius:18px;background:#fffaf4;box-shadow:0 16px 70px #352a2920}.card .kicker{color:#b38c71;font-size:11px;font-weight:700;letter-spacing:.14em}.card h2{font-size:clamp(21px,3vw,31px);margin:10px 0 12px;letter-spacing:-.04em}.card p{font-size:14px;line-height:1.9;color:#87776b;margin:0 0 18px}.primary{background:var(--pink);border:0;color:white;padding:12px 30px;border-radius:8px;font-size:14px;font-weight:700}.card .small{font-size:11px;margin-top:13px;margin-bottom:0;color:#a38f80}
-.status{display:flex;align-items:center;gap:20px;padding:13px 3px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}.air{display:flex;align-items:center;gap:9px}.air meter{width:130px;height:10px;accent-color:var(--pink)}.air strong{color:var(--pink);font-variant-numeric:tabular-nums;min-width:33px}.state{flex:1;color:var(--brown)}.legend{display:flex;flex-wrap:wrap;gap:12px 24px;padding:19px 0 14px;font-size:12px;color:#81746b}.legend>span{display:flex;align-items:center;gap:7px}kbd{display:inline-block;min-width:23px;padding:3px 5px;border:1px solid #d9c9bc;border-bottom-width:2px;border-radius:4px;background:#fffaf5;text-align:center;font:11px ui-monospace,Consolas,monospace;color:#665449}.note{font-size:11px;color:#a18e80;line-height:1.7;margin:0}.touch{display:none;gap:7px;grid-template-columns:repeat(7,1fr);padding:12px 0}.touch button{user-select:none;-webkit-user-select:none;border:1px solid var(--line);background:#fffaf5;border-radius:9px;padding:14px 2px;color:var(--brown);font-size:12px;touch-action:none}.touch button.active{background:#f5cfb6;border-color:#c49b7c}
-@media(max-width:700px){body{padding-top:20px}.wrap{max-width:1160px}.heading{margin-bottom:19px}.edition{display:none}.topline{align-items:start;flex-direction:column}.levels{gap:5px}.levels button{padding:7px 9px;font-size:11px}.tools{align-self:end}.status{gap:12px;font-size:10px}.air meter{width:75px}.legend{gap:9px 15px;font-size:11px}.card{padding:18px}.card p{font-size:12px;line-height:1.6;margin-bottom:10px}.card .small{display:none}.card h2{margin:6px 0}.primary{padding:9px 22px}.touch{display:grid}.note{font-size:10px}}
-@media(pointer:coarse){.touch{display:grid}}
-@media(max-width:420px){.card{padding:12px}.card .kicker{display:none}.card h2{font-size:20px;margin:0 0 8px}.card p{font-size:11px;line-height:1.5;margin-bottom:8px}.primary{font-size:12px;padding:8px 18px}.status{flex-wrap:wrap;gap:7px 10px}.status .state{order:3;flex-basis:100%}.status>span:last-child{margin-left:auto}}
-.roles{display:flex;align-items:center;gap:7px;margin:0 0 10px}.roles button{border:1px solid var(--line);background:#fffaf5;color:var(--muted);font-size:12px;padding:8px 12px;border-radius:7px}.roles button[aria-pressed=true]{background:#80563c;color:white;border-color:#80563c}.roles #dogRole[aria-pressed=true]{background:var(--pink);border-color:var(--pink)}.roles span{margin-left:auto;color:#987d68;font-size:11px}.touch{grid-template-columns:repeat(5,1fr)}@media(max-width:480px){.roles{flex-wrap:wrap}.roles span{width:100%;margin:0;font-size:10px}.roles button{font-size:11px;padding:7px 10px}}
-.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));flex:1}.levels button{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.topline{align-items:start}.roles strong{color:#80563c;font-size:12px}.roles span{font-size:11px}.note a{color:#a26d58;margin-left:8px}.touch{grid-template-columns:repeat(4,1fr)}@media(max-width:700px){.levels{width:100%}.roles span{font-size:10px}.topline{gap:8px}.levels button{padding:7px 6px}}
-.chapters{display:flex;gap:8px;align-items:center;margin:0 0 12px}.chapters button{background:#fffaf5;border:1px solid #dcc7b5;border-radius:7px;padding:8px 12px;color:#80563c;font-size:12px}.chapters a{margin-left:auto;font-size:11px;color:#947358}.levels{max-height:100px;overflow:auto;scrollbar-width:thin}
+:root{color-scheme:light;--bg:#f3eee6;--paper:#fffdf8;--ink:#344139;--muted:#7d8479;--line:#deded0;--pink:#dc667d;--brown:#8c6243;--green:#5f8875;--font:system-ui,-apple-system,"Microsoft YaHei","PingFang SC",sans-serif}
+*{box-sizing:border-box}body{margin:0;padding:25px 28px 18px;background:radial-gradient(ellipse at 14% 0,#fffaf0 0,transparent 48%),var(--bg);color:var(--ink);font-family:var(--font)}button,a{ -webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;touch-action:manipulation}button,a{transition:background .18s,box-shadow .18s,transform .18s,color .18s}button:active{transform:translateY(1px)}button:focus-visible,a:focus-visible{outline:3px solid #8bad9b;outline-offset:4px}[hidden]{display:none!important}.wrap{max-width:1280px;margin:auto}.heading{display:flex;align-items:center;justify-content:space-between;gap:22px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:13px;color:inherit;text-decoration:none}.brand-mark{width:43px;height:43px;display:grid;place-items:center;background:#e2eadf;color:#67856f;border-radius:14px;font:italic 31px Georgia,serif}.heading h1{margin:0;font-size:25px;letter-spacing:-1px;line-height:1.3;font-weight:800}.heading h1 span{color:#cc6478}.heading p{font-size:12px;color:var(--muted);margin:4px 0 0}.main-tools{display:flex;align-items:center;gap:9px}.main-tools button{border:1px solid #d4d9cb;background:#fffaf2;padding:10px 15px;border-radius:8px;color:#5e6a5f;font-size:12px;font-weight:600}.main-tools button:hover{background:#e6edde}.main-tools button:first-child{background:#628574;color:#fffef9;border-color:#628574}.main-tools button:first-child:hover{background:#4f7462}.main-tools span{display:inline-block;margin-left:7px;font-size:10px;color:#8b9486}.play-area{background:#fffdf8;border:1px solid #e0ddcf;border-radius:17px;box-shadow:0 12px 42px #62563b09;overflow:hidden}.roomline{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 20px;border-bottom:1px solid #ecebdf}.roomline>span{font-size:12px;font-weight:650;color:#728271}.tools{display:flex;align-items:center;gap:2px}.tools button{border:0;border-radius:5px;padding:6px 10px;background:transparent;color:#8b9084;font-size:11px}.tools button:hover{background:#eef0e5;color:#526c58}.mission{display:flex;align-items:center;gap:13px;min-height:96px;padding:15px 23px 17px;background:#f6f8ef;border-bottom:1px solid #e5e9d9}.mission-mark{align-self:center;width:37px;height:37px;border-radius:50%;background:#e0e9d8;color:#668764;display:grid;place-items:center;font-size:24px}.mission-copy{flex:1;min-width:0}.mission-copy>span{display:block;font-size:10px;letter-spacing:.08em;color:#87967a;margin-bottom:4px}.mission h2{margin:0 0 5px;font-size:19px;font-weight:750;letter-spacing:-.4px;color:#405f4c;line-height:1.3}.mission p{margin:0;color:#7b8573;font-size:12px;line-height:1.65}.mission[data-who=dog]{background:#fff4f1;border-color:#f2e2dc}.mission[data-who=dog] h2{color:#ae5869}.mission[data-who=dog] .mission-mark{background:#f6dfe1;color:#bd6175}.mission[data-who=dog] .mission-copy>span{color:#c38d95}.mission[data-who=hog] h2{color:#855d3b}.mission[data-who=hog] .mission-mark{background:#ecdfca;color:#a47e4d}.mission-keys{display:flex;gap:5px;flex-shrink:0}kbd{display:inline-block;min-width:25px;padding:4px 6px;background:#fffcf5;border:1px solid #dfd9c9;border-bottom-width:3px;border-radius:5px;color:#6c7567;font:12px ui-monospace,Consolas,monospace;text-align:center}.mission-keys kbd{min-width:36px;padding:8px 10px;font-size:16px;border-color:#d1d9c1;box-shadow:0 2px 4px #79723a05}.stage{position:relative;aspect-ratio:16/9;max-height:calc(100svh - 285px);min-height:300px;overflow:hidden;background:#f8f2e5;outline:none}canvas{display:block;width:100%;height:100%;touch-action:none}.stage:fullscreen{max-height:none;width:100vw;height:100vh;background:#f8f2e5}.stage:fullscreen canvas{object-fit:contain}.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#4257433d;backdrop-filter:blur(5px);z-index:4}.card{text-align:center;max-width:min(460px,91%);padding:28px 34px;border:1px solid #ffffffbc;border-radius:18px;background:#fffdf6;box-shadow:0 20px 70px #273b2d26}.kicker{font-size:10px;letter-spacing:.15em;color:#9b9b85;font-weight:650}.card h2{font-size:27px;letter-spacing:-1px;line-height:1.3;margin:10px 0 12px;color:#405744}.card p{font-size:13px;color:#8b8e7b;line-height:1.8;margin:0 0 18px}.card .small{font-size:10px;color:#a4a28b;margin:14px 0 0;line-height:1.6}.welcome-friends{width:245px;max-width:80%;margin:10px auto 14px}.welcome-friends svg{display:block;width:100%}.primary{border:0;border-radius:8px;background:#628574;color:#fffef9;font-size:13px;font-weight:650;padding:13px 23px;box-shadow:0 4px 0 #4c705d}.primary:hover{background:#4f7662}.primary span{margin-left:15px}.text-button{display:block;margin:17px auto 0;border:0;background:transparent;color:#949780;font-size:11px;padding:3px}.text-button:hover{color:#526a50}.companions{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding:13px 22px;border-top:1px solid #e8e6d9;background:#fffdf8}.companion{display:flex;align-items:center;gap:9px}.companion-dot{width:10px;height:10px;border-radius:50%;background:#a07750}.companion.dog .companion-dot{background:#dc7285}.companion strong{display:block;font-size:12px;color:#8c6846;margin-bottom:3px}.companion.dog strong{color:#bd6174}.companion div>span{display:block;font-size:10px;color:#979988;max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.companion.dog{justify-self:end}.compact-keys{display:flex;gap:3px;margin-left:6px}.compact-keys kbd{font-size:10px;min-width:19px;padding:3px 4px}.air{display:flex;align-items:center;gap:8px;font-size:10px;color:#9a9f8b}.air meter{width:95px;height:9px;accent-color:#d9798a}.air strong{color:#c86b80;min-width:31px;font-size:11px;font-variant-numeric:tabular-nums}.status{display:flex;justify-content:space-between;gap:15px;font-size:10px;color:#9ba08f;padding:0 22px 10px}.status span:first-child{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:70%}.status span:last-child{white-space:nowrap}.touch{display:none;grid-template-columns:repeat(6,1fr);gap:6px;padding:10px 14px;background:#f5f6ed}.touch button{border:1px solid #dddccc;border-radius:7px;background:#fffdf6;color:#7d816b;padding:11px 3px;font-size:11px;user-select:none;touch-action:none}.touch button.active{background:#dae7d4;border-color:#7b9b76}.help-panel{border-radius:12px;background:#ebeede;padding:22px 25px;margin-top:14px}.help-panel h2{font-size:16px;color:#5b7355;margin:0 0 12px}.help-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;font-size:12px;color:#879078;line-height:1.85}.help-grid b{color:#6c7c5d}.help-grid p{margin:0}.help-note{color:#9b9f88;font-size:11px;line-height:1.8;margin:14px 0 0}footer{display:flex;gap:18px;padding:13px 3px 0;color:#a2a592;font-size:10px}footer span{margin-right:auto}footer a{color:#919b83;text-decoration:none}footer a:hover{text-decoration:underline}.level-panel{position:fixed;z-index:10;background:#314b3a62;padding:25px}.level-sheet{width:min(740px,100%);max-height:85svh;overflow:auto;padding:28px;background:#fffdf5;border:1px solid #fffef6;border-radius:16px;box-shadow:0 20px 80px #233f3929}.sheet-title{display:flex;justify-content:space-between;align-items:center}.sheet-title h2{margin:5px 0 20px;font-size:28px;letter-spacing:-1px}.sheet-title>button{background:#f1f2e7;border:0;border-radius:50%;width:30px;height:30px;color:#919b83;font-size:23px}.chapters{display:flex;gap:7px;margin-bottom:17px}.chapters button{border:1px solid #dfe4d3;background:#f7f8ef;border-radius:8px;color:#829174;padding:9px 12px;font-size:12px}.chapters button[aria-pressed=true]{background:#607f67;color:#fffdf3;border-color:#607f67}.chapters span{margin-left:6px;opacity:.65;font-size:10px}.levels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.levels button{position:relative;text-align:left;border:1px solid #e6e4d8;border-radius:9px;padding:15px 30px 15px 14px;background:#fffef8;color:#7d896f;font-size:12px;line-height:1.5}.levels button:hover{background:#eef2e3;border-color:#c5d5b7}.levels button[aria-pressed=true]{border-color:#8ba97e;background:#edf3e4;color:#54734e}.levels button[data-complete=true]:after{content:'✓';position:absolute;right:13px;top:15px;color:#7c9a69}.level-note{font-size:11px;line-height:1.9;color:#a3a68f;margin:17px 0 0}.level-note a{float:right;color:#829373}
+@media(min-width:1600px){.wrap{max-width:1360px}.stage{max-height:760px}}@media(max-width:900px){body{padding:16px 15px}.heading{margin-bottom:15px}.heading h1{font-size:22px}.main-tools button{padding:9px 10px;font-size:11px}.compact-keys{display:none}.companions{gap:10px}.mission{padding:13px 16px;min-height:92px}.mission h2{font-size:17px}.mission p{font-size:11px}.mission-keys kbd{font-size:14px;min-width:30px;padding:7px}.stage{min-height:280px}}
+@media(max-width:620px){body{padding:12px 9px}.heading{gap:8px;align-items:flex-start}.brand-mark{width:32px;height:32px;font-size:23px;border-radius:10px}.brand{gap:8px}.heading h1{font-size:20px}.heading p{font-size:10px}.main-tools{gap:5px;flex-wrap:wrap;justify-content:flex-end}.main-tools button{padding:7px;font-size:10px}.main-tools button:last-child{display:none}.roomline{padding:8px 12px}.roomline>span{max-width:50%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:10px}.tools button{padding:6px;font-size:10px}.mission{position:relative;gap:9px;padding:12px;min-height:100px;align-items:flex-start}.mission-mark{display:none}.mission h2{font-size:16px;max-width:calc(100% - 35px)}.mission-copy>span{font-size:9px}.mission p{font-size:11px;line-height:1.65;padding-right:3px}.mission-keys{max-width:110px;flex-wrap:wrap;justify-content:flex-end;gap:3px}.mission-keys kbd{min-width:25px;padding:4px;font-size:12px}.stage{min-height:230px;max-height:none;aspect-ratio:16/10}.companions{padding:10px 12px;grid-template-columns:1fr 1fr}.companion-dot{width:8px;height:8px}.companion strong{font-size:11px}.companion div>span{font-size:9px;max-width:130px}.air{order:3;grid-column:1/-1;justify-content:center;font-size:9px;padding-top:2px}.air meter{width:130px}.status{font-size:9px;padding:0 12px 8px}.status span:first-child{max-width:70%}.status span:last-child{max-width:40%;overflow:hidden;text-overflow:ellipsis}.touch{display:grid;grid-template-columns:repeat(4,1fr)}.help-grid{grid-template-columns:1fr;gap:14px}.level-sheet{padding:20px}.chapters button{padding:8px;font-size:11px}.chapters span{display:none}.levels{grid-template-columns:1fr}.card{padding:20px;max-width:90%}.welcome-friends{width:160px;margin:3px auto 8px}.card h2{font-size:22px;margin:6px 0}.card p{font-size:11px;line-height:1.7;margin:0 0 12px}.card .small{display:none}.primary{padding:10px 17px;font-size:12px}.text-button{margin-top:12px}.level-note a{float:none;display:block}footer{gap:11px;font-size:9px}.help-panel{padding:19px}.overlay{backdrop-filter:blur(3px)}}
+@media(pointer:coarse){.touch{display:grid}}@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* Keep the drawing surface at its true aspect ratio; never crop the floor. */
+.stage{aspect-ratio:16/9;max-height:none;min-height:0}
+
+@media(min-width:700px) and (min-height:600px){body{padding:12px 20px}.wrap{max-width:min(1280px,calc((100dvh - 312px)*16/9))}.heading{margin-bottom:12px}.mission{min-height:82px;padding:10px 16px}.roomline{padding:7px 16px}.companions{padding:9px 16px}.status{padding-bottom:7px}footer{padding-top:9px}}
+
+@media(max-width:620px){.main-tools button:last-child{display:inline-block}.stage>.overlay{position:fixed;inset:0;z-index:8}.stage>.overlay .card{max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);overflow:auto}}
+
 </style>
 </head>
 <body><main class="wrap">
-<header class="heading"><div><p class="eyebrow">A CO-OP GAME FOR ONE</p><h1><span>气球狗</span>和刺猬</h1><p class="sub">一只气球狗，一只刺猬。两套操作，一根呼吸管。</p></div><span class="edition">房间冒险 · 06</span></header>
-<div class="chapters"><button id="classicChapter">经典篇 · 01–08</button><button id="memoChapter">设计稿篇 · 09–16</button><a href="archive/index.html">历史关卡馆</a></div>
-<div class="topline"><nav class="levels" id="levels" aria-label="选关"></nav><div class="tools"><button id="soundBtn" aria-pressed="true">声音 开</button><button id="restartBtn">重来 R</button><button id="pauseBtn">暂停 P</button></div></div>
-<div class="roles"><strong>刺猬：方向键 · F 操作</strong><span>气球狗：A / D · / 操作</span></div>
-<div class="stage" id="stage" tabindex="0" aria-label="刺猬用方向键移动和跳跃，F 刺猬操作，Shift 滚动；狗用 A D 移动，空格跳，斜杠操作；W 给狗打气，S 放气，按住 0 收绳">
+<header class="heading"><a class="brand" href="index.html"><span class="brand-mark">&amp;</span><div><h1><span>气球狗</span>和刺猬</h1><p>你是小刺猬，带着气球狗一起冒险。</p></div></a><nav class="main-tools" aria-label="游戏菜单"><button id="practiceBtn">先练一练</button><button id="levelMenu">选择关卡 <span>19</span></button><button id="helpBtn" aria-label="查看操作说明">操作说明</button></nav></header>
+<section class="play-area" aria-label="游戏">
+<div class="roomline"><span id="roomName">准备一起出发</span><div class="tools"><button id="soundBtn" aria-pressed="true">声音 开</button><button id="restartBtn">重来 R</button><button id="pauseBtn">暂停 P</button><button id="focusBtn">全屏</button></div></div>
+<div class="mission" id="mission" data-who="pair"><div class="mission-mark" aria-hidden="true">↗</div><div class="mission-copy"><span id="missionStep">一次只学一步</span><h2 id="missionTitle">先认识两位朋友</h2><p id="missionAction">点击开始，在没有危险的练习房里熟悉操作。</p></div><div id="missionKeys" class="mission-keys"></div></div>
+<div class="stage" id="stage" tabindex="0" aria-label="A D 移动刺猬，空格跳，Shift 滚，F 操作；W 给狗气，S 放气，向下键倒灌，斜杠派狗操作，0 收绳">
 <canvas id="game" aria-label="气球狗和刺猬单人游戏画面"></canvas>
-<div class="overlay" id="start"><div class="card"><span class="kicker">一人两角，也能两人分工</span><h2>两位朋友，各有动作。</h2><p>刺猬：方向键移动，↑ 跳，F 操作，Shift 滚。<br>狗：A / D 移动，空格跳，/ 操作。<br>W 给狗气，S 放气；按住 0 收绳。</p><button class="primary" id="startBtn">一起进屋冒险</button><p class="small">设计稿篇从 09 开始 · 经典 8 关完整保留 · 历史版本均可进入</p></div></div>
+<div class="overlay" id="start"><div class="card welcome"><span class="kicker">一根绳子，两位朋友</span><div class="welcome-friends" aria-hidden="true"><svg viewBox="0 0 280 94"><path d="M90 64Q145 108 192 66" fill="none" stroke="#a89078" stroke-width="3"/><g fill="#ed7184" stroke="#b7485d" stroke-width="1.5"><rect x="29" y="48" width="59" height="19" rx="10"/><rect x="34" y="59" width="10" height="27" rx="5"/><rect x="72" y="59" width="10" height="27" rx="5"/><rect x="77" y="24" width="12" height="37" rx="6" transform="rotate(12 83 42)"/><rect x="79" y="18" width="33" height="16" rx="8"/><rect x="78" y="4" width="8" height="20" rx="4" transform="rotate(-15 82 14)"/><path d="M33 52L21 32" stroke-width="8" stroke-linecap="round"/></g><path d="M43 53h20M91 23h10" stroke="#fff5ee" stroke-width="3" stroke-linecap="round"/><circle cx="103" cy="24" r="2.4" fill="#4d3b38"/><path d="M177 63l-7-8 13-2-1-13 13 6 5-13 10 11 12-8 3 14 15-1-4 14 12 7-13 7-54 2z" fill="#79563e"/><ellipse cx="206" cy="69" rx="31" ry="19" fill="#a27650"/><ellipse cx="225" cy="70" rx="18" ry="14" fill="#f4dab7"/><circle cx="230" cy="65" r="2.8" fill="#463732"/><circle cx="242" cy="71" r="3" fill="#463732"/><ellipse cx="221" cy="76" rx="4" ry="2.5" fill="#e99e99"/></svg></div><h2>先走两步，再一起冒险。</h2><p>你来控制刺猬，小狗会自动跟随。<br>从走路开始，一步一步学会配合。</p><button class="primary" id="startBtn">第一次玩 · 从练习开始 <span>→</span></button><button class="text-button" id="chooseStart">我会操作，直接选关</button><p class="small">全部 16 个冒险关卡保留 · 新增 3 间安全练习房</p></div></div>
 <div class="overlay" id="paused" hidden><div class="card"><span class="kicker">等一等朋友</span><h2>歇一下，再出发。</h2><p>按 P / Esc，或点击下面的按钮继续。</p><button class="primary" id="resumeBtn">继续同行</button></div></div>
-<div class="overlay" id="win" hidden><div class="card"><span class="kicker">一根绳子，两位朋友</span><h2 id="winTitle">一起到了！</h2><p id="winBody"></p><button class="primary" id="nextBtn">下一关 →</button><p class="small" id="winNext">Enter 下一关 · R 再试一次</p></div></div>
+<div class="overlay" id="win" hidden><div class="card"><span class="kicker">一根绳子，两位朋友</span><h2 id="winTitle">两位都到了</h2><p id="winBody"></p><button class="primary" id="nextBtn">下一关 →</button><p class="small" id="winNext">Enter 下一关 · R 再试一次</p></div></div>
 </div>
-<div class="status" id="status" role="status" aria-live="off"><div class="air"><span>气量</span><meter id="airMeter" min="0" max="1" low=".32" high=".90" optimum=".78" value=".12"></meter><strong id="airText">12%</strong></div><span class="state" id="stateText">等你出发</span><span id="saveText">蓝旗处自动存档</span></div>
-<div class="touch" aria-label="两位角色独立触屏操作"><button data-code="ArrowLeft">猬 ←</button><button data-code="ArrowRight">猬 →</button><button data-code="ArrowUp">猬 跳</button><button data-code="KeyF">猬 F</button><button data-code="KeyA">狗 ←</button><button data-code="KeyD">狗 →</button><button data-code="Space">狗 跳</button><button data-code="Slash">狗 /</button><button data-code="KeyW">给狗气</button><button data-code="KeyS">狗放气</button><button data-code="ShiftLeft">猬滚动</button><button data-code="Digit0">按住收绳</button></div>
-<div class="legend"><span>刺猬 <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd> · <kbd>F</kbd> 操作 · <kbd>Shift</kbd> 滚</span><span>狗 <kbd>A</kbd><kbd>D</kbd> · <kbd>Space</kbd> 跳 · <kbd>/</kbd> 操作</span><span><kbd>W</kbd> 给狗气 · <kbd>S</kbd> 放气 · <kbd>0</kbd> 按住收绳</span></div>
-<p class="note">设计稿篇 09–16：房间总气量有限，W / F 只是把刺猬的气给狗，狗长按 / 或 ↓ 倒灌。苹果座位、静电、水和风会改变两位的关系。<a href="archive/index.html">全部历史版本与关卡 →</a> <a href="duo.html">双人初版</a></p>
-</main><script>
+<div class="companions"><div class="companion hog"><span class="companion-dot"></span><div><strong>刺猬</strong><span id="hogState">稳稳走，别碰到狗</span></div><div class="compact-keys"><kbd>A</kbd><kbd>D</kbd><kbd>空格</kbd><kbd>F</kbd></div></div><div class="air"><span>狗的气量</span><meter id="airMeter" min="0" max="1" low=".32" high=".90" optimum=".78" value=".12"></meter><strong id="airText">12%</strong></div><div class="companion dog"><span class="companion-dot"></span><div><strong>气球狗</strong><span id="dogState">小小的，可以走</span></div><div class="compact-keys"><kbd>W</kbd><kbd>S</kbd><kbd>↓</kbd><kbd>/</kbd></div></div></div>
+<div class="status" id="status" role="status" aria-live="off"><span id="stateText">准备出发</span><span id="saveText">两位一直连着绳子</span></div>
+<div class="touch" aria-label="单人操作"><button data-code="KeyA">A 左走</button><button data-code="KeyD">D 右走</button><button data-code="Space">空格 跳</button><button data-code="ShiftLeft">Shift 滚</button><button data-code="KeyW">W 给狗气</button><button data-code="KeyS">S 放气</button><button data-code="ArrowDown">↓ 狗还气</button><button data-code="Digit0">0 收绳</button><button data-code="KeyF">F 刺猬操作</button><button data-code="Slash">/ 让狗帮忙</button></div>
+</section>
+<aside class="help-panel" id="helpPanel" hidden><h2>先记住：你控制刺猬，小狗自动跟随</h2><div class="help-grid"><p><b>让刺猬动起来</b><br>A 向左，D 向右，空格跳。<br>按住 Shift 再走，就会缩成球滚动；F 操作身边的物品。</p><p><b>给小狗分气</b><br>W 给狗充气，S 放气。<br>↓ 用狗的气鼓大刺猬；0 按住收绳，松开放长。</p><p><b>需要狗帮忙时</b><br>按 / 派狗按按钮或贴墙，按住 / 做高处作业。<br>有苹果时狗会自动上座；再按 / 让它下来。</p></div><p class="help-note">复杂地形需要微调狗的位置时，可用 ← / →，↑ 让狗跳；普通走路不用管狗。经典篇 E 切换长短绳。R 重来，P 暂停。</p></aside>
+<footer><span>慢一点没关系，等一等朋友。</span><a href="archive/index.html">历史关卡馆</a><a href="duo.html">双人初版</a></footer>
+<div class="level-panel overlay" id="levelPanel" hidden><section class="level-sheet" aria-label="选择关卡"><div class="sheet-title"><div><span class="kicker">每一间房，都留着</span><h2>想去哪里？</h2></div><button id="closeLevels" aria-label="关闭关卡选择">×</button></div><div class="chapters"><button id="practiceChapter" aria-pressed="true">先练一练 <span>3 间</span></button><button id="classicChapter">经典篇 <span>01–08</span></button><button id="memoChapter">房间篇 <span>09–16</span></button></div><nav class="levels" id="levels" aria-label="选关"></nav><p class="level-note">不锁关，随时可以回来。完成的房间会留下一个小勾。<a href="archive/index.html">查看全部历史版本 →</a></p></section></div>
+</main>
+<script>
 (()=>{
 const cv=document.getElementById('game'),c=cv.getContext('2d');
 const stageEl=document.getElementById('stage'),startEl=document.getElementById('start'),winEl=document.getElementById('win'),pauseEl=document.getElementById('paused');
@@ -150,7 +155,7 @@ LEVELS.push(
   solids:[{x:-200,y:460,w:1820,h:300},{x:500,y:26,w:620,h:280}],
   apples:[{x:340,y:447}],nailBeds:[{x:570,y:449,w:530,h:11}],pumps:[{x:205,y:460,cap:.24}],
   heat:[{x:500,y:26,w:620,h:325,temp:1.7,k:0}],checkpoints:[],goal:{x:1270,y:380,w:110,h:80},
-  zones:[{x:0,title:'09 这一屋的气，不够飞',hint:'方向键走刺猬，Shift 滚过苹果；狗用 A / D 走近，/ 坐上苹果。'},
+  zones:[{x:0,title:'09 这一屋的气，不够飞',hint:'A/D 走刺猬，Shift 滚过苹果。停稳以后，狗会自动跟过来坐上苹果。'},
    {x:430,title:'苹果只保护座位那一点',hint:'狗坐好后刺猬慢慢走。跳跃或重新缩球会掉苹果，图钉只扎狗。'},
    {x:1100,title:'一起从客厅出去',hint:'两只仍连着气管；苹果能载狗，不能保护旁边的刺。'}]},
  {name:'书房 · 拧掉热灯泡',memo:true,world:'study',kind:'低气 / 高空作业',width:1450,softSky:true,budget:.25,dogGas:.14,dogX:130,hogX:220,
@@ -159,21 +164,21 @@ LEVELS.push(
   objects:[{id:'lamp',type:'lamp',x:760,y:334,apples:3,duration:1.3,label:'拧掉热灯泡'}],
   heat:[{x:610,y:26,w:300,h:370,temp:1.8,k:0,until:'lamp'}],
   gates:[{x:915,y:26,w:26,h:434,rule:'lamp',label:'灯泡还没拧掉'}],checkpoints:[],goal:{x:1320,y:380,w:100,h:80,requires:['lamp']},
-  zones:[{x:0,title:'10 飞不起来，就搭高一点',hint:'Shift 连续滚过三个苹果，松开后留住它们。狗走近再 / 坐上去。'},
+  zones:[{x:0,title:'10 飞不起来，就搭高一点',hint:'Shift 连续滚过三个苹果，松开后留住它们。狗靠近就会自动坐上去。'},
    {x:570,title:'高处要站得稳',hint:'把狗送到灯泡旁，刺猬停稳，狗按住 / 拧灯。只有三层苹果够得到。'},
    {x:900,title:'灯灭了，气还是原来那些',hint:'变冷只缩体积。出口很矮，狗先下来，刺猬重新缩球通过。'}]},
  {name:'洗衣房 · 她飞它爬',memo:true,world:'laundry',kind:'静电 / 角色互换',width:1360,softSky:false,budget:.88,dogGas:.80,dogX:235,hogX:340,
   solids:[{x:-200,y:460,w:720,h:300},{x:830,y:240,w:700,h:400},{x:475,y:80,w:22,h:220}],
   carpets:[{x:170,y:460,w:265}],clingPaths:[[{x:450,y:445},{x:450,y:145},{x:1200,y:145}]],
   fans:[{x:510,y:120,w:325,h:420,dx:.15,dy:-1,p:1250}],pumps:[{x:215,y:460,cap:.88}],checkpoints:[],goal:{x:1215,y:160,w:100,h:80},
-  zones:[{x:0,title:'11 把气借给她，这次她会飞',hint:'狗长按 / 或 ↓ 倒灌。瘪狗在毛衣毯上走动蹭电，再 / 贴上灰色墙。'},
-   {x:420,title:'一只爬墙，一只借风',hint:'狗贴墙后 A / D 沿表面爬；方向键让刺豚进入风道。电会慢慢消失。'},
+  zones:[{x:0,title:'11 把气借给她，这次她会飞',hint:'按住 ↓ 倒灌。瘪狗在毛衣毯上走动蹭电，再 / 贴上灰色墙。'},
+   {x:420,title:'一只爬墙，一只借风',hint:'狗贴墙后会自己往上爬；按 D 让刺豚进入风道。电会慢慢消失。'},
    {x:790,title:'到台面再把气分回来',hint:'0 按住收绳，松开放长。狗到墙顶以后继续向右爬，刺猬落到台面。'}]},
  {name:'浴室 · 堵住排水口',memo:true,world:'bath',kind:'水位 / 限时撤离',width:1410,softSky:true,budget:.94,dogGas:.83,dogX:220,hogX:320,
   solids:[{x:-200,y:500,w:1310,h:300},{x:970,y:260,w:600,h:400}],
   water:{x:380,w:650,bottom:500,y:440,min:140,fill:40,drain:27,plugX:630},
   objects:[{id:'drain',type:'drain',x:630,y:492,label:'刺豚堵排水口'}],bubbles:[{x:555,y:475}],pumps:[{x:235,y:500,cap:.94}],checkpoints:[],goal:{x:1270,y:180,w:100,h:80},
-  zones:[{x:0,title:'12 水位，是免费的电梯',hint:'狗倒灌让刺猬鼓起，方向键走到浴缸底的排水口，F 堵住。'},
+  zones:[{x:0,title:'12 水位，是免费的电梯',hint:'狗倒灌让刺猬鼓起，A/D 走到浴缸底的排水口，F 堵住。'},
    {x:500,title:'它浮起来，她留在水底',hint:'堵住以后水位才会上升。留一点气给狗，让它浮；水底气泡能补气。'},
    {x:760,title:'放开以后，要一起赶上去',hint:'F 松开排水口，水会下降；两只一起向右，0 收绳，登上毛巾架。'}]},
  {name:'鸟笼 · 一口气的距离',memo:true,world:'attic',kind:'体型 / 钥匙谜题',width:1430,softSky:true,budget:.84,dogGas:.75,dogX:180,hogX:280,
@@ -207,8 +212,20 @@ LEVELS.push(
   heat:[{x:470,y:26,w:580,h:435,temp:.62,k:0,when:'fridge'}, {x:1080,y:26,w:330,h:355,temp:2.2,k:0}],
   pumps:[{x:195,y:460,cap:.58}],checkpoints:[],goal:{x:1450,y:300,w:100,h:80,requires:['fridge']},
   zones:[{x:0,title:'16 飞不动两位，就让水变成路',hint:'刺猬走到冰箱旁按 F，冷气会把水面冻成地板。'},
-   {x:530,title:'气没少，只是缩小了',hint:'冰面上方向键控制刺猬，A / D 控制狗；↑ 和空格分别跳。'},
+   {x:530,title:'气没少，只是缩小了',hint:'D 和空格让刺猬跳上冰面，狗会自己跟着跳。'},
    {x:1040,title:'烤箱旁，先把气分好',hint:'热只涨体积，不造气。窄门前把气倒给刺猬，让狗小一点再通过。'}]}
+);
+// Safe practice rooms append to the campaign. Existing rooms keep their indices.
+LEVELS.push(
+ {name:'先认识两位朋友',practice:true,lesson:'move',memo:true,world:'practice',kind:'练习 1 / 3',width:1200,softSky:true,budget:.28,dogGas:.14,dogX:170,hogX:360,
+  solids:[{x:-200,y:460,w:1600,h:300}],objects:[{id:'walkHog',type:'lesson',x:-1000,y:0},{id:'walkDog',type:'lesson',x:-1000,y:0},{id:'jumpHog',type:'lesson',x:-1000,y:0},{id:'jumpDog',type:'lesson',x:-1000,y:0}],checkpoints:[],goal:{x:1040,y:380,w:110,h:80,requires:['walkHog','walkDog','jumpHog','jumpDog']},
+  zones:[{x:0,title:'先练一只，再练另一只',hint:'看画面上方，一次只学一个动作。这个房间没有尖刺。'}]},
+ {name:'气和绳子怎么用',practice:true,lesson:'air',memo:true,world:'practice',kind:'练习 2 / 3',width:1250,softSky:true,budget:.84,dogGas:.14,dogX:170,hogX:350,
+  solids:[{x:-200,y:460,w:1650,h:300}],objects:[{id:'give',type:'lesson',x:-1000,y:0},{id:'vent',type:'lesson',x:-1000,y:0},{id:'return',type:'lesson',x:-1000,y:0},{id:'reel',type:'lesson',x:-1000,y:0}],pumps:[{x:280,y:460,cap:.84}],checkpoints:[],goal:{x:1090,y:380,w:110,h:80,requires:['give','vent','return','reel']},
+  zones:[{x:0,title:'一根管子，两边分气',hint:'W 给狗气，S 放气，↓ 把气还给刺猬，0 按住收绳。跟着上方提示做。'}]},
+ {name:'苹果和各自的操作',practice:true,lesson:'apple',memo:true,world:'practice',kind:'练习 3 / 3',width:1320,softSky:true,budget:.24,dogGas:.14,dogX:150,hogX:260,
+  solids:[{x:-200,y:460,w:1720,h:300}],apples:[{x:365,y:447}],objects:[{id:'lamp',type:'lamp',x:725,y:378,apples:1,duration:1.1,label:'狗 / 关掉台灯'},{id:'fridge',type:'fridge',x:980,y:420,label:'刺猬 F 打开冰箱'}],checkpoints:[],goal:{x:1170,y:380,w:110,h:80,requires:['lamp','fridge']},
+  zones:[{x:0,title:'靠近就能坐，操作各管各',hint:'先用刺猬滚过苹果，再让狗靠近。苹果会自动托住小狗。'}]}
 );
 let idx=0,L,statics,walls,cacti,fans,heat,bars,solids,spikeTeeth=[],switches=[],gates=[],charges=[],needRebuild=false;
 let dog,hog,ropeLen=ROPE,parts=[],texts=[],stats,time=0,hit=0,shake=0,win=false,started=false,paused=false,muted=false,checkpoint=null,banner=0,pumpClock=0,hudClock=0,cameraX=0,hurt=0,hurtReason='';
@@ -231,7 +248,7 @@ function reset(full){
  const sp=checkpoint?L.checkpoints[checkpoint.index]:null,air=sp?sp.air:(L.dogAir??.12),dx=sp?sp.dogX:L.dogX,hx=sp?sp.x:L.hogX;
  dog={x:dx,y:groundAt(dx)-(air<.04?7:rr(air)),vx:0,vy:0,air,face:1,ground:true,state:'ok',lastPop:'',docked:'',task:null,taskTarget:null,fClock:0,fContext:false,squash:0,rot:0,inv:1,near:99,lastR:rr(air),flatPrev:air<.04,blocked:0};
  hog={x:hx,y:groundAt(hx)-15,vx:0,vy:0,face:1,ground:true,revive:0,bloat:0,backflow:false,returnAir:false,squash:0,ball:false,spin:0,blow:false,reel:false,coyote:0,jbuf:0,bob:0,taut:false,jet:false,jetEmpty:false,jetDir:1,jetGlow:0,jetClock:0};
- ropeLen=ROPE;ropeShort=false;activeRole='hog';noticeTime=0;hit=0;shake=0;hurt=0;win=false;banner=5.5;paused=false;pumpClock=0;cameraX=clamp(hx-W*.38,0,L.width-W);clearHeld();setJet(false);initMemo();winEl.hidden=true;pauseEl.hidden=true;document.getElementById('pauseBtn').textContent='暂停 P';syncRoleUI();syncHUD();
+ ropeLen=ROPE;ropeShort=false;activeRole='hog';noticeTime=0;hit=0;shake=0;hurt=0;win=false;banner=5.5;paused=false;pumpClock=0;cameraX=clamp(hx-W*.38,0,L.width-W);clearHeld();setJet(false);initMemo();initExperience();winEl.hidden=true;pauseEl.hidden=true;document.getElementById('pauseBtn').textContent='暂停 P';syncRoleUI();syncHUD();
 }
 let ac=null,master=null,jetGain=null,nbuf=null;
 function initAudio(){
@@ -264,6 +281,36 @@ const sFall=()=>tone('sine',500,90,.5,.2);
 const sCreak=()=>tone('sawtooth',230,170,.12,.04);
 const sWin=()=>[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone('triangle',f,f*1.001,.2,.18),i*110));
 
+// Physical single-player keys map to the simulation's established action names.
+const PLAYER_KEYS={KeyA:'ArrowLeft',KeyD:'ArrowRight',Space:'ArrowUp',ArrowLeft:'KeyA',ArrowRight:'KeyD',ArrowUp:'Space'};
+function setPlayerHeld(code,source,on){setHeld(PLAYER_KEYS[code]||code,source,on);}
+const companion={enabled:true,level:-1,jumpDelay:0,jumpTime:0};
+function prepareCompanion(dt){
+ if(companion.level!==idx){companion.level=idx;companion.jumpDelay=companion.jumpTime=0;}
+ if(!companion.enabled||hurt>0)return;
+ const manual=k=>{const sources=heldSources.get(k);return sources&&[...sources].some(s=>s!=='companion');};
+ const command=(k,on)=>setHeld(k,'companion',on);
+ command('KeyA',false);command('KeyD',false);command('Space',false);
+ if(pressed('ArrowUp'))companion.jumpDelay=.16;
+ if(companion.jumpDelay>0){companion.jumpDelay-=dt;if(companion.jumpDelay<=0)companion.jumpTime=.22;}
+ if(companion.jumpTime>0){companion.jumpTime-=dt;if(!dog.riding&&!dog.cling&&dog.ground&&!manual('Space'))command('Space',true);}
+ if(!L.memo||dog.state!=='ok'||dog.task||dog.docked||dog.riding||manual('KeyA')||manual('KeyD'))return;
+ if(memo.rail&&!memo.rail.done)return;
+ const side=dog.x<hog.x?-1:1,gap=95+Math.max(0,hogScale()-1)*22;
+ let target=hog.x+side*gap;
+ if(memo.stack&&!dog.seatOptOut&&!hog.ball)target=hog.x;
+ if(dog.air>.42&&dog.y<hog.y-90)target=hog.x-25;
+ if(memo.water&&!memo.water.frozen&&memo.water.y<300)target=hog.x+155;
+ if(dog.cling)target=dog.x+100;
+ const delta=target-dog.x,dir=Math.abs(delta)>10?Math.sign(delta):0;
+ command('KeyA',dir<0);command('KeyD',dir>0);
+ // Jump at an actual ledge or low obstacle; do not teleport or bypass hazards.
+ if(dir&&dog.ground&&!dog.cling&&!dog.riding&&!memo.stack){
+  const [hw,hh]=dogDims(),ahead=dog.x+dir*(hw+15),floor=groundAt(ahead);
+  const step=solids.some(s=>s.y<dog.y+hh-8&&s.y>dog.y-85&&ahead>s.x&&ahead<s.x+s.w);
+  if((floor>dog.y+hh+35||step)&&Math.abs(hog.x-dog.x)>90)command('Space',true);
+ }
+}
 
 /* One player owns every action; the dog responds to air, tether and momentum. */
 const down=new Set(),just=new Set(),heldSources=new Map();
@@ -274,7 +321,7 @@ function setHeld(code,source,on){
 function clearHeld(){down.clear();just.clear();heldSources.clear();document.querySelectorAll('.touch .active').forEach(b=>b.classList.remove('active'));}
 const held=(...keys)=>keys.some(k=>down.has(k));
 const pressed=(...keys)=>keys.some(k=>just.has(k));
-function start(){started=true;paused=false;startEl.hidden=true;pauseEl.hidden=true;initAudio();stageEl.focus({preventScroll:true});}
+function start(){started=true;paused=false;document.getElementById('pauseBtn').textContent='暂停 P';startEl.hidden=true;pauseEl.hidden=true;initAudio();stageEl.focus({preventScroll:true});}
 function togglePause(force){if(!started||win)return;paused=force??!paused;clearHeld();pauseEl.hidden=!paused;document.getElementById('pauseBtn').textContent=paused?'继续 P':'暂停 P';setJet(false);if(!paused){initAudio();stageEl.focus({preventScroll:true});}}
 function toggleSound(){muted=!muted;if(ac&&master)master.gain.value=muted?0:.32;document.getElementById('soundBtn').textContent=muted?'声音 关':'声音 开';document.getElementById('soundBtn').setAttribute('aria-pressed',String(!muted));}
 const gameKeys=['KeyA','KeyD','KeyW','KeyS','KeyE','KeyF','Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','ShiftLeft','ShiftRight','Slash','NumpadDivide','Digit0','Numpad0'];
@@ -283,25 +330,25 @@ addEventListener('keydown',e=>{
  if(k==='KeyP'||k==='Escape'){if(!e.repeat)togglePause();return;}
  if(k==='KeyM'){if(!e.repeat)toggleSound();return;}
  if(k==='KeyR'&&started){reset(true);return;}
- const m=k.match(/^Digit([1-9])$/);if(m){loadLevel(+m[1]-1);start();return;}if(k==='BracketRight'){loadLevel((idx+1)%LEVELS.length);start();return;}if(k==='BracketLeft'){loadLevel((idx+LEVELS.length-1)%LEVELS.length);start();return;}
- if(win&&(k==='Enter'||k==='NumpadEnter')){loadLevel((idx+1)%LEVELS.length);start();return;}
+ const m=k.match(/^Digit([1-9])$/);if(m){loadLevel(+m[1]-1);start();return;}if(k==='BracketRight'){loadLevel(nextRoomIndex());start();return;}if(k==='BracketLeft'){loadLevel((idx+LEVELS.length-1)%LEVELS.length);start();return;}
+ if(win&&(k==='Enter'||k==='NumpadEnter')){loadLevel(nextRoomIndex());start();return;}
  if(!gameKeys.includes(k)||paused||win)return;
- if(!started)start();initAudio();setHeld(k,'keyboard',true);
+ if(!started)start();initAudio();setPlayerHeld(k,'keyboard',true);
 });
-addEventListener('keyup',e=>setHeld(e.code,'keyboard',false));
+addEventListener('keyup',e=>setPlayerHeld(e.code,'keyboard',false));
 addEventListener('blur',()=>{clearHeld();if(started&&!win)togglePause(true);});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&started&&!win)togglePause(true);});
-document.getElementById('startBtn').addEventListener('click',start);
+document.getElementById('startBtn').addEventListener('click',()=>{loadLevel(16);start();});
 document.getElementById('resumeBtn').addEventListener('click',()=>togglePause(false));
 document.getElementById('pauseBtn').addEventListener('click',()=>togglePause());
 document.getElementById('restartBtn').addEventListener('click',()=>{reset(true);start();});
 document.getElementById('soundBtn').addEventListener('click',()=>{initAudio();toggleSound();});
-document.getElementById('nextBtn').addEventListener('click',()=>{loadLevel((idx+1)%LEVELS.length);start();});
+document.getElementById('nextBtn').addEventListener('click',()=>{loadLevel(nextRoomIndex());start();});
 stageEl.addEventListener('click',e=>{if(e.target===cv){if(!started)start();else stageEl.focus({preventScroll:true});}});
-LEVELS.forEach((l,i)=>{const b=document.createElement('button');b.type='button';b.id='lv'+(i+1);b.textContent=`${String(i+1).padStart(2,'0')} ${l.name}`;b.addEventListener('click',()=>{loadLevel(i);start();});levelsEl.appendChild(b);});
+LEVELS.forEach((l,i)=>{const b=document.createElement('button');b.type='button';b.id='lv'+(i+1);b.textContent=l.practice?`练习 ${i-15}  ${l.name}`:`${String(i+1).padStart(2,'0')} ${l.name}`;b.title=l.name;b.addEventListener('click',()=>{loadLevel(i);closeLevelPanel();start();});levelsEl.appendChild(b);});
 document.querySelectorAll('[data-code]').forEach(b=>{
- b.addEventListener('pointerdown',e=>{e.preventDefault();if(win)return;if(!started)start();if(paused)togglePause(false);b.setPointerCapture(e.pointerId);setHeld(b.dataset.code,e.pointerId,true);b.classList.add('active');});
- const release=e=>{setHeld(b.dataset.code,e.pointerId,false);b.classList.remove('active');};b.addEventListener('pointerup',release);b.addEventListener('pointercancel',release);b.addEventListener('lostpointercapture',release);
+ b.addEventListener('pointerdown',e=>{e.preventDefault();if(win)return;if(!started)start();if(paused)togglePause(false);b.setPointerCapture(e.pointerId);setPlayerHeld(b.dataset.code,e.pointerId,true);b.classList.add('active');});
+ const release=e=>{setPlayerHeld(b.dataset.code,e.pointerId,false);b.classList.remove('active');};b.addEventListener('pointerup',release);b.addEventListener('pointercancel',release);b.addEventListener('lostpointercapture',release);
 });
 function addText(x,y,txt,col,size=20){texts.push({x,y,txt,col,size,life:1.1});}
 function puff(x,y,n,col){for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*120,vy:-40-Math.random()*80,life:.5+Math.random()*.3,max:.8,col,sz:3+Math.random()*4,rot:0,vr:0,round:true});}
@@ -349,14 +396,15 @@ function hurtHog(reason){if(hurt>0)return;stats[reason]++;hurt=.55;hurtReason=re
 function fanOn(f){return f.rule?powered(f.rule):f.switch===undefined||switches[f.switch].on;}
 function pressSwitch(p){if(p.latched||(p.requires&&!p.requires.every(powered)))return;p.on=true;p.latched=true;needRebuild=true;sGrab();sThud();confetti(p.x+p.w/2,p.y-15,16,['#cfaa67','#7aa99c','#e6cb98'],p.w);addText(p.x+p.w/2,p.y-55,'接过来了！','#8e774b',20);}
 function update(dt){
+ prepareCompanion(dt);
  if(L.memo){updateMemo(dt);return;}
  if(hurt>0){hurt-=dt;if(hurt<=0){const txt=hurtReason==='thorn'?'她也怕刺，要让小狗把她吊高再过':hurtReason==='timeout'?'接力超时，重新安排两位的位置':'回到蓝旗，再试一次';reset(false);addText(cameraX+W*.5,215,txt,'#9b7252',19);}return;}
  time+=dt;banner=Math.max(0,banner-dt);dog.blocked=Math.max(0,dog.blocked-dt);dog.inv=Math.max(0,dog.inv-dt);
  noticeTime=Math.max(0,noticeTime-dt);
  if(pressed('KeyE')){ropeShort=!ropeShort;sGrab();}
- if(pressed('Slash','NumpadDivide'))interact();if(pressed('KeyF'))say('F 是刺猬的动作：按住吹气给狗；铜色机关用 Shift 滚压。');
+ if(pressed('Slash','NumpadDivide'))interact();if(pressed('KeyF'))say('F 只操作附近物品；W 给狗气，Shift 滚压铜色机关。');
  updateTransfer(dt);updateDogTask(dt);
- const move=(held('ArrowRight')?1:0)-(held('ArrowLeft')?1:0),ix=move,dogIx=(held('KeyD')?1:0)-(held('KeyA')?1:0),inflate=held('KeyW','KeyF'),deflate=held('KeyS');
+ const move=(held('ArrowRight')?1:0)-(held('ArrowLeft')?1:0),ix=move,dogIx=(held('KeyD')?1:0)-(held('KeyA')?1:0),inflate=held('KeyW'),deflate=held('KeyS');
  const shiftHeld=held('ShiftLeft','ShiftRight'),wasJet=hog.jet;
  const wantBall=shiftHeld&&hog.ground;
  if(wantBall&&!hog.ball){hog.ball=true;hog.y+=2*hogScale();sCurl();}
@@ -456,25 +504,26 @@ function update(dt){
  const g=L.goal;
  const arrived=g.pair?(!!charges.find(p=>p.id===g.pair)?.done&&(!g.requires||g.requires.every(powered))):(hog.ground&&hog.x>=g.x&&hog.x<=g.x+g.w+16&&hog.y>g.y&&hog.y<g.y+g.h&&dog.x>g.x-115&&(!g.requires||g.requires.every(powered)));
  if(!win&&dog.state==='ok'&&arrived&&walls.every(w=>!w.alive)){
-  win=true;clearHeld();setJet(false);sWin();syncHUD();
+  win=true;clearHeld();setJet(false);sWin();syncHUD();rememberCompletion();
   winTitle.textContent=idx===LEVELS.length-1?'我们一起走完了！':'一起到了！';
   const pops=stats.hog+stats.over+stats.spike+stats.cactus;
   winBody.innerHTML=`第 ${idx+1} 关 · ${L.name}<br>${time.toFixed(1)} 秒 · 狗行动 ${stats.commands} 次<br>小狗爆掉 ${pops} 次 · 接力超时 ${stats.timeout} 次<br>一个人，也把两位都照顾到了。`;
   document.getElementById('nextBtn').textContent=idx===LEVELS.length-1?'再走一遍 ↻':'下一关 →';winNext.textContent=idx===LEVELS.length-1?'选择关卡继续冒险 · R 再试这一关':'Enter 下一关 · R 再试一次';winEl.hidden=false;
  }
  hudClock+=dt;if(hudClock>.1){syncHUD();hudClock=0;}
+ updateExperience(dt);
  const camTarget=clamp((activeRole==='hog'?hog.x*.7+dog.x*.3:dog.x*.7+hog.x*.3)-W*.38,0,L.width-W);cameraX=approach(cameraX,camTarget,Math.max(90,Math.abs(camTarget-cameraX)*7)*dt);
 }
 function syncHUD(){
  if(L?.memo&&memo){syncMemoHUD();return;}
  airMeter.value=dog.state==='ok'?clamp(dog.air,0,1):0;airText.textContent=`${Math.round(airMeter.value*100)}%`;
- stateText.textContent=win?'两位都到了！':hurt>0?'回蓝旗，重新接应':dog.state==='skin'?`${dog.lastPop} · W 吹回来`:noticeTime>0?interactNotice:hog.backflow?'倒灌中：狗变小，刺猬变大':hog.returnAir?'把气还给狗：刺猬缩小':dog.docked?`狗留在 ${device(dog.docked)?.letter} · / 叫回来`:dog.task?'狗正在行动 · W/S 调气量 · / 取消':hog.jet?'喷气中 · W 补气':hog.bloat>.05?`刺猬体型 ${Math.round(hog.bloat*100)}% · S 还气`:'方向键控制刺猬 · A/D 控制狗 · F / 各自动作';
- saveText.textContent=`${ropeShort?'短绳':'长绳'} · ${devicesSummary()}`;
+ stateText.textContent=win?'两位都到了！':hurt>0?'回蓝旗，重新接应':dog.state==='skin'?`${dog.lastPop} · W 吹回来`:noticeTime>0?interactNotice:hog.backflow?'倒灌中：狗变小，刺猬变大':hog.returnAir?'把气还给狗：刺猬缩小':dog.docked?`狗留在 ${device(dog.docked)?.letter} · / 叫回来`:dog.task?'狗正在行动 · W/S 调气量 · / 取消':hog.jet?'喷气中 · W 补气':hog.bloat>.05?`刺猬体型 ${Math.round(hog.bloat*100)}% · S 还气`:'A/D 控制刺猬 · 狗自动跟随 · ↓ 倒灌气';
+ saveText.textContent=`${ropeShort?'短绳':'长绳'} · ${devicesSummary()}`;syncExperience();
 }
 function effects(dt){for(const p of parts){p.vy+=(p.round?-30:600)*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;p.rot+=p.vr*dt;}parts=parts.filter(p=>p.life>0);for(const t of texts){t.y-=26*dt;t.life-=dt;}texts=texts.filter(t=>t.life>0);shake=Math.max(0,shake-dt);}
 
-document.getElementById('memoChapter').addEventListener('click',()=>{[...levelsEl.children].forEach((b,i)=>b.hidden=i<8);loadLevel(8);start();});
-document.getElementById('classicChapter').addEventListener('click',()=>{[...levelsEl.children].forEach((b,i)=>b.hidden=i>=8);loadLevel(0);start();});
+document.getElementById('memoChapter').addEventListener('click',()=>selectChapter('memo'));
+document.getElementById('classicChapter').addEventListener('click',()=>selectChapter('classic'));
 function device(id){return switches.find(p=>p.id===id);}
 function powered(rule){if(!rule)return true;if(typeof rule==='string')return !!device(rule)?.on||!!(L?.memo&&memoObj(rule)?.done);if(rule.any)return rule.any.some(powered);if(rule.all)return rule.all.every(powered);if(rule.charge)return !!charges.find(p=>p.id===rule.charge)?.done;return false;}
 function say(t){interactNotice=t;noticeTime=2.6;syncHUD();}
@@ -499,7 +548,7 @@ function interact(){
  if(p){dog.fContext=true;if(dog.state!=='ok'){say('先 W 把狗吹回来。');return;}if(ropeShort&&Math.hypot(p.x-hog.x,p.y-hog.y)>140){say('目标够得着，但绳子太短：E 放长，再按 /。');return;}
   dog.task={id:p.id,step:0,clock:0};say(p.flatOK?'狗出发走高窗。到窄缝前用 S 放扁，风管会托着它。':'狗出发。你继续控制刺猬，W / S 仍能调它的气量。');return;
  }
- say('空闲时长按 /：狗把气借给刺猬；S 把气还给狗。');
+ say('↓ 把狗的气给刺猬；S 把刺猬缩小。');
 }
 function updateDogTask(dt){
  dog.taskTarget=null;
@@ -514,7 +563,7 @@ function updateDogTask(dt){
 function updateTransfer(dt){
  hog.backflow=false;hog.returnAir=false;
  if(held('Slash','NumpadDivide'))dog.fClock=(dog.fClock||0)+dt;else{dog.fClock=0;dog.fContext=false;}
- if(held('Slash','NumpadDivide')&&!dog.fContext&&!dog.task&&!dog.docked&&dog.fClock>.32&&dog.state==='ok'&&dog.air>.06&&(hog.bloat||0)<1){
+ if(held('ArrowDown')&&dog.state==='ok'&&dog.air>.06&&(hog.bloat||0)<1){
   const amount=Math.min(.28*dt,dog.air-.06,(1-(hog.bloat||0))/1.8);if(amount>0&&setBloat((hog.bloat||0)+amount*1.8)){setAir(dog.air-amount);hog.backflow=true;stats.transfer+=amount;}
  }
  if(held('KeyS')&&(hog.bloat||0)>0){const amount=Math.min(.8*dt,hog.bloat);setBloat(hog.bloat-amount);if(dog.state==='ok')setAir(dog.air+amount*.3);hog.returnAir=true;}
@@ -549,7 +598,7 @@ const memoObj=id=>memo?.objects.find(p=>p.id===id);
 function initMemo(){
  memo=null;if(!memoOn())return;
  memo={level:idx,apples:(L.apples||[]).map(p=>({...p,vy:0,ignore:0})),stack:0,objects:(L.objects||[]).map(p=>({...p,done:false,progress:0})),cats:(L.cats||[]).map(p=>({...p,vx:0,alert:0,awake:false,flee:0})),water:L.water?{...L.water,frozen:false,freeze:0,plugged:false}:null,rail:L.rail?{...L.rail,done:false}:null,keys:0,noise:0,work:null,slashContext:false,slashClock:0,pigContext:false};
- dog.gas=L.dogGas??.15;hog.gas=Math.max(0,L.budget-dog.gas);dog.temp=1;dog.air=dog.gas;hog.bloat=clamp((hog.gas-.16)/.64,0,1);dog.riding=false;dog.cling=null;dog.charge=0;
+ dog.gas=L.dogGas??.15;hog.gas=Math.max(0,L.budget-dog.gas);dog.temp=1;dog.air=dog.gas;hog.bloat=clamp((hog.gas-.16)/.64,0,1);dog.riding=false;dog.seatOptOut=false;dog.cling=null;dog.charge=0;
  dog.x=L.dogX;dog.y=L.dogY??((L.world==='bath'?500:460)-rr(dog.air));hog.x=L.hogX;hog.y=L.hogY??((L.world==='bath'?500:460)-hogHalf());
  dog.ground=hog.ground=true;ropeLen=L.rail?.long??300;ropeShort=false;
  Object.assign(stats,{apples:0,scares:0,cat:0,rail:0,spent:0});rebuildSolids();
@@ -563,6 +612,16 @@ function memoExtraSolids(){
 function memoTotalAir(){return memoOn()?dog.gas+hog.gas:dog.air+(hog.bloat||0)/1.8;}
 function memoHogMass(){return MH*(1-.58*(hog.bloat||0))+.2*(memo?.stack||0);}
 function memoSeatY(){return hog.y-17*hogScale()-22*(memo?.stack||0);}
+function leaveAppleSeat(vx=0){dog.riding=false;dog.seatOptOut=true;dog.seatCooldown=.65;dog.vx=vx;dog.vy=-180;dog.inv=.3;memo.work=null;}
+function autoAppleSeat(dx,dt){
+ dog.seatCooldown=Math.max(0,(dog.seatCooldown||0)-dt);
+ if(dog.riding){if(!dx)dog.seatInputReleased=true;return;}
+ if(dog.seatOptOut||!memo.stack||!hog.ground||hog.ball||dog.state!=='ok'||dog.cling||dog.seatCooldown>0||dog.air>=.29||pressed('Space'))return;
+ if(Math.abs(dog.x-hog.x)>86||dog.y<memoSeatY()-80||dog.y>hog.y+30||Math.abs(dog.vy)>210)return;
+ const [hw,hh]=dogDims(),seatY=memoSeatY()-hh;if(overlapAny(hog.x,seatY,hw,hh))return;
+ dog.seatOptOut=false;dog.riding=true;dog.x=hog.x;dog.y=seatY;dog.vx=dog.vy=0;dog.ground=true;dog.inv=.2;dog.seatInputReleased=!dx;
+ say('狗坐好了。现在用 → 慢慢驮它走；/ 让狗下座。');
+}
 function dropApples(){
  if(!memo?.stack)return;for(let i=0;i<memo.stack;i++)memo.apples.push({x:hog.x+(i-(memo.stack-1)/2)*25,y:memoSeatY()+i*16,vy:-100,ignore:.6});memo.stack=0;dog.riding=false;memo.work=null;say('苹果掉了，座位也没了！');
 }
@@ -573,11 +632,11 @@ function memoDogAction(){
  memo.slashClock=0;memo.slashContext=true;
  const work=memo.objects.find(p=>p.type==='lamp'&&!p.done&&Math.hypot(p.x-dog.x,p.y-dog.y)<75);
  if(work){memo.work=work.id;say('狗按住 / 作业；刺猬必须停稳，苹果座位要够高。');return;}
- if(dog.riding){dog.riding=false;dog.vx=dog.face*150;dog.vy=-180;dog.inv=.25;say('狗跳下座位。苹果只护住上面那一点。');return;}
+ if(dog.riding){leaveAppleSeat(-hog.face*180);say('狗下来了。小狗会在地面跟随；再按 / 可以重新上座。');return;}
+ if(dog.seatOptOut&&memo.stack){dog.seatOptOut=false;say('小狗准备重新上座，停稳等它靠近。');return;}
  if(dog.cling){dog.cling=null;dog.inv=.2;say('松开静电，重新受风和重力影响。');return;}
- const cling=nearestCling();if(dog.air<.16&&dog.charge>.08&&cling&&cling.d<60){dog.cling={path:cling.j,s:cling.s};dog.riding=false;dog.vx=dog.vy=0;say('贴住了。A / D 沿墙爬，/ 或空格松开；电量会减少。');return;}
- if(memo.stack&&hog.ground&&!hog.ball&&dog.air<.29&&Math.hypot(dog.x-hog.x,dog.y-hog.y)<120){dog.riding=true;dog.vx=dog.vy=0;dog.inv=.15;say('狗坐好了。刺猬别跳、别重新缩球；气大了也坐不住。');return;}
- memo.slashContext=false;say('狗长按 / 倒灌给刺猬；在苹果或带电墙边，/ 是狗自己的操作。');
+ const cling=nearestCling();if(dog.air<.16&&dog.charge>.08&&cling&&cling.d<60){dog.cling={path:cling.j,s:cling.s};dog.riding=false;dog.vx=dog.vy=0;say('贴住了。小狗会自己往上爬，/ 让它松开；电量会减少。');return;}
+ memo.slashContext=false;say('↓ 把气给刺猬。狗会自己跟随；带电墙边按 / 让它贴住。');
 }
 function memoPigAction(){
  memo.pigContext=false;
@@ -592,17 +651,17 @@ function memoPigAction(){
  if(key){memo.pigContext=true;key.key=null;memo.keys++;sGrab();say('刺猬拿到钥匙了，去门边按 F。');return;}
  const pump=(L.pumps||[]).find(p=>Math.hypot(hog.x-p.x,hog.y-(p.y-15))<75);
  if(pump){memo.pigContext=true;say('按住 F 用打气筒补总气量。W 只把已有的气给狗。');return;}
- say('刺猬按住 F / W 把自己的气给狗；Shift 滚动，↑ 跳跃。');
+ say('这里没有可操作的物品。W 给狗输气；F 只操作附近的物品。');
 }
 function memoTransfer(dt){
  const before=memoTotalAir();hog.blow=false;hog.backflow=false;hog.returnAir=false;memo.ventThrust=false;
  const pump=(L.pumps||[]).find(p=>Math.hypot(hog.x-p.x,hog.y-(p.y-15))<75);
  if(held('KeyF')&&memo.pigContext&&pump){const q=Math.min(.24*dt,Math.max(0,pump.cap-memoTotalAir()));hog.gas+=q;memo.noise=Math.max(memo.noise,.9);}
- if((held('KeyW')||(held('KeyF')&&!memo.pigContext))&&dog.state==='ok'){const q=Math.min(hog.gas,.28*dt,1.05-dog.gas);hog.gas-=q;dog.gas+=q;hog.blow=q>0;if(q>0)memo.noise=Math.max(memo.noise,.8);}
+ if(held('KeyW')&&dog.state==='ok'){const q=Math.min(hog.gas,.28*dt,1.05-dog.gas);hog.gas-=q;dog.gas+=q;hog.blow=q>0;if(q>0)memo.noise=Math.max(memo.noise,.8);}
  if(held('Slash','NumpadDivide'))memo.slashClock+=dt;else{memo.slashClock=0;memo.slashContext=false;memo.work=null;}
- if((held('ArrowDown')||(held('Slash','NumpadDivide')&&!memo.slashContext&&memo.slashClock>.25))&&dog.state==='ok'){const q=Math.min(dog.gas,.33*dt,1-hog.gas);dog.gas-=q;hog.gas+=q;hog.backflow=q>0;}
+ if(held('ArrowDown')&&dog.state==='ok'){const q=Math.min(dog.gas,.33*dt,1-hog.gas);dog.gas-=q;hog.gas+=q;hog.backflow=q>0;}
  if(held('KeyS')&&dog.state==='ok'){const q=Math.min(dog.gas,.34*dt);dog.gas-=q;stats.spent+=q;memo.ventThrust=q>0;if(q>0)memo.noise=Math.max(memo.noise,.9);}
- if(dog.state==='skin'&&(held('KeyW')||held('KeyF'))&&hog.gas>.045){hog.revive+=dt;if(hog.revive>.7){dog.state='ok';dog.gas=Math.min(.12,hog.gas);hog.gas-=dog.gas;dog.inv=1;dog.lastPop='';hog.revive=0;}}
+ if(dog.state==='skin'&&held('KeyW')&&hog.gas>.045){hog.revive+=dt;if(hog.revive>.7){dog.state='ok';dog.gas=Math.min(.12,hog.gas);hog.gas-=dog.gas;dog.inv=1;dog.lastPop='';hog.revive=0;}}
  const oldHalf=hogHalf();hog.bloat=clamp((hog.gas-.16)/.64,0,1);if(hog.ground)hog.y-=hogHalf()-oldHalf;
  let temp=1;for(const z of heat)if(inRect(dog.x,dog.y,z)&&(!z.until||!memoObj(z.until)?.done)&&(!z.when||memoObj(z.when)?.done))temp=z.temp??1;
  dog.temp=approach(dog.temp,temp,dt*.7);const oldR=isFlat()?7:rr(dog.air),oldFlat=isFlat();dog.air=dog.gas*dog.temp;const newR=isFlat()?7:rr(dog.air);if(dog.ground||oldFlat!==isFlat())dog.y-=newR-oldR;
@@ -643,8 +702,8 @@ function updateMemo(dt){
  const ball=held('ShiftLeft','ShiftRight');if(ball&&!wasBall){dropApples();hog.ball=true;hog.y+=2*hogScale();}else if(!ball&&wasBall&&!overlapAny(hog.x,hog.y-2*hogScale(),15*hogScale(),15*hogScale())){hog.ball=false;hog.y-=2*hogScale();}
  if(hx)hog.face=hx;if(dx)dog.face=dx;
  if(pressed('ArrowUp')&&hog.ground&&!hog.plugged){dropApples();hog.vy=-420/(1+hog.bloat*.45);hog.ground=false;memo.noise=1;}
- if(pressed('Space')){if(dog.cling){dog.cling=null;dog.vy=-180;}else if(dog.riding){dog.riding=false;dog.vy=-300;dog.inv=.3;}else if(dog.ground){dog.vy=-350;dog.ground=false;}}
- if(dog.riding&&(dx||dog.air>.29||hog.ball||!memo.stack)){dog.riding=false;dog.vx=dx*140;dog.vy=-130;}
+ if(pressed('Space')){if(dog.cling){dog.cling=null;dog.vy=-180;}else if(dog.riding){leaveAppleSeat(dog.face*100);dog.vy=-300;}else if(dog.ground){dog.vy=-350;dog.ground=false;}}
+ if(dog.riding&&((dx&&dog.seatInputReleased)||dog.air>.29||hog.ball||!memo.stack))leaveAppleSeat(dx*140);
  const w=memo.water,hWater=w&&!w.frozen&&hog.x>w.x&&hog.x<w.x+w.w&&hog.y+hogHalf()>w.y,dWater=w&&!w.frozen&&dog.x>w.x&&dog.x<w.x+w.w&&dog.y+dogDims()[1]>w.y;
  hog.vx=approach(hog.vx,hx*(hog.ball?350:185)/(1+hog.bloat*.4),dt*(hx?1800:2600));hog.vy+=G*(hWater?(hog.bloat>.35?-.4-2*hog.bloat:1.2):1-.22*hog.bloat)*dt;
  if(hWater){hog.vx*=Math.exp(-dt);hog.vy*=Math.exp(-dt*2.5);}
@@ -657,9 +716,10 @@ function updateMemo(dt){
  for(const c of L.carpets||[])if(dog.x>c.x&&dog.x<c.x+c.w&&dog.air<.16&&dog.ground&&dx)dog.charge=Math.min(1,dog.charge+dt*.8);
  dog.charge=Math.max(0,dog.charge-dt*.045);if(dWater){dog.charge=0;dog.cling=null;}
  if(dog.cling&&(dog.charge<=0||dog.air>=.16))dog.cling=null;
+ autoAppleSeat(dx,dt);
  if(dog.riding){dog.x=hog.x;dog.y=memoSeatY()-dogDims()[1];dog.vx=hog.vx;dog.vy=hog.vy;dog.ground=true;}
  else if(dog.cling){dog.cling.s=clamp(dog.cling.s+dx*120*dt,0,clingLength(dog.cling.path));const p=clingPoint(dog.cling.path,dog.cling.s);dog.x=p.x;dog.y=p.y;dog.vx=dog.vy=0;dog.ground=false;}
- else{dog.vx=approach(dog.vx,dx*165+(memo.ventThrust?dog.face*65:0),dt*(dx?1300:1800));let ay=G*(1-K*dog.air);if(dWater)ay=dog.air>.04?-G*(1+Math.min(1.8,dog.air*4)):650;dog.vy+=ay*dt;if(memo.ventThrust)dog.vy+=Math.sin(time*19)*55*dt;dog.vy*=Math.exp(-dt*(dWater?4:2.5));for(const f of fans)if(fanOn(f)&&inRect(dog.x,dog.y,f)&&dog.air>.04){dog.vx+=f.dx*f.p*dog.air*1.4*dt;dog.vy+=f.dy*f.p*dog.air*1.4*dt;}dog.vy=clamp(dog.vy,-360,750);dog.ground=false;dog.x+=dog.vx*dt;dog.y+=dog.vy*dt;const[a,b]=dogDims();resolve(dog,a,b,false);}
+ else{dog.vx=approach(dog.vx,dx*(heldSources.get('KeyA')?.has('companion')||heldSources.get('KeyD')?.has('companion')?Math.max(165,Math.abs(hog.vx)+35):165)+(memo.ventThrust?dog.face*65:0),dt*(dx?1300:1800));let ay=G*(1-K*dog.air);if(dWater)ay=dog.air>.04?-G*(1+Math.min(1.8,dog.air*4)):650;dog.vy+=ay*dt;if(memo.ventThrust)dog.vy+=Math.sin(time*19)*55*dt;dog.vy*=Math.exp(-dt*(dWater?4:2.5));for(const f of fans)if(fanOn(f)&&inRect(dog.x,dog.y,f)&&dog.air>.04){dog.vx+=f.dx*f.p*dog.air*1.4*dt;dog.vy+=f.dy*f.p*dog.air*1.4*dt;}dog.vy=clamp(dog.vy,-360,750);dog.ground=false;dog.x+=dog.vx*dt;dog.y+=dog.vy*dt;const[a,b]=dogDims();resolve(dog,a,b,false);}
  ropeLen=approach(ropeLen,held('Digit0','Numpad0')?85:300,180*dt);ropeShort=held('Digit0','Numpad0');hog.reel=ropeShort;
  if(!dog.riding){for(let i=0;i<5;i++){const a=anchor(),x=hog.x-a.x,y=hog.y-10-a.y,d=Math.hypot(x,y);if(d<=ropeLen)break;const wd=dog.cling?0:1,wh=hog.plugged?0:1/memoHogMass();if(!wd&&!wh)break;const c=Math.min(24,d-ropeLen)/(wd+wh),nx=x/d,ny=y/d;dog.x+=nx*c*wd;dog.y+=ny*c*wd;hog.x-=nx*c*wh;hog.y-=ny*c*wh;const v=(hog.vx-dog.vx)*nx+(hog.vy-dog.vy)*ny;if(v>0){dog.vx+=nx*v*wd/(wd+wh);dog.vy+=ny*v*wd/(wd+wh);hog.vx-=nx*v*wh/(wd+wh);hog.vy-=ny*v*wh/(wd+wh);}if(!dog.cling){const[a,b]=dogDims();resolve(dog,a,b,false);}if(!hog.plugged)resolve(hog,hogHalf(),hogHalf(),true);}}
  if(L.softSky&&dog.y-dogDims()[1]<26){dog.y=26+dogDims()[1];dog.vy=Math.max(0,dog.vy);}
@@ -670,9 +730,10 @@ function updateMemo(dt){
  finishMemoFrame(dt);
 }
 function finishMemoFrame(dt){
+ updateExperience(dt);
  // Material jobs power only their room's supporting doors.
  for(const g of gates){const on=powered(g.rule);if(on!==g.on){g.on=on;needRebuild=true;}g.open=approach(g.open,g.on?1:0,dt*2.4);}if(needRebuild)rebuildSolids();
- const g=L.goal;if(dog.state==='ok'&&hog.ground&&hog.x>=g.x&&hog.x<=g.x+g.w+20&&dog.x>g.x-115&&(!g.requires||g.requires.every(powered))){win=true;clearHeld();sWin();winTitle.textContent='两位一起出来了！';winBody.innerHTML=`第 ${idx+1} 关 · ${L.name}<br>${time.toFixed(1)} 秒 · 总气量 ${Math.round(memoTotalAir()*100)}%<br>苹果 ${memo.stack} 个 · 猫醒了 ${memo.cats.some(c=>c.awake)?'是':'否'}`;winEl.hidden=false;document.getElementById('nextBtn').textContent=idx===LEVELS.length-1?'再走一遍':'下一关 →';}
+ const g=L.goal;if(dog.state==='ok'&&hog.ground&&hog.x>=g.x&&hog.x<=g.x+g.w+20&&dog.x>g.x-115&&(!g.requires||g.requires.every(powered))){win=true;clearHeld();sWin();rememberCompletion();winTitle.textContent='两位一起出来了！';winBody.innerHTML=`第 ${idx+1} 关 · ${L.name}<br>${time.toFixed(1)} 秒 · 总气量 ${Math.round(memoTotalAir()*100)}%<br>苹果 ${memo.stack} 个 · 猫醒了 ${memo.cats.some(c=>c.awake)?'是':'否'}`;winEl.hidden=false;document.getElementById('nextBtn').textContent=L.practice?(idx===18?'开始房间冒险 →':'下一个练习 →'):idx===15?'练习与更多关卡 →':'下一关 →';}
  const target=clamp((hog.x+dog.x)/2-W*.4,0,L.width-W);cameraX=approach(cameraX,target,Math.max(100,Math.abs(target-cameraX)*7)*dt);hudClock+=dt;if(hudClock>.1){syncHUD();hudClock=0;}
 }
 
@@ -727,9 +788,9 @@ function drawDog(){
   const alpha=dog.inv>0&&Math.floor(time*12)%2?.45:1;
   c.save();c.globalAlpha=alpha;c.translate(dog.x+shv,dog.y);c.rotate(dog.rot);
   c.scale(dog.face*s*(1+dog.squash),s*(1-dog.squash));c.translate(-5,17);
-  c.fillStyle=DOGC;
+  c.fillStyle=artGradient(-20,-75,30,50,[[0,'#f998a4'],[.45,'#ed748c'],[1,'#d85c79']],DOGC);c.shadowColor='#bf5c6c20';c.shadowBlur=3;
   for(const p of DOG_PARTS){let[px,py,w,h,a]=p;if(w<h)w*=t;else h*=t;capsule(px,py,w,h,a*Math.PI/180);}
-  c.fillStyle='rgba(0,0,0,.13)';ell(23,-6,4,4);ell(33,-38,3.5,3.5);ell(-38,-7,3.5,3.5);
+  c.shadowColor='transparent';c.fillStyle='rgba(126,52,66,.16)';ell(23,-6,4,4);ell(33,-38,3.5,3.5);ell(-38,-7,3.5,3.5);
   c.fillStyle='rgba(255,255,255,.6)';ell(-16,-5,14,3.5*t);ell(38,-51,7,2.5*t);
   c.fillStyle='#2b2b2b';
   if(dog.near<12){c.font=FONT(12);c.textAlign='center';c.fillText('>',50,-42);c.fillText('<',62,-42);}
@@ -773,11 +834,11 @@ function drawHog(){
   }
   if(hog.ground&&Math.abs(hog.vx)>30)c.translate(0,-Math.abs(Math.sin(hog.bob))*2.5);
   c.scale(hog.face*(1+hog.squash),1-hog.squash);
-  c.fillStyle='#5e3a26';
+  c.fillStyle='#715337';
   for(let i=0;i<9;i++){const a=-Math.PI-.35+i*(Math.PI-.25)/8,a0=a-.2,a1=a+.2;c.beginPath();c.moveTo(Math.cos(a0)*14,Math.sin(a0)*13);c.lineTo(Math.cos(a)*24,Math.sin(a)*22);c.lineTo(Math.cos(a1)*14,Math.sin(a1)*13);c.closePath();c.fill();}
-  c.fillStyle='#8b5a3c';ell(0,0,17,15);
+  c.fillStyle=artGradient(0,-18,0,18,[[0,'#b18b5e'],[1,'#8f653e']],'#9f754a');ell(0,0,17,15);
   c.fillStyle='#5e3a26';ell(-7,14,5,3);ell(7,14,5,3);
-  c.fillStyle='#f3d7b4';ell(9,3,10,9);
+  c.fillStyle=artGradient(5,-8,18,15,[[0,'#f7e6c7'],[1,'#ebcca4']],'#f3d7b4');ell(9,3,10,9);
   c.fillStyle='rgba(242,140,140,.55)';ell(6,8,3,2);
   c.fillStyle='#2b2b2b';ell(19,2,2.6,2.6);ell(10,-3,2.2,2.2);
   if(hog.blow){c.fillStyle='#2b2b2b';ell(20,6,2.4,2.4);}
@@ -818,8 +879,8 @@ function drawHeat(z){
   if(z.k>0){
     c.fillStyle='rgba(255,170,60,.14)';c.fillRect(z.x,z.y,z.w,z.h);
     const cx=z.x+z.w/2;c.strokeStyle='#8d96a0';c.lineWidth=2;c.beginPath();c.moveTo(cx,10);c.lineTo(cx,z.y+18);c.stroke();
-    c.fillStyle='#e8814c';c.beginPath();c.moveTo(cx-22,z.y+40);c.lineTo(cx-10,z.y+18);c.lineTo(cx+10,z.y+18);c.lineTo(cx+22,z.y+40);c.closePath();c.fill();
-    c.fillStyle='#ffd36b';ell(cx,z.y+42,9,5);
+    if(!drawProp('lamp',cx,z.y+49,76,65)){c.fillStyle='#e8814c';c.beginPath();c.moveTo(cx-22,z.y+40);c.lineTo(cx-10,z.y+18);c.lineTo(cx+10,z.y+18);c.lineTo(cx+22,z.y+40);c.closePath();c.fill();
+    c.fillStyle='#ffd36b';ell(cx,z.y+42,9,5);}
     c.fillStyle='#e8814c';c.font=FONT(13);c.textAlign='center';c.fillText('热灯',cx,z.y+66);
   }else{
     c.fillStyle='rgba(120,190,255,.15)';c.fillRect(z.x,z.y,z.w,z.h);
@@ -829,13 +890,13 @@ function drawHeat(z){
   }
 }
 
-function classicControlHint(t){return(t||'').replaceAll('F','/').replaceAll('A / D 始终移动刺猬','方向键移动刺猬');}
+function classicControlHint(t){return(t||'').replaceAll('F','/').replaceAll('A / D 始终移动刺猬','A/D 移动刺猬');}
 function memoHint(){
  if(win)return'';if(hurt>0)return'回房间入口，再分一次气。物品和房间初始气量会恢复。';
- if(dog.state==='skin')return'狗破了。刺猬留着气时，按 W / F 能把它吹回来；入口打气筒可以补气。';
+ if(dog.state==='skin')return'狗破了。刺猬留着气时，按 W 能把它吹回来；入口打气筒可以补气。';
  if(noticeTime>0)return interactNotice;
  if(memo.rail&&!memo.rail.done)return held('Digit0','Numpad0')?'收绳：狗下降，刺猬上升。上下一起看。':'松开：绳子放长，狗上升，刺猬下降。提前看下一组障碍。';
- if(dog.cling)return`狗正在贴墙 · 电量 ${Math.round(dog.charge*100)}% · A / D 沿墙走，/ 松开`;
+ if(dog.cling)return`狗正在贴墙 · 电量 ${Math.round(dog.charge*100)}% · 自动爬墙，/ 松开`;
  if(dog.riding)return memo.work?'狗按住 / 作业，刺猬停稳。跳或滚都会让苹果掉下来。':'苹果座位上很安全；刺猬慢慢走，别跳、别滚，狗别充大。';
  if(hog.plugged)return'刺豚留在水底堵住口子，狗随水位上升；F 松开以后要一起走。';
  return currentZone().hint;
@@ -843,14 +904,14 @@ function memoHint(){
 function syncMemoHUD(){
  airMeter.value=dog.state==='ok'?clamp(dog.air,0,1):0;airText.textContent=`${Math.round(dog.air*100)}%`;
  const total=Math.round(memoTotalAir()*100);
- stateText.textContent=win?'两位一起出来了':hurt>0?'回房间入口':dog.state==='skin'?'狗破了 · W / F 用剩余的气吹回来':noticeTime>0?interactNotice:dog.riding?`苹果座位 ${memo.stack} 层 · 刺猬别跳或滚`:dog.cling?`静电 ${Math.round(dog.charge*100)}% · A/D 爬墙`:hog.plugged?'刺豚堵住排水口 · F 松开':`狗的气 ${Math.round(dog.gas*100)}% · 猬的气 ${Math.round(hog.gas*100)}%`;
- saveText.textContent=`总气 ${total}% / ${Math.round(L.budget*100)}% · ${L.kind}`;
+ stateText.textContent=win?'两位一起出来了':hurt>0?'回房间入口':dog.state==='skin'?'狗破了 · W 用剩余的气吹回来':noticeTime>0?interactNotice:dog.riding?`苹果座位 ${memo.stack} 层 · 刺猬别跳或滚`:dog.cling?`静电 ${Math.round(dog.charge*100)}% · 自动爬墙`:hog.plugged?'刺豚堵住排水口 · F 松开':`狗的气 ${Math.round(dog.gas*100)}% · 猬的气 ${Math.round(hog.gas*100)}%`;
+ saveText.textContent=`总气 ${total}% / ${Math.round(L.budget*100)}% · ${L.kind}`;syncExperience();
 }
-function drawApple(x,y,r=10){c.save();c.fillStyle='#ce6352';ell(x-3,y,r*.65,r);ell(x+3,y,r*.65,r);c.fillStyle='#efb086';ell(x-4,y-4,2,4);c.strokeStyle='#886745';c.lineWidth=2;c.beginPath();c.moveTo(x,y-r+2);c.lineTo(x+1,y-r-5);c.stroke();c.fillStyle='#7fa17a';ell(x+5,y-r-3,5,2.5);c.restore();}
+function drawApple(x,y,r=10){if(drawProp('apple',x,y+r,r*2.1,r*2.6))return;c.save();c.fillStyle='#ce6352';ell(x-3,y,r*.65,r);ell(x+3,y,r*.65,r);c.fillStyle='#efb086';ell(x-4,y-4,2,4);c.strokeStyle='#886745';c.lineWidth=2;c.beginPath();c.moveTo(x,y-r+2);c.lineTo(x+1,y-r-5);c.stroke();c.fillStyle='#7fa17a';ell(x+5,y-r-3,5,2.5);c.restore();}
 function drawMemoSeat(){if(!memoOn()||!memo)return;for(let i=0;i<memo.stack;i++)drawApple(hog.x,hog.y-17*hogScale()-11-i*22,11);}
 function drawMemoBackdrop(){
  if(!memoOn()||!memo)return;
- const tint={living:'#e7e4cf44',study:'#d6c5a638',laundry:'#c6dce638',bath:'#bce1e844',attic:'#d8bfd638',kitchen:'#dfc9b433'}[L.world];c.fillStyle=tint;c.fillRect(cameraX,8,W,H-8);
+ const tint={living:'#e7e4cf44',study:'#d6c5a638',laundry:'#c6dce638',bath:'#bce1e844',attic:'#d8bfd638',kitchen:'#dfc9b433'}[L.world];if(tint){c.fillStyle=tint;c.fillRect(cameraX,8,W,H-8);}
  for(const carpet of L.carpets||[]){c.fillStyle='#b18c9c';c.fillRect(carpet.x,carpet.y-6,carpet.w,7);c.strokeStyle='#dcc6d2';c.lineWidth=1;for(let x=carpet.x;x<carpet.x+carpet.w;x+=9){c.beginPath();c.moveTo(x,carpet.y-6);c.lineTo(x+5,carpet.y);c.stroke();}c.font=FONT(11);c.fillStyle='#98748c';c.textAlign='center';c.fillText('毛衣毯 · 小狗蹭电',carpet.x+carpet.w/2,carpet.y+34);}
  for(const p of L.clingPaths||[]){c.strokeStyle='#b4a9b5';c.lineWidth=7;c.lineJoin='round';c.beginPath();c.moveTo(p[0].x,p[0].y);for(const q of p.slice(1))c.lineTo(q.x,q.y);c.stroke();c.strokeStyle='#e2d5e5';c.lineWidth=2;c.setLineDash([4,8]);c.stroke();c.setLineDash([]);}
  if(memo.water){const w=memo.water;c.save();c.fillStyle=w.frozen?'#acd4e5':'#83c7d580';c.fillRect(w.x,w.y,w.w,w.bottom-w.y);c.strokeStyle=w.frozen?'#e4f6fa':'#589ead';c.lineWidth=w.frozen?5:2;c.beginPath();c.moveTo(w.x,w.y);for(let x=w.x;x<w.x+w.w;x+=8)c.lineTo(x,w.y+(w.frozen?0:Math.sin(x*.06+time*3)*2));c.stroke();if(w.frozen){c.strokeStyle='#edf9fc';c.lineWidth=1;for(let x=w.x+25;x<w.x+w.w;x+=90){c.beginPath();c.moveTo(x,w.y+5);c.lineTo(x+30,w.y+28);c.lineTo(x+13,w.y+47);c.stroke();}}c.font=FONT(12);c.textAlign='center';c.fillStyle='#4e8d9c';c.fillText(w.frozen?'水面已结冰':w.plugged?'堵住了 · 水位上涨':w.freeze>0?'水面正在结冰…':'排水中 · 水位下降',w.x+w.w/2,w.y+32);c.restore();}
@@ -861,19 +922,168 @@ function drawMemoObjects(){
  if(!memoOn()||!memo)return;
  for(const a of memo.apples)drawApple(a.x,a.y,10);
  for(const b of L.nailBeds||[]){c.fillStyle='#9ba7a6';c.fillRect(b.x,b.y+8,b.w,b.h-8);for(let x=b.x;x<b.x+b.w;x+=15){c.beginPath();c.moveTo(x,b.y+10);c.lineTo(x+7,b.y);c.lineTo(x+14,b.y+10);c.fill();}c.fillStyle='#8a9894';c.font=FONT(11);c.textAlign='center';c.fillText('图钉地板 · 只扎气球',b.x+b.w/2,b.y+40);}
- for(const pump of L.pumps||[]){c.strokeStyle='#a57e5e';c.lineWidth=5;c.beginPath();c.moveTo(pump.x,pump.y-5);c.lineTo(pump.x,pump.y-38);c.stroke();c.fillStyle='#d8ad78';c.fillRect(pump.x-17,pump.y-9,34,8);c.fillRect(pump.x-15,pump.y-44,30,6);c.font=FONT(10);c.fillStyle='#977b5b';c.textAlign='center';c.fillText(`F 补气 · 上限 ${Math.round(pump.cap*100)}%`,pump.x,pump.y+27);}
+ for(const pump of L.pumps||[]){if(!drawProp('pump',pump.x,pump.y,65,75)){c.strokeStyle='#a57e5e';c.lineWidth=5;c.beginPath();c.moveTo(pump.x,pump.y-5);c.lineTo(pump.x,pump.y-38);c.stroke();c.fillStyle='#d8ad78';c.fillRect(pump.x-17,pump.y-9,34,8);c.fillRect(pump.x-15,pump.y-44,30,6);}c.font=FONT(10);c.fillStyle='#977b5b';c.textAlign='center';c.fillText(`F 补气 · 上限 ${Math.round(pump.cap*100)}%`,pump.x,pump.y+27);}
  for(const p of memo.objects){c.save();c.font=FONT(11);c.textAlign='center';
-  if(p.type==='lamp'){c.strokeStyle='#9b9387';c.lineWidth=2;c.beginPath();c.moveTo(p.x,8);c.lineTo(p.x,p.y-25);c.stroke();c.fillStyle=p.done?'#b3bab0':'#e6af58';ell(p.x,p.y-9,13,18);c.fillStyle=p.done?'#a1b3a2':'#ffe1a0';ell(p.x,p.y,8,6);c.fillStyle='#8d7761';c.fillText(p.done?'灯已拧掉':'狗 / · 三层苹果 · 停稳',p.x,p.y+35);c.fillStyle='#cfaa68';c.fillRect(p.x-35,p.y+43,70*Math.min(1,p.progress/p.duration),4);}
+  if(p.type==='lamp'){c.strokeStyle='#9b9387';c.lineWidth=2;c.beginPath();c.moveTo(p.x,8);c.lineTo(p.x,p.y-25);c.stroke();if(!drawProp('lamp',p.x,p.y+12,67,65,{alpha:p.done?.55:1})){c.fillStyle=p.done?'#b3bab0':'#e6af58';ell(p.x,p.y-9,13,18);c.fillStyle=p.done?'#a1b3a2':'#ffe1a0';ell(p.x,p.y,8,6);}propIndicator(p.x+23,p.y+5,p.done);c.fillStyle='#8d7761';c.fillText(p.done?'灯已关好':`狗按住 / · ${p.apples} 个苹果 · 停稳`,p.x,p.y+35);c.fillStyle='#cfaa68';c.fillRect(p.x-35,p.y+43,70*Math.min(1,p.progress/p.duration),4);}
   if(p.type==='drain'){c.fillStyle='#7d9195';ell(p.x,p.y,28,6);c.strokeStyle='#cee5e7';c.lineWidth=2;for(let x=-16;x<=16;x+=8){c.beginPath();c.moveTo(p.x+x,p.y-4);c.lineTo(p.x+x,p.y+4);c.stroke();}c.fillStyle='#597d83';c.fillText('刺豚 F · 堵住 / 松开',p.x,p.y+32);}
-  if(p.type==='cage'){c.strokeStyle='#a29883';c.lineWidth=3;c.strokeRect(p.x-15,355,145,98);for(let x=p.x-15;x<p.x+130;x+=20){c.beginPath();c.moveTo(x,355);c.lineTo(x,453);c.stroke();}if(!p.done){c.fillStyle='#d98989';ell(p.x,p.y,10,15);c.strokeStyle='#b88f78';c.lineWidth=1;c.beginPath();c.moveTo(p.x,p.y+15);c.lineTo(p.x,p.y+29);c.stroke();}c.fillStyle='#8e795d';c.fillText(p.done?'气球锁已破':'F 用长刺够进去',p.x+58,333);}
+  if(p.type==='cage'){if(!drawProp('cage',p.x+58,453,155,128)){c.strokeStyle='#a29883';c.lineWidth=3;c.strokeRect(p.x-15,355,145,98);for(let x=p.x-15;x<p.x+130;x+=20){c.beginPath();c.moveTo(x,355);c.lineTo(x,453);c.stroke();}}if(!p.done){c.fillStyle='#d98989';ell(p.x,p.y,10,15);c.strokeStyle='#b88f78';c.lineWidth=1;c.beginPath();c.moveTo(p.x,p.y+15);c.lineTo(p.x,p.y+29);c.stroke();}c.fillStyle='#8e795d';c.fillText(p.done?'气球锁已破':'F 用长刺够进去',p.x+58,333);}
   if(p.key){c.fillStyle='#c8a451';ell(p.key.x,p.key.y,6,6);c.fillRect(p.key.x+4,p.key.y-2,17,4);c.fillRect(p.key.x+15,p.key.y,4,8);}
   if(p.type==='keylock'){c.fillStyle=p.done?'#8aa98a':'#b0935c';rrPath(p.x-12,p.y-5,24,28,4);c.fill();c.strokeStyle='#b0935c';c.lineWidth=3;c.beginPath();c.arc(p.x,p.y-5,8,Math.PI,Math.PI*2);c.stroke();c.fillStyle='#816c4d';c.fillText(p.done?'已开锁':'F 刺猬用钥匙',p.x,p.y+43);}
-  if(p.type==='fridge'){c.fillStyle=p.done?'#a9cbd6':'#d9e4df';rrPath(p.x-34,p.y-104,68,110,5);c.fill();c.strokeStyle='#859ea4';c.lineWidth=2;c.strokeRect(p.x-34,p.y-104,68,110);c.fillStyle='#859ea4';c.fillRect(p.x+18,p.y-65,4,27);c.fillStyle='#678b97';c.fillText(p.done?'冰箱已打开':'F 刺猬打开冰箱',p.x,p.y+28);}
+  if(p.type==='fridge'){if(!drawProp('fridge',p.x,p.y+6,90,120)){c.fillStyle=p.done?'#a9cbd6':'#d9e4df';rrPath(p.x-34,p.y-104,68,110,5);c.fill();c.strokeStyle='#859ea4';c.lineWidth=2;c.strokeRect(p.x-34,p.y-104,68,110);c.fillStyle='#859ea4';c.fillRect(p.x+18,p.y-65,4,27);}propIndicator(p.x-20,p.y-81,p.done,'#89bdcc');if(p.done){c.strokeStyle='#acd5d9';c.lineWidth=2;c.beginPath();c.moveTo(p.x-10,p.y-8);c.quadraticCurveTo(p.x-30,p.y+18,p.x-55,p.y+8);c.stroke();}c.fillStyle='#678b97';c.fillText(p.done?'冷气已开启':'F 开启冷气',p.x,p.y+28);}
   c.restore();}
  for(const p of L.railHazards||[]){c.save();c.fillStyle=p.target==='dog'?'#a3a7a0':'#b99b80';c.fillRect(p.x,p.y,p.w,p.h);c.fillStyle='#d4c2ad';for(let x=p.x;x<p.x+p.w;x+=20){c.beginPath();if(p.y<100){c.moveTo(x,p.y+p.h);c.lineTo(x+10,p.y+p.h+12);c.lineTo(x+20,p.y+p.h);}else{c.moveTo(x,p.y);c.lineTo(x+10,p.y-12);c.lineTo(x+20,p.y);}c.fill();}c.font=FONT(11);c.textAlign='center';c.fillStyle='#8c765e';c.fillText(p.label,p.x+p.w/2,p.y<100?p.y+p.h+30:p.y+p.h+28);c.restore();}
- for(const cat of memo.cats){c.save();c.translate(cat.x,cat.y);c.fillStyle=cat.awake?'#a47e64':'#c0a38c';ell(0,4,32,18);ell(-22,-6,17,16);c.beginPath();c.moveTo(-36,-12);c.lineTo(-35,-29);c.lineTo(-22,-18);c.moveTo(-21,-20);c.lineTo(-10,-28);c.lineTo(-8,-10);c.fill();c.strokeStyle='#725441';c.lineWidth=2;for(const x of[-28,-17]){c.beginPath();if(cat.awake)c.arc(x,-7,2,0,Math.PI*2);else{c.moveTo(x-3,-7);c.lineTo(x+3,-7);}c.stroke();}c.strokeStyle='#ad8c74';c.lineWidth=9;c.beginPath();c.moveTo(26,5);c.quadraticCurveTo(56,-15,35,-24);c.stroke();c.font=FONT(13);c.textAlign='center';c.fillStyle='#8a735d';c.fillText(cat.awake?(cat.flee>0?'怕刺！':'气球！'):'Z z z',0,-43);if(!cat.awake&&cat.alert>0){c.fillStyle='#d6c3ae';c.fillRect(-30,-35,60,4);c.fillStyle='#c47f6d';c.fillRect(-30,-35,60*cat.alert,4);}c.restore();}
+ for(const cat of memo.cats){c.save();c.translate(cat.x,cat.y);if(!drawProp('cat',0,22,100,66,{alpha:cat.awake?.85:1})){c.fillStyle=cat.awake?'#a47e64':'#c0a38c';ell(0,4,32,18);ell(-22,-6,17,16);c.beginPath();c.moveTo(-36,-12);c.lineTo(-35,-29);c.lineTo(-22,-18);c.moveTo(-21,-20);c.lineTo(-10,-28);c.lineTo(-8,-10);c.fill();c.strokeStyle='#725441';c.lineWidth=2;for(const x of[-28,-17]){c.beginPath();if(cat.awake)c.arc(x,-7,2,0,Math.PI*2);else{c.moveTo(x-3,-7);c.lineTo(x+3,-7);}c.stroke();}c.strokeStyle='#ad8c74';c.lineWidth=9;c.beginPath();c.moveTo(26,5);c.quadraticCurveTo(56,-15,35,-24);c.stroke();}c.font=FONT(13);c.textAlign='center';c.fillStyle='#8a735d';c.fillText(cat.awake?(cat.flee>0?'怕刺！':'气球！'):'Z z z',0,-43);if(!cat.awake&&cat.alert>0){c.fillStyle='#d6c3ae';c.fillRect(-30,-35,60,4);c.fillStyle='#c47f6d';c.fillRect(-30,-35,60*cat.alert,4);}c.restore();}
 }
 function drawMemoHUD(){if(!memoOn()||!memo)return;c.save();c.textAlign='center';c.font=FONT(10);if(dog.charge>0){c.fillStyle='#a58bb5';c.fillText(`静电 ${Math.round(dog.charge*100)}%`,dog.x,dog.y-dogDims()[1]-30);}if(memo.keys){c.fillStyle='#b18a43';c.fillText('拿着钥匙',hog.x,hog.y-hogHalf()-43);}c.restore();}
+let experience={ticks:0,walkHog:0,walkDog:0,peakDog:0,jumpSeen:false,done:new Set(),guide:null};
+const experienceEl=id=>document.getElementById(id);
+function completedRooms(){try{return JSON.parse(localStorage.getItem('balloon-rooms-complete')||'[]');}catch{return[];}}
+function rememberCompletion(){try{const v=completedRooms();if(!v.includes(idx))v.push(idx);localStorage.setItem('balloon-rooms-complete',JSON.stringify(v));}catch{}refreshLevelProgress();}
+function refreshLevelProgress(){const done=completedRooms();[...levelsEl.children].forEach((b,i)=>{b.dataset.complete=done.includes(i)?'true':'false';});}
+function initExperience(){companion.level=-1;experience={ticks:0,walkHog:0,walkDog:0,peakDog:0,jumpSeen:false,done:new Set(),guide:null};syncExperience();}
+function guide(title,action,keys,who,target,step,total){return{title,action,keys,who,target,step,total};}
+function getRoomGuide(){
+ if(!L||!dog||!hog)return null;
+ const at=(x,y=440,w=60,h=45)=>({x,y,w,h});
+ const task=(title,action,keys,who='hog',target=null,step=1,total=3)=>guide(title,action,keys,who,target,step,total);
+ const exit=()=>task('往右走，到绿色旗子旁','按住 D 往右走。狗会自己跟着你；两位到旗子旁就过关。',['D'],'hog',at(L.goal.x+L.goal.w-24,L.goal.y+L.goal.h-40,55,80),3,3);
+ const grow=()=>!experience.backflowReady?task('先按 W，把狗充到 80%','停下来，按住 W。气量到 80% 左右，松开 W，再看下一步。',['W'],'dog',at(dog.x,dog.y-30,75,80)):task('松开 W，按住 ↓ 鼓大刺猬','只按住向下方向键 ↓，把狗的气给刺猬。等提示变成走路后松开。',['↓'],'hog',at(hog.x,hog.y,85,85));
+ const apples=()=>!memo.stack?task('先捡地上的苹果','同时按住 Shift 和 D，滚到圈出的苹果旁。捡到以后松开两个键。',['Shift','D'],'hog',at(memo.apples[0]?.x??hog.x+60,445,35,35),1,L.practice?6:4):task('停下来，等狗坐上苹果','松开 A、D 和 Shift。狗会自己走过来、坐上苹果，不用按键。',[],'dog',at(hog.x,memoSeatY(),65,70),2,L.practice?6:4);
+ if(win)return task('过关了！','点「下一关」继续，或点「选择关卡」回去练习。',[],'hog');
+ if(hurt>0)return task('碰到危险了，马上回安全处','等一下，会自动重新开始。按 R 也可以立刻重来。',['R']);
+ if(dog.state==='skin')return task('狗破了，先把它吹回来',L.memo&&hog.gas<.05?'按 R 重来。这次少放一点气，留些气救狗。':'停下来，按住 W，直到粉色小狗重新鼓起来。',['W'],'dog',at(dog.x,dog.y,65,50));
+ if(dog.air>.89)return task('快充爆了，立刻放一点气','松开 W，按住 S。气量降到 80% 以下就松开。',['S'],'dog',at(dog.x,dog.y,75,80));
+ if(L.practice){
+  if(L.lesson==='move'){
+   if(!memoObj('walkHog').done)return task('按 D，让刺猬走到圈里','你只负责棕色刺猬。按住 D 往右走，狗会自己跟上。',['D'],'hog',at(450),1,4);
+   if(!memoObj('jumpHog').done)return task('按空格，让刺猬跳一下','松开 D，按一下空格。等刺猬落地，再做下一步。',['Space'],'hog',at(hog.x,hog.y-80,55,70),2,4);
+   if(!memoObj('jumpDog').done)return task('Shift + D，让刺猬滚起来','同时按住 Shift 和 D，向右滚一小段。完成后松开 Shift。',['Shift','D'],'hog',at(hog.x+95),3,4);
+   return{...exit(),step:4,total:4};
+  }
+  if(L.lesson==='air'){
+   if(!memoObj('give').done)return task('按住 W，把狗充大','按住 W。气量到 47% 就松开；画面下方能看到百分比。',['W'],'dog',at(dog.x,dog.y-40,70,75),1,5);
+   if(!memoObj('vent').done)return task('按住 S，把狗放小','先松开 W，再按住 S。气量降到 27% 就松开。',['S'],'dog',at(dog.x,dog.y,70,75),2,5);
+   if(!memoObj('return').done)return task('按住 ↓，把气还给刺猬','用键盘右边的向下方向键 ↓。狗会缩小，刺猬会鼓大。',['↓'],'hog',at(hog.x,hog.y,80,75),3,5);
+   if(!memoObj('reel').done)return task('按住数字 0，把绳子收短','按住数字键 0 一小会儿。两位靠近后松开，绳子会重新变长。',['0'],'hog',at((hog.x+dog.x)/2,(hog.y+dog.y)/2,70,70),4,5);
+   return{...exit(),step:5,total:5};
+  }
+  if(!memoObj('lamp').done){if(!memo.stack||!dog.riding)return apples();if(Math.abs(hog.x-725)>40)return task('按 D，把狗送到灯下面','按住 D 慢慢走，到圈出的灯下面停住。不要跳，也不要滚。',['D'],'hog',at(725),3,6);return task('停住，按住 / 关灯','松开 A 和 D，按住键盘的 /。灯下面的小条填满后松开。',['/'],'dog',at(725,378,55,60),4,6);}
+  if(!memoObj('fridge').done){if(dog.riding)return task('按一下 /，让狗下来','灯已经关好了。按一下 / 让狗下座，再按 D 走向冰箱。',['/'],'dog',at(dog.x,dog.y,60,60),5,6);return task('按 D 走到冰箱旁，再按 F','先走到圈出的冰箱旁边，停住，按一下 F 开启冷气。',['D','F'],'hog',at(980,400,75,115),5,6);}
+  return{...exit(),step:6,total:6};
+ }
+ if(!L.memo){
+  const pin=switches.find(p=>p.type==='hogRoll'&&!p.latched&&(!p.requires||p.requires.every(powered)));
+  const p=switches.find(p=>p.type.startsWith('dog')&&!p.latched&&!switches.some(q=>q.latched&&q.requires?.includes(p.id))&&(!p.requires||p.requires.every(powered)));
+  if(dog.task)return task('狗正在去按粉色按钮',device(dog.task.id)?.flatOK&&dog.task.step>0?'按住 S，把狗放扁。狗会自己钻过上面的窄缝。':'先停住。狗会自己去按钮；暂时不要再按 /。',device(dog.task.id)?.flatOK&&dog.task.step>0?['S']:[],'dog',at(dog.taskTarget?.x??dog.x,dog.taskTarget?.y??dog.y,55,60));
+  const dock=device(dog.docked);if(dock&&(dog.air<(dock.minAir??.04)||dog.air>(dock.maxAir??1)))return task('先调整狗的气量，按钮才会通电',`只按住 ${dog.air>(dock.maxAir??1)?'S 放气':'W 充气'}，把气量调到 ${Math.round((dock.minAir??.12)*100)}%–${Math.round((dock.maxAir??1)*100)}% 之间。`,[dog.air>(dock.maxAir??1)?'S':'W'],'dog',at(dog.x,dog.y,70,75));
+  if(dog.docked&&pin)return task('狗撑着门，你滚到铜踏板上','同时按住 Shift 和 D，滚过圈出的铜色踏板。看到它亮绿灯就松开。',['Shift','D'],'hog',at(pin.x+pin.w/2,pin.y-8,pin.w+12,35),2,4);
+  const sync=charges.find(q=>!q.done),plate=sync?.all.map(device).find(q=>q?.type==='hogPlate');
+  if(dog.docked&&plate)return task('站到铜踏板中央，别动','按 D 走到圈出的铜盘中央，松开所有键，等进度条填满。',['D'],'hog',at(plate.x+plate.w/2,plate.y,plate.w,35));
+  if(dog.docked)return task('门固定了，按 / 叫狗回来','按一下 /。然后按 S 把狗放小，再按 D 继续向右。',['/'],'dog',at(dog.x,dog.y,60,65),3,4);
+  if(p&&!p.on&&Math.hypot(p.x-hog.x,p.y-hog.y)>=380)return task('先走近粉色爪印按钮','按住 D 向右走，走到圈出的地方后松开。先不用充气。',['D'],'hog',at(p.x-220));
+  if(p&&Math.hypot(p.x-hog.x,p.y-hog.y)<380&&!p.on){if(dog.air<.44)return task('先按 W，给狗充到 45%','停下来，按住 W。下方气量到 45% 左右就松开。',['W'],'dog',at(dog.x,dog.y-35,70,75));if(ropeShort)return task('先把绳子放长','松开数字 0；如果仍是短绳，按一下 E，再按 /。',['E'],'hog',at(hog.x,hog.y-25,60,70));return task('按一下 /，派狗去粉色按钮','按一下键盘的 /，然后松手。狗会自己飞到圈出的爪印按钮。',['/'],'dog',at(p.x,p.y,60,65));}
+  if(pin&&!pin.requires)return task('先滚过铜踏板，打开风扇','同时按住 Shift 和 D，滚过圈出的铜盘。亮灯后松开 Shift。',['Shift','D'],'hog',at(pin.x+pin.w/2,pin.y,pin.w,35));
+  const bed=(L.beds||[]).find(b=>hog.x<b.x+b.w+40&&hog.x>b.x-250);
+  if(bed){if(hog.y+hogHalf()>bed.base-bed.h-12)return task('先停住，让狗把刺猬吊过刺尖','停在刺丛前。按住 0 收绳，再按 W 充气；刺猬的脚高过尖刺后松开 W。',['0','W'],'hog',at(hog.x,bed.base-bed.h-55,65,70));return task('保持高度，按 D 越过刺丛','继续按住 0，再按 D 往右。过完整片绿色刺丛后，再松开 0。',['0','D'],'hog',at(bed.x+bed.w/2,bed.base-bed.h-45,bed.w,70));}
+  const tunnel=statics.find(q=>q.y<=26&&q.y+q.h>360&&hog.x<q.x+q.w&&hog.x>q.x-230);
+  if(tunnel)return task('把狗放扁，刺猬滚过矮洞','先按 S 把狗放到 0%，再按住 Shift 和 D 滚进洞。狗会跟上。',['S','Shift','D'],'hog',at(tunnel.x+tunnel.w/2,tunnel.y+tunnel.h+14,tunnel.w,30));
+  if(pin&&Math.abs(pin.x-hog.x)<250)return task('滚过铜踏板，把门固定住','同时按住 Shift 和 D，滚过圈出的铜盘；亮绿灯后松开 Shift。',['Shift','D'],'hog',at(pin.x+pin.w/2,pin.y,pin.w,35));
+  const wall=walls.find(q=>q.alive&&q.x-hog.x<230&&q.x>hog.x);
+  if(wall){if(wall.heavy&&hog.bloat<.65)return grow();return task('Shift + D，滚动撞开这堵墙','同时按住 Shift 和 D，朝圈出的墙滚过去。',['Shift','D'],'hog',at(wall.x,Math.min(400,wall.y+wall.h-45),wall.w+15,85));}
+  const weight=switches.find(q=>q.type==='hogWeight'&&!q.on);
+  if(weight){if(hog.bloat<.65)return grow();return task('走到铜盘中央，停一秒','按 D 走到圈出的铜盘中央，松开方向键，等它亮绿灯。',['D'],'hog',at(weight.x+weight.w/2,weight.y,weight.w,30));}
+  return exit();
+ }
+ if(idx===8)return dog.riding?task('只按 D，慢慢驮狗过图钉','按住 D 往右走。不要跳，也不要按 Shift；狗会坐在苹果上。',['D'],'hog',at(1170),3,4):apples();
+ if(idx===9){const lamp=memoObj('lamp');if(lamp.done){if(dog.riding)return task('按 / 让狗下来，再过右边矮洞','按一下 /。接着按 S 放气，按住 Shift 和 D 滚过矮洞。',['/'],'dog',at(dog.x,dog.y,60,60));return task('Shift + D，滚过右边的矮洞','狗保持小小的，自动跟着你。按住 Shift 和 D 从洞下通过。',['Shift','D'],'hog',at(1080,445,160,30));}if(memo.stack<3)return task('先滚过三个苹果，全部捡起来','同时按住 Shift 和 D，捡齐地上的三个苹果，再松开 Shift。',['Shift','D'],'hog',at(memo.apples[0]?.x??360,445,35,35));if(!dog.riding)return apples();if(Math.abs(hog.x-lamp.x)>40)return task('按 D，把狗送到灯下面','慢慢走到圈出的灯下面，松开 D 停住。不要跳或滚。',['D'],'hog',at(lamp.x));return task('停住，按住 / 拧掉灯泡','刺猬站稳以后，按住 /，直到灯下方的小进度条填满。',['/'],'dog',at(lamp.x,lamp.y,55,60));}
+ if(idx===10){if(hog.bloat<.65)return task('按住 ↓，把刺猬鼓大','停下来，按住向下方向键 ↓。等刺猬鼓成大圆球后松开。',['↓'],'hog',at(hog.x,hog.y,85,85));if(!dog.cling&&dog.charge<.15)return task('按 D 慢慢走，让狗蹭过紫色地毯','狗会自己跟着你，在紫色地毯上蹭出静电。先别跳。',['D'],'hog',at(400));if(!dog.cling&&(nearestCling()?.d??999)>55)return task('继续按 D，等狗走到灰墙脚下','慢慢往右走。等小狗跟到灰色墙旁边，再按 /。',['D'],'hog',at(575));if(!dog.cling)return task('按一下 /，让狗贴住灰色墙','到灰色墙脚附近，按一下 /。狗会自己往上爬。',['/'],'dog',at(450,410,40,75));return task('按 D，进入风里并落上右边台面','狗会自己沿墙爬。你按 D，让鼓大的刺猬借风上去。',['D'],'hog',at(880,215,80,70));}
+ if(idx===11){if(hog.bloat<.65&&!hog.plugged)return task('按住 ↓，先让刺猬鼓大','按住 ↓，直到刺猬鼓成大圆球。留一点气在狗身上。',['↓'],'hog',at(hog.x,hog.y,85,80));if(!memo.water.plugged&&memo.water.y>320)return task('走到排水口，再按 F 堵住','按 D 到圈出的排水口旁边，停住，按一下 F。',['D','F'],'hog',at(630,492,70,25));if(memo.water.plugged&&memo.water.y>190)return task('现在不要动，等水涨上去','松开所有键。刺猬正在堵水，狗会浮起来；水涨好后提示会变。',[],'hog',at(630,470,75,55));if(hog.plugged)return task('按一下 F，松开排水口','狗已往右边游。按 F 松开塞子，然后按 D 往右走。',['F'],'hog',at(630,470,75,55));return task('按 D，赶快上右边的平台','水正在退。按住 D 往右；刺猬上不去时，短按住 0 收绳。',['D','0'],'hog',at(1020,230,100,65));}
+ if(idx===12){const cage=memoObj('cage');if(!cage.done){if(hog.bloat<.65)return task('按 ↓，让刺猬的刺变长','按住 ↓ 把气给刺猬，等身体明显鼓大后松开。',['↓'],'hog',at(hog.x,hog.y,85,85));return task('走近鸟笼左边，按 F 扎气球锁','按 D 走到鸟笼左边的圈内，停住，按一下 F。',['D','F'],'hog',at(cage.x,cage.y,45,55));}if(cage.key)return task('走到金钥匙旁，按 F 捡起来','等钥匙落到地面，按 D 靠近它，再按一下 F。',['D','F'],'hog',at(cage.key.x,cage.key.y,45,30));if(!memoObj('exitlock').done)return task('带钥匙去门边，再按 F','按 D 到圈出的门锁旁，停住，按一下 F 开锁。',['D','F'],'hog',at(1120,420,50,75));return exit();}
+ if(idx===13){if(dog.air>.04)return task('先按 ↓，把狗完全放扁','停在猫很远的地方，按住 ↓。狗的气量到 0% 就松手。',['↓'],'dog',at(dog.x,dog.y,65,55));return task('只按 D，轻轻走过睡猫旁边','不要跳、不要滚、不要充气。狗会安静地跟着你。',['D'],'hog',at(1200));}
+ if(idx===14){const x=memo.rail.x,next=(L.railHazards||[]).find(q=>q.x+q.w>x-20);if(memo.rail.done)return task('按 S 把狗放小，再按 D 下平台','先按 S 放到 40% 以下，再按 D 往右走。',['S','D'],'hog',at(1560,430,95,50));const reel=next&&next.y<100;return task(reel?'按住 0，让两位靠拢':'松开 0，让两位上下分开',reel?'按住数字 0：狗下降、刺猬上升。穿过这组障碍前保持按住。':'松开数字 0：狗上升、刺猬下降。滑轮会自己往前走。',reel?['0']:['松开 0'],'hog',next?at(next.x+next.w/2,280,next.w+12,120):null);}
+ if(idx===15){if(!memoObj('fridge').done)return task('先到冰箱旁，按 F 开冷气','按 D 走到圈出的冰箱旁边，停住，按一下 F。',['D','F'],'hog',at(430,380,80,120));if(!memo.water.frozen)return task('等一下，让水面结冰','先松开按键。蓝色水面变成实心冰板以后，提示会变。',[],'hog',at(790,400,430,20));if(hog.x<1040)return task('D + 空格，跳到冰面上','走到冰边，同时按 D 和空格跳过去。狗会自己跟着跳。',['D','Space'],'hog',at(650,400,100,30));return task('先按 ↓ 缩小狗，再滚过烤箱下方','按住 ↓ 把狗的气给刺猬；狗变小后，按住 Shift 和 D 通过矮洞。',['↓','Shift','D'],'hog',at(1230,350,175,65));}
+ return exit();
+}
+function updateExperience(dt){
+ if(!experience)return;experience.ticks+=dt;if(!L.memo){if(dog.air>=.77)experience.backflowReady=true;if(hog.bloat>=.65)experience.backflowReady=false;}
+ if(L.practice){
+  const mark=id=>{const p=memoObj(id);if(p)p.done=true;};
+  if(L.lesson==='move'){if(held('ArrowLeft','ArrowRight'))experience.walkHog+=Math.abs(hog.vx)*dt;if(held('KeyA','KeyD'))experience.walkDog+=Math.abs(dog.vx)*dt;if(experience.walkHog>75){mark('walkHog');mark('walkDog');}if(memoObj('walkHog').done&&experience.walkDog>70)mark('walkDog');if(memoObj('walkDog').done&&pressed('ArrowUp'))experience.jumpSeen=true;if(experience.jumpSeen&&hog.ground)mark('jumpHog');if(memoObj('jumpHog').done&&hog.ball&&Math.abs(hog.vx)>80)mark('jumpDog');}
+  if(L.lesson==='air'){experience.peakDog=Math.max(experience.peakDog,dog.gas);if(dog.gas>.46)mark('give');if(memoObj('give').done&&held('KeyS')&&dog.gas<.28)mark('vent');if(memoObj('vent').done&&held('ArrowDown')&&dog.gas<.09)mark('return');if(memoObj('return').done&&held('Digit0','Numpad0')&&ropeLen<145)mark('reel');}
+ }
+ syncExperience();
+}
+function syncExperience(){
+ if(!L||!dog||!hog)return;const g=getRoomGuide();if(!g)return;experience.guide=g;
+ experienceEl('missionTitle').textContent=g.title;experienceEl('missionAction').textContent=g.action;experienceEl('missionStep').textContent=`${L.practice?'练习':'当前目标'} · ${g.step} / ${g.total}`;
+ experienceEl('missionKeys').innerHTML=g.keys.map(k=>`<kbd>${k}</kbd>`).join('');experienceEl('mission').dataset.who=g.who;
+ experienceEl('roomName').textContent=L.practice?`练习 ${idx-15} · ${L.name}`:`${String(idx+1).padStart(2,'0')} · ${L.name}`;
+ experienceEl('dogState').textContent=dog.state==='skin'?'破了，W 吹回来':dog.riding?'坐在苹果上':dog.cling?'正在自动爬墙':dog.docked?'正在留守':isFlat()?'放扁了':dog.air>.7?'可以吊起朋友':dog.air>.32?'正在飘':'自动跟随刺猬';
+ experienceEl('hogState').textContent=hog.ball?'缩球滚动':hog.plugged?'堵住排水口':hog.bloat>.65?'鼓成刺豚':memo?.stack?`背着 ${memo.stack} 个苹果`:'你控制这位 · A/D 走路';
+}
+function selectChapter(which){[...levelsEl.children].forEach((b,i)=>b.hidden=which==='practice'?i<16:which==='classic'?i>=8:i<8||i>=16);for(const id of ['practiceChapter','classicChapter','memoChapter'])experienceEl(id).setAttribute('aria-pressed',String(id===which+'Chapter'));}
+function openLevelPanel(){togglePause(true);experienceEl('levelPanel').hidden=false;refreshLevelProgress();selectChapter(L.practice?'practice':idx<8?'classic':'memo');}
+function closeLevelPanel(){experienceEl('levelPanel').hidden=true;}
+experienceEl('levelMenu').addEventListener('click',openLevelPanel);
+experienceEl('closeLevels').addEventListener('click',()=>{closeLevelPanel();if(started&&!win)togglePause(false);else if(!started)startEl.hidden=false;});
+experienceEl('practiceChapter').addEventListener('click',()=>selectChapter('practice'));
+experienceEl('practiceBtn').addEventListener('click',()=>{loadLevel(16);closeLevelPanel();start();});
+experienceEl('chooseStart').addEventListener('click',()=>{startEl.hidden=true;openLevelPanel();});
+experienceEl('helpBtn').addEventListener('click',()=>{const panel=experienceEl('helpPanel');panel.hidden=!panel.hidden;});
+experienceEl('focusBtn').addEventListener('click',()=>{const stage=document.getElementById('stage');if(document.fullscreenElement){document.exitFullscreen?.();}else stage.requestFullscreen?.();});
+function nextRoomIndex(){return L.practice&&idx===18?8:(idx+1)%LEVELS.length;}
+function targetVisible(t){return t&&t.x+t.w/2>cameraX&&t.x-t.w/2<cameraX+W;}
+function drawGuideTarget(){
+ const g=getRoomGuide(),t=g?.target;if(!t||win)return;const col=g.who==='dog'?'#dc5c72':g.who==='hog'?'#8c5a37':'#588e7c',pulse=1+Math.sin(time*3.8)*.07;
+ c.save();c.strokeStyle=col;c.lineWidth=2.5;c.setLineDash([7,5]);c.globalAlpha=.7+.2*Math.sin(time*3.8);const w=Math.max(36,t.w)*pulse,h=Math.max(28,t.h)*pulse;rrPath(t.x-w/2-7,t.y-h/2-7,w+14,h+14,10);c.stroke();c.setLineDash([]);c.globalAlpha=1;
+ c.fillStyle=col;ell(t.x,t.y-h/2-21,12,12);c.font=`700 12px ${FONT(12).split('px ')[1]}`;c.textAlign='center';c.fillStyle='#fffaf5';c.fillText(String(g.step),t.x,t.y-h/2-17);
+ const b=g.who==='dog'?dog:hog;if(Math.abs(b.x-t.x)>75){c.strokeStyle=col;c.globalAlpha=.28;c.lineWidth=2;c.setLineDash([4,7]);c.beginPath();c.moveTo(b.x,b.y-35);c.quadraticCurveTo((b.x+t.x)/2,Math.min(b.y,t.y)-80,t.x,t.y-h/2-35);c.stroke();}c.restore();
+}
+function drawSimpleHUD(sc){
+ c.setTransform(sc,0,0,sc,0,0);const g=getRoomGuide();if(g?.target&&!targetVisible(g.target)){const right=g.target.x>cameraX+W,x=right?W-29:29;c.save();c.fillStyle=g.who==='dog'?'#da6278':'#7b9d89';ell(x,H*.5,20,20);c.fillStyle='#fffaf5';c.font=FONT(20);c.textAlign='center';c.fillText(right?'›':'‹',x,H*.5+6);c.restore();}
+ c.save();c.fillStyle='#ffffffd9';rrPath(18,17,155,30,9);c.fill();c.fillStyle='#526d60';c.font=FONT(12);c.textAlign='left';c.fillText(L.practice?'安全练习 · 没有尖刺':`房间 ${idx+1} · 两位一起到终点`,30,37);c.restore();
+}
+function artGradient(x0,y0,x1,y1,stops,fallback){const g=c.createLinearGradient?.(x0,y0,x1,y1);if(!g?.addColorStop)return fallback;for(const [p,col]of stops)g.addColorStop(p,col);return g;}
+function drawRoomBackdrop(){
+ const palettes={practice:['#fcf7e9','#eef0df','#d4ddc2'],living:['#f7f1e4','#e8ead9','#c9d7bf'],study:['#fbf3e4','#efe3d0','#d8c2a5'],laundry:['#f1f7f1','#dce9e0','#b4cdbd'],bath:['#f1f8f3','#dceceb','#b3d1cc'],attic:['#f9f1e5','#eae0d9','#d4bfb1'],kitchen:['#fbf5e8','#e9e6d6','#c4cbb4']};const p=palettes[L.world]||palettes.practice;
+ c.fillStyle=artGradient(0,0,0,H,[[0,p[0]],[1,p[1]]],p[0]);c.fillRect(cameraX-20,-20,W+40,H+40);
+ // Quiet architectural details keep the route and characters in the foreground.
+ const parallax=cameraX*.18;c.save();c.globalAlpha=.5;
+ for(let x=Math.floor((cameraX-parallax)/550)*550+75;x<cameraX+W+150;x+=550){
+  c.fillStyle='#fffcf2';rrPath(x+parallax,140,132,161,48);c.fill();c.fillStyle=artGradient(x,140,x+140,300,[[0,'#e5eddc'],[1,'#f6f0d9']],'#e6e9d8');rrPath(x+parallax+9,150,114,142,42);c.fill();c.strokeStyle='#fffaf0';c.lineWidth=5;c.beginPath();c.moveTo(x+parallax+66,149);c.lineTo(x+parallax+66,294);c.moveTo(x+parallax+9,220);c.lineTo(x+parallax+123,220);c.stroke();
+  c.fillStyle=p[2];rrPath(x+parallax-9,294,150,8,3);c.fill();c.fillStyle='#c1cba8';c.beginPath();c.moveTo(x+parallax+98,287);c.quadraticCurveTo(x+parallax+84,251,x+parallax+108,254);c.quadraticCurveTo(x+parallax+126,254,x+parallax+112,287);c.fill();c.fillStyle='#d9b79d';c.fillRect(x+parallax+99,278,15,15);
+ }
+ c.restore();c.fillStyle=p[2]+'4d';c.fillRect(cameraX,332,W,2);c.strokeStyle=p[2]+'36';c.lineWidth=1;for(let x=Math.floor(cameraX/96)*96;x<cameraX+W;x+=96){c.beginPath();c.moveTo(x,335);c.lineTo(x,H);c.stroke();}
+ c.fillStyle='#b7bbaa';c.fillRect(cameraX,H-9,W,9);
+}
+function drawRoomPlatforms(){
+ for(const s of statics){c.save();const overhead=s.y<=26,floor=s.y>=400;
+  c.shadowColor='#6d5c3e13';c.shadowBlur=9;c.shadowOffsetY=5;c.fillStyle=artGradient(s.x,s.y,s.x,s.y+s.h,[[0,overhead?'#bfad8f':'#ddc39b'],[1,overhead?'#d4c4a9':'#ead7b6']],overhead?'#cbb99a':'#dfc6a2');c.fillRect(s.x,s.y,s.w,s.h);c.shadowColor='transparent';
+  c.fillStyle=overhead?'#a99575':'#a48f68';c.fillRect(s.x,overhead?s.y+s.h-5:s.y,s.w,5);c.fillStyle=overhead?'#e7d9bc':'#f5e3bc';c.fillRect(s.x,overhead?s.y+s.h-9:s.y+5,s.w,3);
+  c.strokeStyle='#aa906d29';c.lineWidth=1;const left=Math.max(cameraX-30,s.x),right=Math.min(cameraX+W+30,s.x+s.w);
+  if(floor){for(let y=s.y+23;y<Math.min(H,s.y+s.h);y+=27){c.beginPath();c.moveTo(left,y);c.lineTo(right,y);c.stroke();for(let x=Math.floor(left/105)*105+(Math.floor(y/27)%2)*53;x<right;x+=105){c.beginPath();c.moveTo(x,y);c.lineTo(x-20,y+27);c.stroke();}}}
+  else{for(let x=Math.floor(left/90)*90;x<right;x+=90){c.beginPath();c.moveTo(x,s.y+6);c.lineTo(x,Math.min(H,s.y+s.h-9));c.stroke();}}
+  c.restore();
+ }
+}
+function drawActorShadows(){
+ c.save();for(const [b,r,col]of[[hog,20*hogScale(),'#66553d'],[dog,isFlat()?25:rr(dog.air)*.68,'#9f5862']]){const ground=groundAt(b.x);const distance=Math.max(0,ground-b.y-15);if(ground>H||distance>220)continue;c.globalAlpha=.13*Math.max(.2,1-distance/260);c.fillStyle=col;ell(b.x,ground-1,r*(1+distance/400),3.4+distance/90);}c.restore();
+}
+// Generated, transparent painted sprites. Geometry and state remain in the game simulation.
+const PROP_BOUNDS={"apple":[0,9,1242,1236],"cage":[0,0,1483,1061],"cat":[0,0,1284,1199],"door":[55,33,717,1715],"fan":[0,0,1253,1254],"fridge":[95,0,1133,1230],"lamp":[0,17,1234,1204],"paw":[0,17,1251,1237],"plate":[30,27,2126,677],"pump":[0,16,1242,1238]};
+const propArt={};
+function drawProp(name,x,y,w,h,options={}){
+ if(typeof Image==='undefined')return false;let img=propArt[name];if(!img){img=new Image();img.decoding='async';img.src=`assets/props/${name}.png`;propArt[name]=img;}if(!img?.complete||!img.naturalWidth)return false;
+ const [sx,sy,sw,sh]=PROP_BOUNDS[name]||[0,0,img.naturalWidth,img.naturalHeight];
+ const fit=Math.min(w/sw,h/sh),dw=options.stretch?w:sw*fit,dh=options.stretch?h:sh*fit;
+ c.save();c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';c.globalAlpha*=options.alpha??1;
+ if(options.flip){c.translate(x,y);c.scale(-1,1);x=0;y=0;}
+ c.drawImage(img,sx,sy,sw,sh,x-dw*(options.anchorX??.5),y-dh*(options.anchorY??1),dw,dh);c.restore();return true;
+}
+function propIndicator(x,y,on,col='#75b49a'){
+ c.save();c.fillStyle=on?col:'#c6bfa8';if(on){c.shadowColor=col;c.shadowBlur=12;}
+ ell(x,y,3.5,3.5);c.shadowBlur=0;c.fillStyle='#fff9e9';ell(x-1,y-1,1,1);c.restore();
+}
 function currentZone(){return [...L.zones].reverse().find(z=>Math.max(hog.x,dog.x-60)>=z.x)||L.zones[0];}
 function hint(){
  if(L.memo)return memoHint();
@@ -881,7 +1091,7 @@ function hint(){
  if(hurt>0)return hurtReason==='timeout'?'接力超时。回到蓝旗，先安排位置，再让狗出发。':'两位都怕刺，回蓝旗再试一次。';
  if(dog.state==='skin')return`${dog.lastPop}。W 沿气管把它重新吹起来。`;
  if(dog.blocked>0)return'这里太窄：S 放扁狗，再让它钻过去。';
- if(dog.air>.90)return'快撑爆了！S 放气，或在空闲处长按 / 把气借给刺猬。';
+ if(dog.air>.90)return'快撑爆了！S 放气，或按住 ↓ 把气给刺猬。';
  if(hog.backflow)return'倒灌中：狗变小、刺猬变重。松开 / 保留体型，S 把气还给狗。';
  if(hog.returnAir)return'把气还给狗，刺猬正在缩小。继续 S 才会给狗放气。';
  if(noticeTime>0)return interactNotice;
@@ -902,12 +1112,12 @@ function drawMechanisms(){
   sources(g.rule).forEach((id,i)=>{const p=device(id);if(!p)return;const q=interactionPoint(p),y=g.y+g.h+15+i*5;c.save();c.strokeStyle=p.type.startsWith('dog')?'#dc9c9d':'#bc9459';c.globalAlpha=p.on?.8:.35;c.lineWidth=p.on?2:1.5;c.setLineDash(p.on?[]:[5,5]);c.beginPath();c.moveTo(q.x,q.y);c.lineTo(q.x+34,q.y);c.lineTo(q.x+34,y);c.lineTo(g.x+g.w/2,y);c.lineTo(g.x+g.w/2,g.y+g.h);c.stroke();c.restore();});
   c.save();c.font=FONT(10);c.textAlign='center';
   if(g.kind==='bridge'){c.strokeStyle=g.on?'#6c9d9b':'#b3a496';c.lineWidth=2;c.setLineDash(g.on?[]:[8,6]);c.strokeRect(g.x,g.y,g.w,g.h);c.setLineDash([]);if(g.on){c.fillStyle='#a7c7bf';c.fillRect(g.x,g.y,g.w,g.h);c.fillStyle='#769e97';for(let x=g.x+12;x<g.x+g.w;x+=30)c.fillRect(x,g.y,3,g.h);}c.fillStyle='#7a9a91';c.fillText(g.on?'桥有人撑着':'桥已收回',g.x+g.w/2,g.y+g.h+30);}
-  else{const remaining=g.h*(1-g.open);c.strokeStyle='#b09063';c.lineWidth=2;c.strokeRect(g.x-5,g.y,g.w+10,g.h);c.fillStyle=g.on?'#91b4a3':'#c6a573';c.fillRect(g.x,g.y,g.w,remaining);c.fillStyle='#efe2c8';for(let y=g.y+7;y<g.y+remaining-3;y+=20)c.fillRect(g.x+4,y,g.w-8,3);c.fillStyle=g.on?'#6c9987':'#987342';c.fillText(g.on?'已接通':g.label,g.x+g.w/2,g.y+g.h+34);}
+  else{const remaining=g.h*(1-g.open);c.strokeStyle='#b09063';c.lineWidth=2;c.strokeRect(g.x-5,g.y,g.w+10,g.h);if(remaining>1){c.save();c.beginPath();c.rect(g.x-3,g.y,g.w+6,remaining);c.clip();if(!drawProp('door',g.x+g.w/2,g.y+remaining,g.w+6,g.h,{stretch:true})){c.fillStyle='#c6a573';c.fillRect(g.x,g.y,g.w,remaining);}c.restore();}propIndicator(g.x+g.w/2,g.y+g.h+12,g.on);c.fillStyle=g.on?'#6c9987':'#987342';c.fillText(g.on?'已接通':g.label,g.x+g.w/2,g.y+g.h+34);}
   c.restore();
  }
  for(const p of switches){const dogOnly=p.type.startsWith('dog');c.save();
-  if(dogOnly){c.strokeStyle='#b6aaa0';c.lineWidth=2;c.beginPath();c.moveTo(p.x,8);c.lineTo(p.x,p.y-24);c.stroke();c.fillStyle=p.on?'#f5b5b4':'#f5ded5';c.strokeStyle=p.on?'#d96973':'#ccaaa0';c.lineWidth=3;c.beginPath();c.arc(p.x,p.y,24,0,Math.PI*2);c.fill();c.stroke();c.fillStyle=p.on?'#b84e5b':'#ba8684';ell(p.x,p.y+5,8,6);for(const [x,y]of[[-10,-5],[-4,-11],[4,-11],[10,-5]])ell(p.x+x,p.y+y,3,4);c.font=FONT(12);c.textAlign='center';c.fillStyle='#ae6970';c.fillText(p.label,p.x,p.y+45);c.font=FONT(10);c.fillText(p.on?(dog.docked===p.id?'/ 松开':p.remaining>0?`${p.remaining.toFixed(1)} 秒`:'已按下'):'/ 狗操作',p.x,p.y+61);if(p.flatOK)c.fillText('放扁穿过高窗',p.x,p.y+77);else if(p.minAir)c.fillText('气量 45%–68%',p.x,p.y+77);}
-  else{c.fillStyle=p.on?'#73a28a':'#ba8b4b';rrPath(p.x,p.y-7,p.w,8,3);c.fill();c.fillStyle=p.on?'#99c1a9':'#e4c282';c.fillRect(p.x+7,p.y-10+(p.on?5:0),p.w-14,5);c.font=FONT(11);c.textAlign='center';c.fillStyle=p.on?'#618875':'#937048';c.fillText(p.label,p.x+p.w/2,p.y+31);if(p.type==='hogWeight'){c.fillStyle='#b38949';c.font=FONT(10);c.fillText('体型 ≥ 65% · 压住 1 秒',p.x+p.w/2,p.y+46);c.fillRect(p.x,p.y+52,p.w*(p.progress||0),3);}if(p.requires&&!p.requires.every(powered)&&!p.on){c.font=FONT(9);c.fillText('需要 A 先供电',p.x+p.w/2,p.y+45);}}
+  if(dogOnly){c.strokeStyle='#b6aaa0';c.lineWidth=2;c.beginPath();c.moveTo(p.x,8);c.lineTo(p.x,p.y-24);c.stroke();if(!drawProp('paw',p.x,p.y+26,57,57)){c.fillStyle=p.on?'#f5b5b4':'#f5ded5';c.strokeStyle=p.on?'#d96973':'#ccaaa0';c.lineWidth=3;c.beginPath();c.arc(p.x,p.y,24,0,Math.PI*2);c.fill();c.stroke();c.fillStyle=p.on?'#b84e5b':'#ba8684';ell(p.x,p.y+5,8,6);for(const [x,y]of[[-10,-5],[-4,-11],[4,-11],[10,-5]])ell(p.x+x,p.y+y,3,4);}propIndicator(p.x,p.y-24,p.on,'#d97588');c.font=FONT(12);c.textAlign='center';c.fillStyle='#ae6970';c.fillText(p.label,p.x,p.y+45);c.font=FONT(10);c.fillText(p.on?(dog.docked===p.id?'/ 松开':p.remaining>0?`${p.remaining.toFixed(1)} 秒`:'已按下'):'/ 狗操作',p.x,p.y+61);if(p.flatOK)c.fillText('放扁穿过高窗',p.x,p.y+77);else if(p.minAir)c.fillText('气量 45%–68%',p.x,p.y+77);}
+  else{if(!drawProp('plate',p.x+p.w/2,p.y+3+(p.on?2:0),p.w+7,27,{stretch:true})){c.fillStyle=p.on?'#73a28a':'#ba8b4b';rrPath(p.x,p.y-7,p.w,8,3);c.fill();c.fillStyle=p.on?'#99c1a9':'#e4c282';c.fillRect(p.x+7,p.y-10+(p.on?5:0),p.w-14,5);}propIndicator(p.x+p.w-5,p.y-5,p.on);c.font=FONT(11);c.textAlign='center';c.fillStyle=p.on?'#618875':'#937048';c.fillText(p.label,p.x+p.w/2,p.y+31);if(p.type==='hogWeight'){c.fillStyle='#b38949';c.font=FONT(10);c.fillText('刺猬鼓大 · 站稳一秒',p.x+p.w/2,p.y+46);c.fillRect(p.x,p.y+52,p.w*(p.progress||0),3);}if(p.requires&&!p.requires.every(powered)&&!p.on){c.font=FONT(9);c.fillText('需要 A 先供电',p.x+p.w/2,p.y+45);}}
   c.restore();
  }
  for(const p of charges){const points=p.all.map(id=>interactionPoint(device(id))),x=points.reduce((n,p)=>n+p.x,0)/points.length,y=Math.min(...points.map(p=>p.y))-67;c.save();c.fillStyle='#fffaf5df';rrPath(x-94,y-24,188,42,7);c.fill();c.font=FONT(10);c.textAlign='center';c.fillStyle='#967757';c.fillText(p.done?'同步已锁定':p.label,x,y-9);c.fillStyle='#e5d4bf';c.fillRect(x-78,y,156,5);c.fillStyle=p.done?'#79a68d':'#d1997a';c.fillRect(x-78,y,156*p.progress/p.duration,5);c.restore();}
@@ -931,14 +1141,13 @@ function drawHogJet(){
  c.fillStyle='#937357';c.fillRect(-6,-4,9,8);c.fillStyle='#d9ba8c';c.fillRect(-7,-3,3,6);c.fillStyle='#6c8990';ell(2,0,4,5);c.restore();
 }
 function drawRoleFocus(){
- const top=hog.y-25*hogScale();c.save();c.fillStyle='#80563c';c.beginPath();c.moveTo(hog.x-5,top-12);c.lineTo(hog.x+5,top-12);c.lineTo(hog.x,top-5);c.fill();c.font=FONT(10);c.textAlign='center';c.fillText(hog.bloat>.05?`你 · 刺猬 ×${hogScale().toFixed(1)}`:'你 · 刺猬',hog.x,top-19);
- if(dog.task||dog.docked){c.fillStyle=DOGC;c.fillText(dog.docked?'留守 · / 叫回来':'行动中 · / 取消',dog.x,dog.y-rr(dog.air)-18);}c.restore();
+ c.save();c.font=FONT(10);c.textAlign='center';for(const [b,name,keys,col,r]of[[hog,'你','A D','#89613e',25*hogScale()],[dog,'狗',dog.riding?'坐好了':dog.docked?'按着按钮':dog.cling?'自动爬墙':'自动跟随','#c45f77',isFlat()?17:rr(dog.air)+9]]){c.fillStyle='#fffcf2df';rrPath(b.x-33,b.y-r-29,66,18,8);c.fill();c.fillStyle=col;c.fillText(`${name} · ${keys}`,b.x,b.y-r-16);}c.restore();
 }
 function drawFan(f){
  c.save();const duct=f.ductY!==undefined;c.fillStyle=duct?'#a5cdd419':'#9ac4e811';c.fillRect(f.x,f.y,f.w,f.h);c.strokeStyle=duct?'#88b5c18c':'#8caec77a';c.lineWidth=1.5;
  if(duct){c.setLineDash([8,6]);c.strokeRect(f.x,f.y,f.w,f.h);c.setLineDash([]);c.font=FONT(10);c.fillStyle='#5f98a3';c.textAlign='center';c.fillText('高位风管 · 放扁也能被托住',f.x+f.w/2,f.y-8);}
- for(let i=0;i<12;i++){const t=(time*.5+i*.113)%1,x=f.x+((i*.173+(f.dx||0)*t)%1+1)%1*f.w,y=f.y+((i*.271+(f.dy||0)*t)%1+1)%1*f.h;c.beginPath();c.moveTo(x,y);c.lineTo(x-f.dx*22,y-f.dy*22);c.stroke();}
- const cx=f.x+f.w/2,cy=duct?f.y+f.h-8:Math.min(f.base??H,H)-14;c.fillStyle='#809ba8';ell(cx,cy,19,8);c.save();c.translate(cx,cy);c.rotate(time*14);c.fillStyle='#accbd4';for(let i=0;i<3;i++){c.rotate(Math.PI*2/3);ell(9,0,11,3);}c.restore();c.fillStyle='#68828d';ell(cx,cy,4,4);c.restore();
+ for(let i=0;i<(f.active===false?0:12);i++){const t=(time*.5+i*.113)%1,x=f.x+((i*.173+(f.dx||0)*t)%1+1)%1*f.w,y=f.y+((i*.271+(f.dy||0)*t)%1+1)%1*f.h;c.beginPath();c.moveTo(x,y);c.lineTo(x-f.dx*22,y-f.dy*22);c.stroke();}
+ const cx=f.x+f.w/2,cy=duct?f.y+f.h-8:Math.min(f.base??H,H)-14;if(drawProp('fan',cx,cy+14,duct?58:85,duct?58:85,{alpha:f.active===false?.6:1})){propIndicator(cx,cy+7,f.active!==false);c.restore();return;}c.fillStyle='#809ba8';ell(cx,cy,19,8);c.save();c.translate(cx,cy);c.rotate(time*14);c.fillStyle='#accbd4';for(let i=0;i<3;i++){c.rotate(Math.PI*2/3);ell(9,0,11,3);}c.restore();c.fillStyle='#68828d';ell(cx,cy,4,4);c.restore();
 }
 function drawAdventureWall(w){
  if(!w.heavy){drawWall(w);return;}if(!w.alive)return;c.save();c.fillStyle='#a78362';c.fillRect(w.x,w.y,w.w,w.h);c.strokeStyle='#e5be7e';c.lineWidth=3;for(let y=w.y+15;y<w.y+w.h;y+=36){c.strokeRect(w.x+5,y,w.w-10,24);c.fillStyle='#775b48';ell(w.x+9,y+12,2,2);ell(w.x+w.w-9,y+12,2,2);}c.translate(w.x+w.w/2,w.y+w.h/2);c.rotate(-Math.PI/2);c.font=FONT(11);c.fillStyle='#fff0d2';c.textAlign='center';c.fillText('巨大刺猬 · 滚动撞开',0,4);c.restore();
@@ -952,38 +1161,30 @@ function drawHose(){
  if(dog.taskTarget){c.save();c.setLineDash([4,6]);c.strokeStyle='#dc969eaa';c.lineWidth=1;c.beginPath();c.moveTo(dog.x,dog.y);c.lineTo(dog.taskTarget.x,dog.taskTarget.y);c.stroke();c.restore();}
 }
 function render(){
- const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);
+ const dpr=Math.min(3,Math.max(2,window.devicePixelRatio||1)),w=Math.round(cv.clientWidth*dpr),h=Math.round(cv.clientHeight*dpr);
  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}const sc=cv.width/W;c.setTransform(sc,0,0,sc,-cameraX*sc,0);
  if(shake>0)c.translate((Math.random()-.5)*shake*18,(Math.random()-.5)*shake*18);
- c.fillStyle='#fbefe6';c.fillRect(cameraX-20,-20,W+40,H+40);
- c.fillStyle='#f7e8dc';for(let x=Math.floor(cameraX/64)*64;x<cameraX+W;x+=64)c.fillRect(x,0,32,H);
- c.strokeStyle='#ead6c4';c.lineWidth=1;for(let y=180;y<H;y+=100){c.beginPath();c.moveTo(cameraX,y);c.lineTo(cameraX+W,y);c.stroke();}
- drawMemoBackdrop();for(const z of heat)if(!L.memo||(!z.until||!memoObj(z.until)?.done)&&(!z.when||memoObj(z.when)?.done))drawHeat(L.memo?{...z,k:(z.temp??1)>1?.1:-.1}:z);for(const f of fans)if(fanOn(f))drawFan({...f,base:Math.min(H,groundAt(f.x+f.w/2))});
+ drawRoomBackdrop();
+ drawMemoBackdrop();for(const z of heat)if(!L.memo||(!z.until||!memoObj(z.until)?.done)&&(!z.when||memoObj(z.when)?.done))drawHeat(L.memo?{...z,k:(z.temp??1)>1?.1:-.1}:z);for(const f of fans)drawFan({...f,active:fanOn(f),base:Math.min(H,groundAt(f.x+f.w/2))});
  c.fillStyle=L.softSky?'#d1bd9f':'#9da29e';c.fillRect(cameraX,0,W,8);c.fillStyle=L.softSky?'#e6d1b3':'#bcc2bc';if(L.softSky){for(let x=Math.floor(cameraX/24)*24;x<cameraX+W;x+=24){c.beginPath();c.arc(x+12,8,12,0,Math.PI);c.fill();}}else for(const t of spikeTeeth)if(t.kind==='ceiling'&&t.x+t.w>cameraX&&t.x<cameraX+W)paintSpikeTooth(t);
  bars.forEach((b,i)=>{c.strokeStyle='#9da29e';c.lineWidth=2;for(let x=b.x+20;x<b.x+b.w;x+=85){c.beginPath();c.moveTo(x,8);c.lineTo(x,b.y);c.stroke();}c.fillStyle='#9da29e';c.fillRect(b.x,b.y,b.w,8);c.fillStyle='#bcc2bc';for(const t of spikeTeeth)if(t.kind===i)paintSpikeTooth(t);});
- c.fillStyle='#c7b6ab';c.fillRect(cameraX,H-9,W,9);
- for(const s of statics){c.fillStyle='#dfbd9d';c.fillRect(s.x,s.y,s.w,s.h);c.fillStyle='#bf9672';if(s.y>40){c.fillRect(s.x,s.y,s.w,6);c.fillStyle='#d5ae89';for(let x=Math.max(cameraX-40,s.x)+15;x<Math.min(cameraX+W,s.x+s.w);x+=45)c.fillRect(x,s.y+25,14,2);}else c.fillRect(s.x,s.y+s.h-5,s.w,5);}
+ drawRoomPlatforms();
  drawMemoObjects();for(const wl of walls)drawAdventureWall(wl);drawMechanisms();for(const b of L.beds||[]){c.fillStyle='#698b6050';c.fillRect(b.x,b.base-4,b.w,5);c.font=FONT(11);c.textAlign='center';c.fillStyle='#78936c';c.fillText('她也得从上面过',b.x+b.w/2,b.base+26);}for(const k of cacti)drawCactus(k);drawCheckpoint();
  const g=L.goal,fx=g.x+g.w-24,fy=g.y+g.h;
  c.fillStyle='#7e8979';c.fillRect(fx-2,fy-80,3,80);c.fillStyle='#70a48a';c.beginPath();c.moveTo(fx+1,fy-79);c.lineTo(fx+31,fy-67);c.lineTo(fx+1,fy-53);c.fill();c.font=FONT(10);c.textAlign='center';c.fillText('一起到这里',fx,fy+26);
- drawHose();
+ drawHose();drawActorShadows();drawGuideTarget();
  if(hog.ball&&Math.abs(hog.vx)>220&&hog.ground){c.fillStyle='#c7aa8e55';for(let i=0;i<3;i++)ell(hog.x-hog.face*(23+i*12),hog.y+9,5-i,3-i*.5);}
  c.save();if(hurt>0)c.globalAlpha=.5+Math.sin(hurt*50)*.3;drawHogJet();if(dog.state==='ok'){drawHog();drawMemoSeat();if(isFlat())drawFlatDog();else drawDog();}else{drawSkin();drawHog();}c.restore();drawRoleFocus();drawMemoHUD();
  for(const p of parts){c.save();c.globalAlpha=clamp(p.life/p.max*1.6,0,1);c.fillStyle=p.col;c.translate(p.x,p.y);c.rotate(p.rot);if(p.round)ell(0,0,p.sz,p.sz);else c.fillRect(-p.sz/2,-p.sz/4,p.sz,p.sz/2);c.restore();}
  for(const t of texts){c.save();c.globalAlpha=Math.min(1,t.life*2);c.font=FONT(t.size);c.textAlign='center';c.lineWidth=4;c.strokeStyle='#fffaf5';c.strokeText(t.txt,t.x,t.y);c.fillStyle=t.col;c.fillText(t.txt,t.x,t.y);c.restore();}
  c.setTransform(sc,0,0,sc,0,0);if(hurt>0){c.fillStyle='#a4512920';c.fillRect(0,0,W,H);}
- c.fillStyle='#fffaf5eb';rrPath(18,40,190,65,9);c.fill();c.font=FONT(12);c.textAlign='left';c.fillStyle='#89715e';c.fillText(`${String(idx+1).padStart(2,'0')} / ${LEVELS.length}    F 刺猬 · / 气球狗`,30,58);
- const bx=30,by=69,bw=163;c.fillStyle='#e9d9c9';c.fillRect(bx,by,bw,7);c.fillStyle=dog.air>.90?'#c44450':DOGC;c.fillRect(bx,by,bw*clamp(dog.air,0,1),7);
- c.font=FONT(9);c.fillStyle='#9a806d';for(const [v,t]of[[.32,'狗能飘'],[.71,'一起飞'],[1,'会爆']]){c.fillRect(bx+bw*v,by-2,1,11);c.textAlign='center';c.fillText(t,Math.min(184,bx+bw*v),90);}
- c.font=FONT(14);c.textAlign='left';c.fillStyle='#826a58';c.fillText(currentZone().title,265,54);drawOverview();
- c.font=FONT(11);c.textAlign='right';c.fillStyle='#fffaf5eb';rrPath(772,40,168,57,8);c.fill();c.fillStyle='#8a6f59';c.fillText(devicesSummary(),925,61);c.font=FONT(10);c.fillText(`${ropeShort?'短绳':'长绳'} ${Math.round(ropeLen)} · 刺猬 ×${hogScale().toFixed(1)} · ${Math.round(time)} 秒`,925,83);
- const hn=hint();if(hn){c.font=FONT(13);const hw=c.measureText(hn).width;c.fillStyle='#54453ad9';rrPath(W/2-hw/2-15,119,hw+30,30,15);c.fill();c.fillStyle='#fffaf5';c.textAlign='center';c.fillText(hn,W/2,139);}
+ drawSimpleHUD(sc);
 }
 let last=performance.now(),acc=0;
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
  if(started&&!paused&&!win){if(hit>0)hit-=dt;else{acc+=dt;while(acc>=1/120){update(1/120);acc-=1/120;just.clear();if(hit>0||win)break;}}effects(dt);}else{just.clear();acc=0;}
  render();requestAnimationFrame(frame);
 }
-loadLevel(0);requestAnimationFrame(frame);
+loadLevel(16);requestAnimationFrame(frame);
 })();
 </script></body></html>

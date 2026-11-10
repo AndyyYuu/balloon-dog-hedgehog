@@ -14,9 +14,9 @@ function drawDog(){
   const alpha=dog.inv>0&&Math.floor(time*12)%2?.45:1;
   c.save();c.globalAlpha=alpha;c.translate(dog.x+shv,dog.y);c.rotate(dog.rot);
   c.scale(dog.face*s*(1+dog.squash),s*(1-dog.squash));c.translate(-5,17);
-  c.fillStyle=DOGC;
+  c.fillStyle=artGradient(-20,-75,30,50,[[0,'#f998a4'],[.45,'#ed748c'],[1,'#d85c79']],DOGC);c.shadowColor='#bf5c6c20';c.shadowBlur=3;
   for(const p of DOG_PARTS){let[px,py,w,h,a]=p;if(w<h)w*=t;else h*=t;capsule(px,py,w,h,a*Math.PI/180);}
-  c.fillStyle='rgba(0,0,0,.13)';ell(23,-6,4,4);ell(33,-38,3.5,3.5);ell(-38,-7,3.5,3.5);
+  c.shadowColor='transparent';c.fillStyle='rgba(126,52,66,.16)';ell(23,-6,4,4);ell(33,-38,3.5,3.5);ell(-38,-7,3.5,3.5);
   c.fillStyle='rgba(255,255,255,.6)';ell(-16,-5,14,3.5*t);ell(38,-51,7,2.5*t);
   c.fillStyle='#2b2b2b';
   if(dog.near<12){c.font=FONT(12);c.textAlign='center';c.fillText('>',50,-42);c.fillText('<',62,-42);}
@@ -60,11 +60,11 @@ function drawHog(){
   }
   if(hog.ground&&Math.abs(hog.vx)>30)c.translate(0,-Math.abs(Math.sin(hog.bob))*2.5);
   c.scale(hog.face*(1+hog.squash),1-hog.squash);
-  c.fillStyle='#5e3a26';
+  c.fillStyle='#715337';
   for(let i=0;i<9;i++){const a=-Math.PI-.35+i*(Math.PI-.25)/8,a0=a-.2,a1=a+.2;c.beginPath();c.moveTo(Math.cos(a0)*14,Math.sin(a0)*13);c.lineTo(Math.cos(a)*24,Math.sin(a)*22);c.lineTo(Math.cos(a1)*14,Math.sin(a1)*13);c.closePath();c.fill();}
-  c.fillStyle='#8b5a3c';ell(0,0,17,15);
+  c.fillStyle=artGradient(0,-18,0,18,[[0,'#b18b5e'],[1,'#8f653e']],'#9f754a');ell(0,0,17,15);
   c.fillStyle='#5e3a26';ell(-7,14,5,3);ell(7,14,5,3);
-  c.fillStyle='#f3d7b4';ell(9,3,10,9);
+  c.fillStyle=artGradient(5,-8,18,15,[[0,'#f7e6c7'],[1,'#ebcca4']],'#f3d7b4');ell(9,3,10,9);
   c.fillStyle='rgba(242,140,140,.55)';ell(6,8,3,2);
   c.fillStyle='#2b2b2b';ell(19,2,2.6,2.6);ell(10,-3,2.2,2.2);
   if(hog.blow){c.fillStyle='#2b2b2b';ell(20,6,2.4,2.4);}
@@ -105,8 +105,8 @@ function drawHeat(z){
   if(z.k>0){
     c.fillStyle='rgba(255,170,60,.14)';c.fillRect(z.x,z.y,z.w,z.h);
     const cx=z.x+z.w/2;c.strokeStyle='#8d96a0';c.lineWidth=2;c.beginPath();c.moveTo(cx,10);c.lineTo(cx,z.y+18);c.stroke();
-    c.fillStyle='#e8814c';c.beginPath();c.moveTo(cx-22,z.y+40);c.lineTo(cx-10,z.y+18);c.lineTo(cx+10,z.y+18);c.lineTo(cx+22,z.y+40);c.closePath();c.fill();
-    c.fillStyle='#ffd36b';ell(cx,z.y+42,9,5);
+    if(!drawProp('lamp',cx,z.y+49,76,65)){c.fillStyle='#e8814c';c.beginPath();c.moveTo(cx-22,z.y+40);c.lineTo(cx-10,z.y+18);c.lineTo(cx+10,z.y+18);c.lineTo(cx+22,z.y+40);c.closePath();c.fill();
+    c.fillStyle='#ffd36b';ell(cx,z.y+42,9,5);}
     c.fillStyle='#e8814c';c.font=FONT(13);c.textAlign='center';c.fillText('热灯',cx,z.y+66);
   }else{
     c.fillStyle='rgba(120,190,255,.15)';c.fillRect(z.x,z.y,z.w,z.h);
