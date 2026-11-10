@@ -1,7 +1,8 @@
 {
   "verifiedOn": "2026-11-09",
   "method": "Automated simulation of single-player keyboard input driving the built game physics at 120 Hz; three independent processes with different input intervals and pauses. No actor teleportation, progress injection or dog movement keys. Browser used separately for visual checks.",
-  "builtGameSha256": "001d32f15646e5eb5016cc51c517e6045a1169164c8e16420fcfa34c9e00ded1",
+  "hashNormalization": "UTF-8 text with LF newlines",
+  "builtGameSha256": "73881bd9001c00386ee5786fe6dc3e424f9083ab3bf2bf8fb5dbcdeb33d01434",
   "totalRooms": 19,
   "rounds": 3,
   "completions": 57,
@@ -9,7 +10,7 @@
   "runs": [
     {
       "round": 1,
-      "builtGameSha256": "001d32f15646e5eb5016cc51c517e6045a1169164c8e16420fcfa34c9e00ded1",
+      "builtGameSha256": "73881bd9001c00386ee5786fe6dc3e424f9083ab3bf2bf8fb5dbcdeb33d01434",
       "controlInterval": 0.04,
       "idlePause": 0.12,
       "completed": 19,
@@ -415,7 +416,7 @@
     },
     {
       "round": 2,
-      "builtGameSha256": "001d32f15646e5eb5016cc51c517e6045a1169164c8e16420fcfa34c9e00ded1",
+      "builtGameSha256": "73881bd9001c00386ee5786fe6dc3e424f9083ab3bf2bf8fb5dbcdeb33d01434",
       "controlInterval": 0.07,
       "idlePause": 0.25,
       "completed": 19,
@@ -821,7 +822,7 @@
     },
     {
       "round": 3,
-      "builtGameSha256": "001d32f15646e5eb5016cc51c517e6045a1169164c8e16420fcfa34c9e00ded1",
+      "builtGameSha256": "73881bd9001c00386ee5786fe6dc3e424f9083ab3bf2bf8fb5dbcdeb33d01434",
       "controlInterval": 0.09,
       "idlePause": 0.4,
       "completed": 19,

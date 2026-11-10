@@ -45,6 +45,6 @@ for(let n=0;n<19;n++){s.loadLevel(n);action(.1);
 }
 // Long W presses are forgiving, but actual hazards and finite gas still exist.
 s.loadLevel(0);action(12,'KeyW');assert.equal(s.stats.over,0);assert(s.dog.air<=.94);s.loadLevel(8);const total=s.memoTotalAir();action(8,'KeyW');assert(Math.abs(s.memoTotalAir()-total)<1e-8);assert(s.dog.gas<.25);
-const report={round,builtGameSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname,'../index.html'))).digest('hex'),controlInterval:step,idlePause:pause,completed:results.length,results};
+const report={round,builtGameSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').replace(/\r\n/g,'\n')).digest('hex'),controlInterval:step,idlePause:pause,completed:results.length,results};
 if(process.argv[3])fs.writeFileSync(process.argv[3],JSON.stringify(report,null,2)+'\n');
 console.log(`Round ${round}: ${results.length}/19 easy rooms passed, all with physical single-player keys and automatic dog.`);
