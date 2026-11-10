@@ -50,7 +50,7 @@ function resolve(b,hw,hh,isHog){
     if(speed>240){if(isHog){hog.squash=.25;sThud();if(hog.ball&&speed>360){b.vy=-Math.min(speed*.26,230);b.ground=false;}}else if(dog.state==='ok')dog.squash=.2;}
    }else{b.y+=oy;if(b.vy<0)b.vy=0;}
   }else{
-   if(s.bwall&&isHog&&(hog.ball||hog.jet)&&Math.abs(b.vx)>(s.heavy?115:155)&&(!s.heavy||(hog.bloat||0)>.65)){breakWall(s);b.vx*=.88;continue;}
+   if(s.bwall&&isHog&&(hog.ball||hog.jet)&&Math.abs(b.vx)>(s.heavy?(L.easy?90:115):155)&&(!s.heavy||(hog.bloat||0)>(s.minBloat??.65))){breakWall(s);b.vx*=.88;continue;}
    b.x+=dx<0?-ox:ox;
    if(isHog&&hog.ball){if(Math.abs(b.vx)>140)sBonk();b.vx=-b.vx*.42;}else b.vx=0;
   }
@@ -104,23 +104,23 @@ function update(dt){
  if(!hog.ground&&hog.ball&&!overlapAny(hog.x,hog.y-2*hogScale(),15*hogScale(),15*hogScale())){hog.ball=false;hog.y-=2*hogScale();}
  const jetRequested=shiftHeld&&!hog.ground;
  hog.jet=jetRequested&&dog.state==='ok'&&dog.air>.08;hog.jetEmpty=jetRequested&&!hog.jet;hog.jetDir=ix||hog.face;
- const hmax=(hog.ball?395:210)/(1+(hog.bloat||0)*.65),hacc=hog.ball?(hog.ground?(ix?1150:180):(ix?600:65)):(hog.ground?(ix?2600:3000):(ix?1350:650));
+ const hmax=(hog.ball?(L.easy?320:395):210)/(1+(hog.bloat||0)*.65),hacc=hog.ball?(hog.ground?(ix?1150:180):(ix?600:65)):(hog.ground?(ix?2600:3000):(ix?1350:650));
  hog.vx=approach(hog.vx,hog.jet?hog.jetDir*440/(1+(hog.bloat||0)):ix*hmax,(hog.jet?1800:hacc)*dt);
  hog.vy+=G*dt;
  if(!(held('ArrowUp'))&&hog.vy<0&&!hog.taut)hog.vy+=G*.8*dt;
  for(const f of fans)if(fanOn(f)&&inRect(hog.x,hog.y,f)){const q=hog.ball?.035:.12;hog.vx+=f.dx*f.p*q*dt;hog.vy+=f.dy*f.p*q*dt;}
- hog.vy=clamp(hog.vy,-380,850);hog.squash*=Math.exp(-10*dt);hog.spin+=hog.vx*dt/13;if(hog.ground&&ix)hog.bob+=dt*18;
+ hog.vy=clamp(hog.vy,-380,L.easy&&hog.taut&&dog.air>.4?120:850);hog.squash*=Math.exp(-10*dt);hog.spin+=hog.vx*dt/13;if(hog.ground&&ix)hog.bob+=dt*18;
  hog.ground=false;hog.x+=hog.vx*dt;hog.y+=hog.vy*dt;const hh=hogHalf();resolve(hog,hh,hh,true);
  if(hog.ground){hog.jet=false;hog.jetEmpty=false;}
- for(const p of switches)if(p.type==='hogRoll'&&!p.latched&&hog.ground&&hog.ball&&Math.abs(hog.vx)>140&&hog.x>p.x-3&&hog.x<p.x+p.w+3&&Math.abs(hog.y+hh-p.y)<5)pressSwitch(p);
+ for(const p of switches)if(p.type==='hogRoll'&&!p.latched&&hog.ground&&hog.ball&&Math.abs(hog.vx)>(L.easyTuning?.rollTrigger??140)&&hog.x>p.x-3&&hog.x<p.x+p.w+3&&Math.abs(hog.y+hh-p.y)<5)pressSwitch(p);
  hog.blow=inflate&&!deflate;
  if(dog.state==='ok'){
-  if(inflate&&!deflate)setAir(dog.air+.23*dt);
+  if(inflate&&!deflate)setAir(L.easy?Math.max(dog.air,Math.min(.82,dog.air+.23*dt)):dog.air+.23*dt);
   if(deflate&&!hog.returnAir)setAir(dog.air-.50*dt);
   if(hog.jet)setAir(dog.air-.06*dt);
   for(const z of heat)if(inRect(dog.x,dog.y,z))setAir(dog.air+z.k*dt);
   setAir(dog.air-(L.leak??.003)*dt);
-  if(dog.air>1){pop('over');}
+  if(L.easy&&dog.air>.94){setAir(.94);dog.relief=.3;}else if(dog.air>1){pop('over');}
  }else if(inflate&&!deflate){hog.revive+=dt;if(hog.revive>.85)revive();}else hog.revive=Math.max(0,hog.revive-dt*1.5);
  pumpClock-=dt;
  if(inflate&&!deflate&&pumpClock<=0){pumpClock=.32;noise(.12,.12,'bandpass',600,1200);const a=anchor();puff(a.x,a.y,2,'#fffaf5');}

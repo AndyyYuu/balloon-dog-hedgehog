@@ -1,0 +1,1229 @@
+{
+  "verifiedOn": "2026-11-09",
+  "method": "Automated simulation of single-player keyboard input driving the built game physics at 120 Hz; three independent processes with different input intervals and pauses. No actor teleportation, progress injection or dog movement keys. Browser used separately for visual checks.",
+  "builtGameSha256": "001d32f15646e5eb5016cc51c517e6045a1169164c8e16420fcfa34c9e00ded1",
+  "totalRooms": 19,
+  "rounds": 3,
+  "completions": 57,
+  "allPassed": true,
+  "runs": [
+    {
+      "round": 1,
+      "builtGameSha256": "001d32f15646e5eb5016cc51c517e6045a1169164c8e16420fcfa34c9e00ded1",
+      "controlInterval": 0.04,
+      "idlePause": 0.12,
+      "completed": 19,
+      "results": [
+        {
+          "room": 1,
+          "name": "默契不用换人",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 1,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 2,
+          "name": "借一阵风",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 1,
+            "commands": 0,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 3,
+          "name": "高窗快递",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 1,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 4,
+          "name": "一根绳的距离",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 1,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 5,
+          "name": "热风与冷库",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 6,
+          "name": "这次把气借给她",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 1,
+            "commands": 0,
+            "transfer": 0.28
+          }
+        },
+        {
+          "room": 7,
+          "name": "风向也要接力",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 2,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 8,
+          "name": "把所有默契接起来",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 1,
+            "commands": 2,
+            "transfer": 0.28
+          }
+        },
+        {
+          "room": 9,
+          "name": "客厅 · 苹果座位",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 1,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 10,
+          "name": "书房 · 拧掉热灯泡",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 2,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0.14
+          }
+        },
+        {
+          "room": 11,
+          "name": "洗衣房 · 她飞它爬",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 12,
+          "name": "浴室 · 堵住排水口",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 13,
+          "name": "鸟笼 · 一口气的距离",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 14,
+          "name": "走廊 · 别吵醒猫",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 15,
+          "name": "厨房 · 滑轨节拍",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0.34000000000000025
+          }
+        },
+        {
+          "room": 16,
+          "name": "厨房 · 冰箱和烤箱",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 17,
+          "name": "先认识两位朋友",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 18,
+          "name": "气和绳子怎么用",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0.2379999999999996
+          }
+        },
+        {
+          "room": 19,
+          "name": "苹果和各自的操作",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 1,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "builtGameSha256": "001d32f15646e5eb5016cc51c517e6045a1169164c8e16420fcfa34c9e00ded1",
+      "controlInterval": 0.07,
+      "idlePause": 0.25,
+      "completed": 19,
+      "results": [
+        {
+          "room": 1,
+          "name": "默契不用换人",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 1,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 2,
+          "name": "借一阵风",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 1,
+            "commands": 0,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 3,
+          "name": "高窗快递",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 1,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 4,
+          "name": "一根绳的距离",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 1,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 5,
+          "name": "热风与冷库",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 6,
+          "name": "这次把气借给她",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 1,
+            "commands": 0,
+            "transfer": 0.28
+          }
+        },
+        {
+          "room": 7,
+          "name": "风向也要接力",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 2,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 8,
+          "name": "把所有默契接起来",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 1,
+            "commands": 2,
+            "transfer": 0.28
+          }
+        },
+        {
+          "room": 9,
+          "name": "客厅 · 苹果座位",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 1,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 10,
+          "name": "书房 · 拧掉热灯泡",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 2,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0.14
+          }
+        },
+        {
+          "room": 11,
+          "name": "洗衣房 · 她飞它爬",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 12,
+          "name": "浴室 · 堵住排水口",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 13,
+          "name": "鸟笼 · 一口气的距离",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 14,
+          "name": "走廊 · 别吵醒猫",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 15,
+          "name": "厨房 · 滑轨节拍",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0.34000000000000025
+          }
+        },
+        {
+          "room": 16,
+          "name": "厨房 · 冰箱和烤箱",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 17,
+          "name": "先认识两位朋友",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 18,
+          "name": "气和绳子怎么用",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0.2379999999999996
+          }
+        },
+        {
+          "room": 19,
+          "name": "苹果和各自的操作",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 1,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "builtGameSha256": "001d32f15646e5eb5016cc51c517e6045a1169164c8e16420fcfa34c9e00ded1",
+      "controlInterval": 0.09,
+      "idlePause": 0.4,
+      "completed": 19,
+      "results": [
+        {
+          "room": 1,
+          "name": "默契不用换人",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 1,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 2,
+          "name": "借一阵风",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 1,
+            "commands": 0,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 3,
+          "name": "高窗快递",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 1,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 4,
+          "name": "一根绳的距离",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 1,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 5,
+          "name": "热风与冷库",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 6,
+          "name": "这次把气借给她",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 1,
+            "commands": 0,
+            "transfer": 0.2823333333333334
+          }
+        },
+        {
+          "room": 7,
+          "name": "风向也要接力",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 2,
+            "transfer": 0
+          }
+        },
+        {
+          "room": 8,
+          "name": "把所有默契接起来",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 1,
+            "commands": 2,
+            "transfer": 0.2823333333333334
+          }
+        },
+        {
+          "room": 9,
+          "name": "客厅 · 苹果座位",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 1,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 10,
+          "name": "书房 · 拧掉热灯泡",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 2,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0.14
+          }
+        },
+        {
+          "room": 11,
+          "name": "洗衣房 · 她飞它爬",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 12,
+          "name": "浴室 · 堵住排水口",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 13,
+          "name": "鸟笼 · 一口气的距离",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 14,
+          "name": "走廊 · 别吵醒猫",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 15,
+          "name": "厨房 · 滑轨节拍",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0.34000000000000025
+          }
+        },
+        {
+          "room": 16,
+          "name": "厨房 · 冰箱和烤箱",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 17,
+          "name": "先认识两位朋友",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        },
+        {
+          "room": 18,
+          "name": "气和绳子怎么用",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 0,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0.2379999999999996
+          }
+        },
+        {
+          "room": 19,
+          "name": "苹果和各自的操作",
+          "passed": true,
+          "stats": {
+            "hog": 0,
+            "over": 0,
+            "spike": 0,
+            "cactus": 0,
+            "thorn": 0,
+            "fall": 0,
+            "timeout": 0,
+            "swaps": 0,
+            "breaks": 0,
+            "commands": 0,
+            "transfer": 0,
+            "apples": 1,
+            "scares": 0,
+            "cat": 0,
+            "rail": 0,
+            "spent": 0
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -104,10 +104,10 @@ function drawFan(f){
 function drawHeat(z){
   if(z.k>0){
     c.fillStyle='rgba(255,170,60,.14)';c.fillRect(z.x,z.y,z.w,z.h);
-    const cx=z.x+z.w/2;c.strokeStyle='#8d96a0';c.lineWidth=2;c.beginPath();c.moveTo(cx,10);c.lineTo(cx,z.y+18);c.stroke();
+    if(!z.until){const cx=z.x+z.w/2;c.strokeStyle='#8d96a0';c.lineWidth=2;c.beginPath();c.moveTo(cx,10);c.lineTo(cx,z.y+18);c.stroke();
     if(!drawProp('lamp',cx,z.y+49,76,65)){c.fillStyle='#e8814c';c.beginPath();c.moveTo(cx-22,z.y+40);c.lineTo(cx-10,z.y+18);c.lineTo(cx+10,z.y+18);c.lineTo(cx+22,z.y+40);c.closePath();c.fill();
     c.fillStyle='#ffd36b';ell(cx,z.y+42,9,5);}
-    c.fillStyle='#e8814c';c.font=FONT(13);c.textAlign='center';c.fillText('热灯',cx,z.y+66);
+    c.fillStyle='#e8814c';c.font=FONT(13);c.textAlign='center';c.fillText('热灯',cx,z.y+66);}
   }else{
     c.fillStyle='rgba(120,190,255,.15)';c.fillRect(z.x,z.y,z.w,z.h);
     c.fillStyle='rgba(255,255,255,.9)';

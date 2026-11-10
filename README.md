@@ -4,9 +4,17 @@
 
 [在线试玩](https://andyyyuu.github.io/balloon-dog-hedgehog/) · [全部历史关卡](https://andyyyuu.github.io/balloon-dog-hedgehog/archive/) · [双人初版](https://andyyyuu.github.io/balloon-dog-hedgehog/duo.html)
 
+默认现在是**轻松版**，19 间房都降低难度，完整原难度保存在 [历史关卡馆](archive/solo-before-easy.html)。
+
 目前共有 19 间房：3 间安全练习 + 16 间冒险。经典八关完整保留。设计稿篇只追加为 09–16 关，采用有限总气量、苹果座位、静电、刺豚、水位、猫和滑轨。独立双角房间版（16 关）、早期单人初稿、六关喷气版、四关机关接力版、八关旧操作版和双人初版全部可在历史关卡馆游玩。
 
 ![刺猬主角、自动跟随、逐步提示与生成机关图片](docs/singleplayer-props-preview.png)
+
+## 轻松版
+
+窄洞与高窗扩大，刺丛缩短并降低，缺口收窄，重量机关放宽，32 秒限时、慢滑轨、慢退水，以及更快的灯具作业和结冰。充气加入安全阀；苹果、钥匙和物品的操作范围扩大。全部机制和原关卡都保留。
+
+[逐关调整及三轮通关记录](docs/easy-mode.md)
 
 ## 这一版的可读性与美术
 
@@ -68,15 +76,18 @@
 
 ## 修改与验证
 
-`index.html` 包含游戏逻辑，生成的透明图片放在 `assets/props/`，应一起部署。经典关卡定义在 `src/levels.js`，新增篇追加在 `src/memo-levels.js`。新增篇机制和绘制在 `memo.js`、`memo-render.js`。练习房追加在 `practice-levels.js`，逐步目标及高亮在 `experience.js`，图片绘制在 `prop-art.js`。不覆盖旧关卡或旧版本。
+`index.html` 包含游戏逻辑，生成的透明图片放在 `assets/props/`，应一起部署。经典关卡定义在 `src/levels.js`，新增篇追加在 `src/memo-levels.js`。轻松版通过 `src/easy-levels.js` 生成独立变体。新增篇机制和绘制在 `memo.js`、`memo-render.js`。练习房追加在 `practice-levels.js`，逐步目标及高亮在 `experience.js`，图片绘制在 `prop-art.js`。不覆盖旧关卡或旧版本。
 
 ```sh
 python tools/build.py
 node tools/verify.cjs
 node tools/verify-memo.cjs
+node tools/verify-easy.cjs 1
+node tools/verify-easy.cjs 2
+node tools/verify-easy.cjs 3
 python tools/verify-retention.py
 ```
 
-检查包括经典八关和新增八关的完整键盘通关路线、单人实体按键、自动跟随通关、空气守恒、冷热体积、苹果掉落、稳定高处作业、静电遇水失效、猫的声音反应、滑轨耦合，以及历史文件与经典关卡保留检查。
+旧脚本验证归档原难度，verify-easy 对当前 19 关分别使用三种按键采样与停顿节奏完整通关。检查还包括经典八关和新增八关的完整键盘通关路线、单人实体按键、自动跟随通关、空气守恒、冷热体积、苹果掉落、稳定高处作业、静电遇水失效、猫的声音反应、滑轨耦合，以及历史文件与经典关卡保留检查。
 
 GitHub Pages 从 `main` 分支根目录发布。上一版分别操控双角的 16 关保存在 `archive/solo-rooms-independent.html`。所有历史版本入口为 `archive/index.html`。

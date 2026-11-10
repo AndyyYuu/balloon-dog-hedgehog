@@ -48,7 +48,7 @@ function updateDevices(dt){
  for(const p of switches){
   if(p.type==='dogDock')p.on=dog.state==='ok'&&dog.docked===p.id&&(p.flatOK||dog.air>=(p.minAir??.12))&&dog.air<=(p.maxAir??1);
   else if(p.type==='dogTap'){const before=p.remaining;p.remaining=Math.max(0,p.remaining-dt);p.on=p.latched||p.remaining>0;if(p.lockBy&&before>0&&p.remaining===0&&!device(p.lockBy)?.latched){hurtHog('timeout');return;}}
-  else if(p.type==='hogWeight'){const down=hog.ground&&hog.x>p.x&&hog.x<p.x+p.w&&hog.bloat>=p.minBloat;p.progress=down?Math.min(1,(p.progress||0)+dt):0;if(p.progress>=1&&!p.latched)pressSwitch(p);p.on=p.latched;}
+  else if(p.type==='hogWeight'){const down=hog.ground&&hog.x>p.x&&hog.x<p.x+p.w&&hog.bloat>=p.minBloat;p.progress=down?Math.min(p.hold??1,(p.progress||0)+dt):0;if(p.progress>=(p.hold??1)&&!p.latched)pressSwitch(p);p.on=p.latched;}
   else if(p.type==='hogPlate')p.on=hog.ground&&hog.x>p.x&&hog.x<p.x+p.w&&Math.abs(hog.y+hogHalf()-p.y)<5;
   else p.on=p.latched;
  }

@@ -9,3 +9,5 @@
 
 - W exclusively transfers air to/revives the dog. F never aliases W. A small dog automatically boards an apple seat when approaching; do not require Slash to board. Slash dismounts; preserve automatic boarding before the first ride.
 - Keep all sixteen adventure rooms and append the three safe practice rooms. Generated transparent sprites in assets/props must ship alongside index.html. Preserve their alpha; retain directional/state feedback drawn by the game.
+
+- All current rooms use easier variants from src/easy-levels.js. Do not edit retained original definitions to tune difficulty. The previous 19-room edition is archived in archive/solo-before-easy.html. Validate the current campaign with three full runs of node tools/verify-easy.cjs 1/2/3; old verify scripts cover the archived original difficulty.

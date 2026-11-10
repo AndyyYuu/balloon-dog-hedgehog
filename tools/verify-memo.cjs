@@ -1,7 +1,7 @@
 const fs=require('node:fs');
 const vm=require('node:vm');
 const assert=require('node:assert/strict');
-const html=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8');
+const html=fs.readFileSync(require('node:path').join(__dirname,'../archive/solo-before-easy.html'),'utf8');
 let source=html.split('<script>')[1].split('</script>')[0];
 source=source.replace('loadLevel(16);requestAnimationFrame(frame);','globalThis.sim={get memo(){return memo},get levels(){return LEVELS},companion,setPlayerHeld,getRoomGuide,memoTotalAir,memoDogAction,memoPigAction,ropeRoute,pathLength,hogScale,hogHalf,fanOn,setBloat,loadLevel,update,setHeld,clearHeld,pop,revive,reset,setAir,render,resolve,dogTouchesSpikes,hogTouchesSpikes,dogCollisionCapsules,capsuleHitsTriangle,setActor,interact,device,powered,get charges(){return charges},get activeRole(){return activeRole},get ropeShort(){return ropeShort},get spikeTeeth(){return spikeTeeth},get solids(){return solids},get dog(){return dog},get hog(){return hog},get walls(){return walls},get stats(){return stats},get checkpoint(){return checkpoint},get win(){return win},get ropeLen(){return ropeLen},get level(){return L},get just(){return just},get hurt(){return hurt},get switches(){return switches},get gates(){return gates},get cameraX(){return cameraX}};loadLevel(0);');
 const elements=new Map();
