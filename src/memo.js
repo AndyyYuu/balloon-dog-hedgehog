@@ -43,7 +43,7 @@ function memoDogAction(){
  if(dog.seatOptOut&&memo.stack){dog.seatOptOut=false;say('小狗准备重新上座，停稳等它靠近。');return;}
  if(dog.cling){dog.cling=null;dog.inv=.2;say('松开静电，重新受风和重力影响。');return;}
  const cling=nearestCling();if(dog.air<.16&&dog.charge>.08&&cling&&cling.d<60){dog.cling={path:cling.j,s:cling.s};dog.riding=false;dog.vx=dog.vy=0;say('贴住了。小狗会自己往上爬，/ 让它松开；电量会减少。');return;}
- memo.slashContext=false;say('↓ 把气给刺猬。狗会自己跟随；带电墙边按 / 让它贴住。');
+ memo.slashContext=false;say('S 把气还给刺猬。狗会自己跟随；带电墙边按 / 让它贴住。');
 }
 function memoPigAction(){
  memo.pigContext=false;
@@ -64,10 +64,9 @@ function memoTransfer(dt){
  const before=memoTotalAir();hog.blow=false;hog.backflow=false;hog.returnAir=false;memo.ventThrust=false;
  const pump=(L.pumps||[]).find(p=>Math.hypot(hog.x-p.x,hog.y-(p.y-15))<75);
  if(held('KeyF')&&memo.pigContext&&pump){const q=Math.min(.24*dt,Math.max(0,pump.cap-memoTotalAir()));hog.gas+=q;memo.noise=Math.max(memo.noise,.9);}
- if(held('KeyW')&&dog.state==='ok'){const q=Math.min(hog.gas,.28*dt,Math.max(0,(L.easy ? .82/dog.temp : 1.05)-dog.gas));hog.gas-=q;dog.gas+=q;hog.blow=q>0;if(q>0)memo.noise=Math.max(memo.noise,.8);}
+ if(held('KeyW')&&!held('KeyS')&&dog.state==='ok'){const q=Math.min(hog.gas,.28*dt,Math.max(0,(L.easy ? .82/dog.temp : 1.05)-dog.gas));hog.gas-=q;dog.gas+=q;hog.blow=q>0;if(q>0)memo.noise=Math.max(memo.noise,.8);}
  if(held('Slash','NumpadDivide'))memo.slashClock+=dt;else{memo.slashClock=0;memo.slashContext=false;memo.work=null;}
- if(held('ArrowDown')&&dog.state==='ok'){const q=Math.min(dog.gas,.33*dt,1-hog.gas);dog.gas-=q;hog.gas+=q;hog.backflow=q>0;}
- if(held('KeyS')&&dog.state==='ok'){const q=Math.min(dog.gas,.34*dt);dog.gas-=q;stats.spent+=q;memo.ventThrust=q>0;if(q>0)memo.noise=Math.max(memo.noise,.9);}
+ if(held('KeyS')&&!held('KeyW')&&dog.state==='ok'){const q=Math.min(dog.gas,.33*dt,1-hog.gas);dog.gas-=q;hog.gas+=q;hog.backflow=q>0;}
  if(dog.state==='skin'&&held('KeyW')&&hog.gas>.045){hog.revive+=dt;if(hog.revive>.7){dog.state='ok';dog.gas=Math.min(.12,hog.gas);hog.gas-=dog.gas;dog.inv=1;dog.lastPop='';hog.revive=0;}}
  const oldHalf=hogHalf();hog.bloat=clamp((hog.gas-.16)/.64,0,1);if(hog.ground)hog.y-=hogHalf()-oldHalf;
  let temp=1;for(const z of heat)if(inRect(dog.x,dog.y,z)&&(!z.until||!memoObj(z.until)?.done)&&(!z.when||memoObj(z.when)?.done))temp=z.temp??1;

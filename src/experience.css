@@ -10,3 +10,5 @@
 @media(min-width:700px) and (min-height:600px){body{padding:12px 20px}.wrap{max-width:min(1280px,calc((100dvh - 312px)*16/9))}.heading{margin-bottom:12px}.mission{min-height:82px;padding:10px 16px}.roomline{padding:7px 16px}.companions{padding:9px 16px}.status{padding-bottom:7px}footer{padding-top:9px}}
 
 @media(max-width:620px){.main-tools button:last-child{display:inline-block}.stage>.overlay{position:fixed;inset:0;z-index:8}.stage>.overlay .card{max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);overflow:auto}}
+
+@media(max-width:620px){.touch{grid-template-columns:repeat(3,minmax(0,1fr))}}

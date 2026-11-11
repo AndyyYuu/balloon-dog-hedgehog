@@ -20,9 +20,9 @@ function interact(){
  if(dog.task){dog.task=null;dog.taskTarget=null;dog.fContext=true;say('取消这次行动，狗回来跟随。');return;}
  const p=availableDogAction();
  if(p){dog.fContext=true;if(dog.state!=='ok'){say('先 W 把狗吹回来。');return;}if(ropeShort&&Math.hypot(p.x-hog.x,p.y-hog.y)>140){say('目标够得着，但绳子太短：E 放长，再按 /。');return;}
-  dog.task={id:p.id,step:0,clock:0};say(p.flatOK?'狗出发走高窗。到窄缝前用 S 放扁，风管会托着它。':'狗出发。你继续控制刺猬，W / S 仍能调它的气量。');return;
+  dog.task={id:p.id,step:0,clock:0};say(p.flatOK?'狗出发走高窗。到窄缝前按 S 收回气，让狗变瘪，风管会托着它。':'狗出发。你继续控制刺猬，W / S 仍能调它的气量。');return;
  }
- say('↓ 把狗的气给刺猬；S 把刺猬缩小。');
+ say('W 把气给狗；S 把狗的气还给刺猬。');
 }
 function updateDogTask(dt){
  dog.taskTarget=null;
@@ -36,11 +36,13 @@ function updateDogTask(dt){
 }
 function updateTransfer(dt){
  hog.backflow=false;hog.returnAir=false;
- if(held('Slash','NumpadDivide'))dog.fClock=(dog.fClock||0)+dt;else{dog.fClock=0;dog.fContext=false;}
- if(held('ArrowDown')&&dog.state==='ok'&&dog.air>.06&&(hog.bloat||0)<1){
-  const amount=Math.min(.28*dt,dog.air-.06,(1-(hog.bloat||0))/1.8);if(amount>0&&setBloat((hog.bloat||0)+amount*1.8)){setAir(dog.air-amount);hog.backflow=true;stats.transfer+=amount;}
+ const toDog=held('KeyW')&&!held('KeyS'),toHog=held('KeyS')&&!held('KeyW');
+ let stored=hog.storedAir??(hog.bloat||0)/1.8;
+ if(dog.state==='ok'){
+  if(toDog){const before=dog.air;setAir(L.easy?Math.max(before,Math.min(.82,before+.23*dt)):before+.23*dt);const amount=Math.max(0,dog.air-before),used=Math.min(stored,amount);stored-=used;hog.returnAir=used>0;}
+  if(toHog){const before=dog.air;setAir(Math.max(0,before-.34*dt));const amount=before-dog.air;stored+=amount;hog.backflow=amount>0;stats.transfer+=amount;}
  }
- if(held('KeyS')&&(hog.bloat||0)>0){const amount=Math.min(.8*dt,hog.bloat);setBloat(hog.bloat-amount);if(dog.state==='ok')setAir(dog.air+amount*.3);hog.returnAir=true;}
+ hog.storedAir=stored;setBloat(clamp(stored*1.8,0,1));
 }
 function devicesSummary(){const t=switches.find(p=>p.remaining>0);if(t)return `${t.letter} ${t.remaining.toFixed(1)} 秒`;if(dog.task)return'狗正在行动 · / 取消';if(hog.backflow)return`倒灌中 · 体型 ${Math.round((hog.bloat||0)*100)}%`;return switches.map(p=>`${p.letter}${p.on?'●':'○'}`).join('  ')||'风 / 温度 / 绳长';}
 function updateDevices(dt){

@@ -1,6 +1,6 @@
 // Physical single-player keys map to the simulation's established action names.
 const PLAYER_KEYS={KeyA:'ArrowLeft',KeyD:'ArrowRight',Space:'ArrowUp',ArrowLeft:'KeyA',ArrowRight:'KeyD',ArrowUp:'Space'};
-function setPlayerHeld(code,source,on){setHeld(PLAYER_KEYS[code]||code,source,on);}
+function setPlayerHeld(code,source,on){if(code==='ArrowDown')return;setHeld(PLAYER_KEYS[code]||code,source,on);}
 const companion={enabled:true,level:-1,jumpDelay:0,jumpTime:0};
 function prepareCompanion(dt){
  if(companion.level!==idx){companion.level=idx;companion.jumpDelay=companion.jumpTime=0;}

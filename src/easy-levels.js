@@ -3,11 +3,11 @@
 const BASE_LEVELS=JSON.parse(JSON.stringify(LEVELS));
 for(let i=0;i<LEVELS.length;i++){
  const l=JSON.parse(JSON.stringify(BASE_LEVELS[i]));LEVELS[i]=l;
- l.easy=true;l.softSky=true;l.easyNotes=['安全天花板','充气安全阀','更宽的操作范围'];
+ l.easy=true;l.softSky=true;l.leak=0;l.easyNotes=['安全天花板','充气安全阀','更宽的操作范围'];
  l.easyTuning={big:.45,rollTrigger:85,appleReach:44,seatReach:108,seatAir:.35,interaction:105,workReach:90,workSpeed:24,staticGain:1.1,staticDecay:.012,clingSpeed:145};
  l.goal.w+=35;
  // Widen floor tunnels without changing the floor or the room's route.
- for(const s of l.solids)if(s.y<=26&&s.h>330){s.h-=24;l.easyNotes.push('矮洞增高 24 像素');}
+ for(const s of l.solids)if(s.y<=26&&s.h>330){const cx=s.x+s.w/2,floor=Math.min(...l.solids.filter(q=>q.y>300&&q!==s&&cx>=q.x&&cx<=q.x+q.w).map(q=>q.y));s.h=Number.isFinite(floor)?Math.min(s.h,floor-70-s.y):s.h-24;l.easyNotes.push('矮洞可让鼓大的刺猬缩球通过');}
  for(const b of l.beds||[]){const center=b.x+b.w/2;b.w=Math.max(75,Math.round(b.w*.65));b.x=center-b.w/2;b.h=Math.round(b.h*.38);l.easyNotes.push('刺丛更短、更低');}
  for(const p of l.switches||[]){
   if(!p.type.startsWith('dog')){const center=p.x+p.w/2;p.w+=40;p.x=center-p.w/2;}

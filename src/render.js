@@ -5,13 +5,13 @@ function hint(){
  if(hurt>0)return hurtReason==='timeout'?'接力超时。回到蓝旗，先安排位置，再让狗出发。':'两位都怕刺，回蓝旗再试一次。';
  if(dog.state==='skin')return`${dog.lastPop}。W 沿气管把它重新吹起来。`;
  if(dog.blocked>0)return'这里太窄：S 放扁狗，再让它钻过去。';
- if(dog.air>.90)return'快撑爆了！S 放气，或按住 ↓ 把气给刺猬。';
- if(hog.backflow)return'倒灌中：狗变小、刺猬变重。松开 / 保留体型，S 把气还给狗。';
- if(hog.returnAir)return'把气还给狗，刺猬正在缩小。继续 S 才会给狗放气。';
+ if(dog.air>.90)return'快撑爆了！按住 S，把气还给刺猬。';
+ if(hog.backflow)return'倒灌中：狗变小、刺猬变重。松开 S 保留体型，W 把气给狗。';
+ if(hog.returnAir)return'把气还给狗，刺猬正在缩小。继续 W，狗会变大，刺猬会缩小。';
  if(noticeTime>0)return interactNotice;
  if(dog.docked)return device(dog.docked)?.on?'狗正在留守。你去接管机关；/ 叫狗回来。':'气量不合适，W / S 调整；/ 叫回来。';
  if(dog.task){const p=device(dog.task.id);return p.flatOK?'狗走高处，你走下面。到窄窗用 S 放扁，别急着收短绳。':'狗正在行动。W / S 调气量，E 调绳长；/ 取消。';}
- if(hog.bloat>.65)return'巨大刺猬更重：能压重机关、撞厚墙。S 还气才能钻矮洞。';
+ if(hog.bloat>.65)return'巨大刺猬更重：能压重机关、撞厚墙。按 Shift 缩球滚过矮洞，W 能让刺猬变小。';
  if(hog.jet)return'喷气消耗狗的气量；A / D 转向，W 补气。';
  return classicControlHint(currentZone().hint);
 }

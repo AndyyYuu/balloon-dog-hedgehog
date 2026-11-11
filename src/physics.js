@@ -11,7 +11,7 @@ const pressed=(...keys)=>keys.some(k=>just.has(k));
 function start(){started=true;paused=false;document.getElementById('pauseBtn').textContent='暂停 P';startEl.hidden=true;pauseEl.hidden=true;initAudio();stageEl.focus({preventScroll:true});}
 function togglePause(force){if(!started||win)return;paused=force??!paused;clearHeld();pauseEl.hidden=!paused;document.getElementById('pauseBtn').textContent=paused?'继续 P':'暂停 P';setJet(false);if(!paused){initAudio();stageEl.focus({preventScroll:true});}}
 function toggleSound(){muted=!muted;if(ac&&master)master.gain.value=muted?0:.32;document.getElementById('soundBtn').textContent=muted?'声音 关':'声音 开';document.getElementById('soundBtn').setAttribute('aria-pressed',String(!muted));}
-const gameKeys=['KeyA','KeyD','KeyW','KeyS','KeyE','KeyF','Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','ShiftLeft','ShiftRight','Slash','NumpadDivide','Digit0','Numpad0'];
+const gameKeys=['KeyA','KeyD','KeyW','KeyS','KeyE','KeyF','Space','ArrowLeft','ArrowRight','ArrowUp','ShiftLeft','ShiftRight','Slash','NumpadDivide','Digit0','Numpad0'];
 addEventListener('keydown',e=>{
  const k=e.code;if(gameKeys.includes(k))e.preventDefault();
  if(k==='KeyP'||k==='Escape'){if(!e.repeat)togglePause();return;}
@@ -91,7 +91,7 @@ function update(dt){
  if(pressed('KeyE')){ropeShort=!ropeShort;sGrab();}
  if(pressed('Slash','NumpadDivide'))interact();if(pressed('KeyF'))say('F 只操作附近物品；W 给狗气，Shift 滚压铜色机关。');
  updateTransfer(dt);updateDogTask(dt);
- const move=(held('ArrowRight')?1:0)-(held('ArrowLeft')?1:0),ix=move,dogIx=(held('KeyD')?1:0)-(held('KeyA')?1:0),inflate=held('KeyW'),deflate=held('KeyS');
+ const move=(held('ArrowRight')?1:0)-(held('ArrowLeft')?1:0),ix=move,dogIx=(held('KeyD')?1:0)-(held('KeyA')?1:0),inflate=held('KeyW')&&!held('KeyS'),deflate=held('KeyS')&&!held('KeyW');
  const shiftHeld=held('ShiftLeft','ShiftRight'),wasJet=hog.jet;
  const wantBall=shiftHeld&&hog.ground;
  if(wantBall&&!hog.ball){hog.ball=true;hog.y+=2*hogScale();sCurl();}
@@ -115,13 +115,11 @@ function update(dt){
  for(const p of switches)if(p.type==='hogRoll'&&!p.latched&&hog.ground&&hog.ball&&Math.abs(hog.vx)>(L.easyTuning?.rollTrigger??140)&&hog.x>p.x-3&&hog.x<p.x+p.w+3&&Math.abs(hog.y+hh-p.y)<5)pressSwitch(p);
  hog.blow=inflate&&!deflate;
  if(dog.state==='ok'){
-  if(inflate&&!deflate)setAir(L.easy?Math.max(dog.air,Math.min(.82,dog.air+.23*dt)):dog.air+.23*dt);
-  if(deflate&&!hog.returnAir)setAir(dog.air-.50*dt);
   if(hog.jet)setAir(dog.air-.06*dt);
   for(const z of heat)if(inRect(dog.x,dog.y,z))setAir(dog.air+z.k*dt);
   setAir(dog.air-(L.leak??.003)*dt);
   if(L.easy&&dog.air>.94){setAir(.94);dog.relief=.3;}else if(dog.air>1){pop('over');}
- }else if(inflate&&!deflate){hog.revive+=dt;if(hog.revive>.85)revive();}else hog.revive=Math.max(0,hog.revive-dt*1.5);
+ }else if(inflate&&!deflate){hog.revive+=dt;if(hog.revive>.85){hog.storedAir=Math.max(0,(hog.storedAir||0)-.12);setBloat(clamp(hog.storedAir*1.8,0,1));revive();}}else hog.revive=Math.max(0,hog.revive-dt*1.5);
  pumpClock-=dt;
  if(inflate&&!deflate&&pumpClock<=0){pumpClock=.32;noise(.12,.12,'bandpass',600,1200);const a=anchor();puff(a.x,a.y,2,'#fffaf5');}
  hog.jet=hog.jet&&dog.state==='ok'&&dog.air>.08;
@@ -129,7 +127,7 @@ function update(dt){
  if(hog.jet&&!wasJet)noise(.1,.12,'bandpass',650,1600);
  hog.jetClock-=dt;
  if(hog.jet&&hog.jetClock<=0){hog.jetClock=.025;for(let i=0;i<2;i++)parts.push({x:hog.x-hog.jetDir*22,y:hog.y+3+(Math.random()-.5)*5,vx:-hog.jetDir*(130+Math.random()*110)+hog.vx*.2,vy:(Math.random()-.5)*35,life:.2+Math.random()*.1,max:.3,col:i?'#d6edf2':'#fff5db',sz:3+Math.random()*3,rot:0,vr:0,round:true});}
- setJet(hog.jet||(deflate&&dog.state==='ok'&&dog.air>.02));
+ setJet(hog.jet);
  // The dog trails the walker; above the floating threshold it moves overhead.
  const flying=dog.state==='ok'&&dog.air>.38;
  const overhead=clamp((hog.y-dog.y-(dog.vy>15?150:55))/65,0,1);
@@ -168,7 +166,7 @@ function update(dt){
   if(d>ropeLen-2)hog.taut=true;if(d<=ropeLen||d<.001)break;
   const q=route[1],p=route[route.length-2],dn=Math.hypot(q.x-a.x,q.y-a.y)||1,hn=Math.hypot(p.x-hog.x,p.y-(hog.y-10))||1;
   const nx=(q.x-a.x)/dn,ny=(q.y-a.y)/dn,hx=(p.x-hog.x)/hn,hy=(p.y-(hog.y-10))/hn;
-  const wd=dock?0:(dog.state==='ok'?1:1.6),wh=1/(MH*(1+(hog.bloat||0)*4)),corr=Math.min(d-ropeLen,25)/(wd+wh);
+  const wd=dock?0:(dog.state==='ok'?1:1.6),wh=1/(MH*(1+(hog.bloat||0)*(L.easy ? .8 : 4))),corr=Math.min(d-ropeLen,25)/(wd+wh);
   dog.x+=nx*corr*wd;dog.y+=ny*corr*wd;hog.x+=hx*corr*wh;hog.y+=hy*corr*wh;
   const vr=-dog.vx*nx-dog.vy*ny-hog.vx*hx-hog.vy*hy;
   if(vr>0){const j=vr/(wd+wh);dog.vx+=nx*j*wd;dog.vy+=ny*j*wd;hog.vx+=hx*j*wh;hog.vy+=hy*j*wh;}
@@ -204,7 +202,7 @@ function update(dt){
 function syncHUD(){
  if(L?.memo&&memo){syncMemoHUD();return;}
  airMeter.value=dog.state==='ok'?clamp(dog.air,0,1):0;airText.textContent=`${Math.round(airMeter.value*100)}%`;
- stateText.textContent=win?'两位都到了！':hurt>0?'回蓝旗，重新接应':dog.state==='skin'?`${dog.lastPop} · W 吹回来`:noticeTime>0?interactNotice:hog.backflow?'倒灌中：狗变小，刺猬变大':hog.returnAir?'把气还给狗：刺猬缩小':dog.docked?`狗留在 ${device(dog.docked)?.letter} · / 叫回来`:dog.task?'狗正在行动 · W/S 调气量 · / 取消':hog.jet?'喷气中 · W 补气':hog.bloat>.05?`刺猬体型 ${Math.round(hog.bloat*100)}% · S 还气`:'A/D 控制刺猬 · 狗自动跟随 · ↓ 倒灌气';
+ stateText.textContent=win?'两位都到了！':hurt>0?'回蓝旗，重新接应':dog.state==='skin'?`${dog.lastPop} · W 吹回来`:noticeTime>0?interactNotice:hog.backflow?'倒灌中：狗变小，刺猬变大':hog.returnAir?'W 给狗气：刺猬缩小':dog.docked?`狗留在 ${device(dog.docked)?.letter} · / 叫回来`:dog.task?'狗正在行动 · W/S 调气量 · / 取消':hog.jet?'喷气中 · W 补气':hog.bloat>.05?`刺猬体型 ${Math.round(hog.bloat*100)}% · W 给狗气可缩小`:'A/D 控制刺猬 · W 给狗气 · S 给刺猬气';
  saveText.textContent=`${ropeShort?'短绳':'长绳'} · ${devicesSummary()}`;syncExperience();
 }
 function effects(dt){for(const p of parts){p.vy+=(p.round?-30:600)*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;p.rot+=p.vr*dt;}parts=parts.filter(p=>p.life>0);for(const t of texts){t.y-=26*dt;t.life-=dt;}texts=texts.filter(t=>t.life>0);shake=Math.max(0,shake-dt);}

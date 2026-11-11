@@ -19,6 +19,8 @@
 
 @media(max-width:620px){.main-tools button:last-child{display:inline-block}.stage>.overlay{position:fixed;inset:0;z-index:8}.stage>.overlay .card{max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);overflow:auto}}
 
+@media(max-width:620px){.touch{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -26,17 +28,17 @@
 <section class="play-area" aria-label="游戏">
 <div class="roomline"><span id="roomName">准备一起出发</span><div class="tools"><button id="soundBtn" aria-pressed="true">声音 开</button><button id="restartBtn">重来 R</button><button id="pauseBtn">暂停 P</button><button id="focusBtn">全屏</button></div></div>
 <div class="mission" id="mission" data-who="pair"><div class="mission-mark" aria-hidden="true">↗</div><div class="mission-copy"><span id="missionStep">一次只学一步</span><h2 id="missionTitle">先认识两位朋友</h2><p id="missionAction">点击开始，在没有危险的练习房里熟悉操作。</p></div><div id="missionKeys" class="mission-keys"></div></div>
-<div class="stage" id="stage" tabindex="0" aria-label="A D 移动刺猬，空格跳，Shift 滚，F 操作；W 给狗气，S 放气，向下键倒灌，斜杠派狗操作，0 收绳">
+<div class="stage" id="stage" tabindex="0" aria-label="A D 移动刺猬，空格跳，Shift 滚，F 操作；W 给狗气，S 把狗的气还给刺猬，斜杠派狗操作，0 收绳">
 <canvas id="game" aria-label="气球狗和刺猬单人游戏画面"></canvas>
 <div class="overlay" id="start"><div class="card welcome"><span class="kicker">一根绳子，两位朋友</span><div class="welcome-friends" aria-hidden="true"><svg viewBox="0 0 280 94"><path d="M90 64Q145 108 192 66" fill="none" stroke="#a89078" stroke-width="3"/><g fill="#ed7184" stroke="#b7485d" stroke-width="1.5"><rect x="29" y="48" width="59" height="19" rx="10"/><rect x="34" y="59" width="10" height="27" rx="5"/><rect x="72" y="59" width="10" height="27" rx="5"/><rect x="77" y="24" width="12" height="37" rx="6" transform="rotate(12 83 42)"/><rect x="79" y="18" width="33" height="16" rx="8"/><rect x="78" y="4" width="8" height="20" rx="4" transform="rotate(-15 82 14)"/><path d="M33 52L21 32" stroke-width="8" stroke-linecap="round"/></g><path d="M43 53h20M91 23h10" stroke="#fff5ee" stroke-width="3" stroke-linecap="round"/><circle cx="103" cy="24" r="2.4" fill="#4d3b38"/><path d="M177 63l-7-8 13-2-1-13 13 6 5-13 10 11 12-8 3 14 15-1-4 14 12 7-13 7-54 2z" fill="#79563e"/><ellipse cx="206" cy="69" rx="31" ry="19" fill="#a27650"/><ellipse cx="225" cy="70" rx="18" ry="14" fill="#f4dab7"/><circle cx="230" cy="65" r="2.8" fill="#463732"/><circle cx="242" cy="71" r="3" fill="#463732"/><ellipse cx="221" cy="76" rx="4" ry="2.5" fill="#e99e99"/></svg></div><h2>先走两步，再一起冒险。</h2><p>你来控制刺猬，小狗会自动跟随。<br>从走路开始，一步一步学会配合。</p><button class="primary" id="startBtn">第一次玩 · 从练习开始 <span>→</span></button><button class="text-button" id="chooseStart">我会操作，直接选关</button><p class="small">全部 16 个冒险关卡保留 · 新增 3 间安全练习房</p></div></div>
 <div class="overlay" id="paused" hidden><div class="card"><span class="kicker">等一等朋友</span><h2>歇一下，再出发。</h2><p>按 P / Esc，或点击下面的按钮继续。</p><button class="primary" id="resumeBtn">继续同行</button></div></div>
 <div class="overlay" id="win" hidden><div class="card"><span class="kicker">一根绳子，两位朋友</span><h2 id="winTitle">两位都到了</h2><p id="winBody"></p><button class="primary" id="nextBtn">下一关 →</button><p class="small" id="winNext">Enter 下一关 · R 再试一次</p></div></div>
 </div>
-<div class="companions"><div class="companion hog"><span class="companion-dot"></span><div><strong>刺猬</strong><span id="hogState">稳稳走，别碰到狗</span></div><div class="compact-keys"><kbd>A</kbd><kbd>D</kbd><kbd>空格</kbd><kbd>F</kbd></div></div><div class="air"><span>狗的气量</span><meter id="airMeter" min="0" max="1" low=".32" high=".90" optimum=".78" value=".12"></meter><strong id="airText">12%</strong></div><div class="companion dog"><span class="companion-dot"></span><div><strong>气球狗</strong><span id="dogState">小小的，可以走</span></div><div class="compact-keys"><kbd>W</kbd><kbd>S</kbd><kbd>↓</kbd><kbd>/</kbd></div></div></div>
+<div class="companions"><div class="companion hog"><span class="companion-dot"></span><div><strong>刺猬</strong><span id="hogState">稳稳走，别碰到狗</span></div><div class="compact-keys"><kbd>A</kbd><kbd>D</kbd><kbd>空格</kbd><kbd>F</kbd></div></div><div class="air"><span>狗的气量</span><meter id="airMeter" min="0" max="1" low=".32" high=".90" optimum=".78" value=".12"></meter><strong id="airText">12%</strong></div><div class="companion dog"><span class="companion-dot"></span><div><strong>气球狗</strong><span id="dogState">小小的，可以走</span></div><div class="compact-keys"><kbd>W</kbd><kbd>S</kbd><kbd>0</kbd><kbd>/</kbd></div></div></div>
 <div class="status" id="status" role="status" aria-live="off"><span id="stateText">准备出发</span><span id="saveText">两位一直连着绳子</span></div>
-<div class="touch" aria-label="单人操作"><button data-code="KeyA">A 左走</button><button data-code="KeyD">D 右走</button><button data-code="Space">空格 跳</button><button data-code="ShiftLeft">Shift 滚</button><button data-code="KeyW">W 给狗气</button><button data-code="KeyS">S 放气</button><button data-code="ArrowDown">↓ 狗还气</button><button data-code="Digit0">0 收绳</button><button data-code="KeyF">F 刺猬操作</button><button data-code="Slash">/ 让狗帮忙</button></div>
+<div class="touch" aria-label="单人操作"><button data-code="KeyA">A 左走</button><button data-code="KeyD">D 右走</button><button data-code="Space">空格 跳</button><button data-code="ShiftLeft">Shift 滚</button><button data-code="KeyW">W 给狗气</button><button data-code="KeyS">S 给刺猬气</button><button data-code="Digit0">0 收绳</button><button data-code="KeyF">F 刺猬操作</button><button data-code="Slash">/ 让狗帮忙</button></div>
 </section>
-<aside class="help-panel" id="helpPanel" hidden><h2>先记住：你控制刺猬，小狗自动跟随</h2><div class="help-grid"><p><b>让刺猬动起来</b><br>A 向左，D 向右，空格跳。<br>按住 Shift 再走，就会缩成球滚动；F 操作身边的物品。</p><p><b>给小狗分气</b><br>W 给狗充气，S 放气。<br>↓ 用狗的气鼓大刺猬；0 按住收绳，松开放长。</p><p><b>需要狗帮忙时</b><br>按 / 派狗按按钮或贴墙，按住 / 做高处作业。<br>有苹果时狗会自动上座；再按 / 让它下来。</p></div><p class="help-note">复杂地形需要微调狗的位置时，可用 ← / →，↑ 让狗跳；普通走路不用管狗。经典篇 E 切换长短绳。R 重来，P 暂停。</p></aside>
+<aside class="help-panel" id="helpPanel" hidden><h2>先记住：你控制刺猬，小狗自动跟随</h2><div class="help-grid"><p><b>让刺猬动起来</b><br>A 向左，D 向右，空格跳。<br>按住 Shift 再走，就会缩成球滚动；F 操作身边的物品。</p><p><b>给小狗分气</b><br>W 把气给狗，S 把气还给刺猬。<br>气沿管子来回分，不会因为按 S 而丢掉；0 按住收绳，松开放长。</p><p><b>需要狗帮忙时</b><br>按 / 派狗按按钮或贴墙，按住 / 做高处作业。<br>有苹果时狗会自动上座；再按 / 让它下来。</p></div><p class="help-note">复杂地形需要微调狗的位置时，可用 ← / →，↑ 让狗跳；普通走路不用管狗。经典篇 E 切换长短绳。R 重来，P 暂停。</p></aside>
 <footer><span>慢一点没关系，等一等朋友。</span><a href="archive/index.html">历史关卡馆</a><a href="duo.html">双人初版</a></footer>
 <div class="level-panel overlay" id="levelPanel" hidden><section class="level-sheet" aria-label="选择关卡"><div class="sheet-title"><div><span class="kicker">每一间房，都留着</span><h2>想去哪里？</h2></div><button id="closeLevels" aria-label="关闭关卡选择">×</button></div><div class="chapters"><button id="practiceChapter" aria-pressed="true">先练一练 <span>3 间</span></button><button id="classicChapter">经典篇 <span>01–08</span></button><button id="memoChapter">房间篇 <span>09–16</span></button></div><nav class="levels" id="levels" aria-label="选关"></nav><p class="level-note">全部 19 关均为轻松版；原难度保存在历史关卡馆。<a href="archive/index.html">查看全部历史版本 →</a></p></section></div>
 </main>
@@ -171,7 +173,7 @@ LEVELS.push(
   solids:[{x:-200,y:460,w:720,h:300},{x:830,y:240,w:700,h:400},{x:475,y:80,w:22,h:220}],
   carpets:[{x:170,y:460,w:265}],clingPaths:[[{x:450,y:445},{x:450,y:145},{x:1200,y:145}]],
   fans:[{x:510,y:120,w:325,h:420,dx:.15,dy:-1,p:1250}],pumps:[{x:215,y:460,cap:.88}],checkpoints:[],goal:{x:1215,y:160,w:100,h:80},
-  zones:[{x:0,title:'11 把气借给她，这次她会飞',hint:'按住 ↓ 倒灌。瘪狗在毛衣毯上走动蹭电，再 / 贴上灰色墙。'},
+  zones:[{x:0,title:'11 把气借给她，这次她会飞',hint:'按住 S 倒灌。瘪狗在毛衣毯上走动蹭电，再 / 贴上灰色墙。'},
    {x:420,title:'一只爬墙，一只借风',hint:'狗贴墙后会自己往上爬；按 D 让刺豚进入风道。电会慢慢消失。'},
    {x:790,title:'到台面再把气分回来',hint:'0 按住收绳，松开放长。狗到墙顶以后继续向右爬，刺猬落到台面。'}]},
  {name:'浴室 · 堵住排水口',memo:true,world:'bath',kind:'水位 / 限时撤离',width:1410,softSky:true,budget:.94,dogGas:.83,dogX:220,hogX:320,
@@ -191,14 +193,14 @@ LEVELS.push(
  {name:'走廊 · 别吵醒猫',memo:true,world:'living',kind:'潜行 / 距离',width:1560,softSky:true,budget:.25,dogGas:.16,dogX:150,hogX:250,
   solids:[{x:-200,y:460,w:1960,h:300},{x:600,y:26,w:460,h:300}],
   cats:[{x:850,y:440,state:'sleep'}],carpets:[{x:400,y:460,w:750}],pumps:[{x:200,y:460,cap:.25}],checkpoints:[],goal:{x:1420,y:380,w:100,h:80},
-  zones:[{x:0,title:'14 每个动作，都有声音',hint:'先倒灌或 S 放扁狗，再进走廊。小心走，不要滚、跳、打气或喷气。'},
+  zones:[{x:0,title:'14 每个动作，都有声音',hint:'先按 S，把狗的气收回，再进走廊。小心走，不要滚、跳、打气或喷气。'},
    {x:520,title:'它爱抓气球，也怕刺猬',hint:'猫会追飘着的狗。靠刺猬近一点能挡猫，但贴得太近也会被扎。'},
    {x:1130,title:'把安静留到门外',hint:'出了走廊再充气。两位都到出口才算成功。'}]},
  {name:'厨房 · 滑轨节拍',memo:true,world:'kitchen',kind:'自动前进 / 反应',width:1720,softSky:true,budget:.84,dogGas:.74,dogX:220,hogX:220,dogY:145,hogY:432,
   solids:[{x:-200,y:480,w:400,h:300},{x:1470,y:460,w:500,h:300}],
   rail:{x:220,y:280,end:1510,speed:42,long:340,short:170},
-  railHazards:[{x:450,y:40,w:120,h:150,target:'dog',label:'收绳 ↓ 狗'}, {x:450,y:370,w:120,h:110,target:'hog',label:'收绳 ↑ 刺猬'},
-   {x:760,y:205,w:130,h:65,target:'dog',label:'放长 ↑ 狗'},{x:760,y:285,w:130,h:80,target:'hog',label:'放长 ↓ 刺猬'},
+  railHazards:[{x:450,y:40,w:120,h:150,target:'dog',label:'按 0 收绳 · 狗下降'}, {x:450,y:370,w:120,h:110,target:'hog',label:'按 0 收绳 · 刺猬上升'},
+   {x:760,y:205,w:130,h:65,target:'dog',label:'松开 0 · 狗上升'},{x:760,y:285,w:130,h:80,target:'hog',label:'松开 0 · 刺猬下降'},
    {x:1090,y:40,w:120,h:150,target:'dog',label:'再次收绳'},{x:1090,y:370,w:120,h:110,target:'hog',label:'同时吊高'}],
   checkpoints:[],goal:{x:1540,y:380,w:110,h:80},
   zones:[{x:0,title:'15 两端加起来，只有这么长',hint:'滑轮自动前进。0 按住收绳：狗下降、刺猬上升；松开则相反。'},
@@ -222,7 +224,7 @@ LEVELS.push(
   zones:[{x:0,title:'先练一只，再练另一只',hint:'看画面上方，一次只学一个动作。这个房间没有尖刺。'}]},
  {name:'气和绳子怎么用',practice:true,lesson:'air',memo:true,world:'practice',kind:'练习 2 / 3',width:1250,softSky:true,budget:.84,dogGas:.14,dogX:170,hogX:350,
   solids:[{x:-200,y:460,w:1650,h:300}],objects:[{id:'give',type:'lesson',x:-1000,y:0},{id:'vent',type:'lesson',x:-1000,y:0},{id:'return',type:'lesson',x:-1000,y:0},{id:'reel',type:'lesson',x:-1000,y:0}],pumps:[{x:280,y:460,cap:.84}],checkpoints:[],goal:{x:1090,y:380,w:110,h:80,requires:['give','vent','return','reel']},
-  zones:[{x:0,title:'一根管子，两边分气',hint:'W 给狗气，S 放气，↓ 把气还给刺猬，0 按住收绳。跟着上方提示做。'}]},
+  zones:[{x:0,title:'一根管子，两边分气',hint:'W 给狗气，S 把气还给刺猬，0 按住收绳。跟着上方提示做。'}]},
  {name:'苹果和各自的操作',practice:true,lesson:'apple',memo:true,world:'practice',kind:'练习 3 / 3',width:1320,softSky:true,budget:.24,dogGas:.14,dogX:150,hogX:260,
   solids:[{x:-200,y:460,w:1720,h:300}],apples:[{x:365,y:447}],objects:[{id:'lamp',type:'lamp',x:725,y:378,apples:1,duration:1.1,label:'狗 / 关掉台灯'},{id:'fridge',type:'fridge',x:980,y:420,label:'刺猬 F 打开冰箱'}],checkpoints:[],goal:{x:1170,y:380,w:110,h:80,requires:['lamp','fridge']},
   zones:[{x:0,title:'靠近就能坐，操作各管各',hint:'先用刺猬滚过苹果，再让狗靠近。苹果会自动托住小狗。'}]}
@@ -232,11 +234,11 @@ LEVELS.push(
 const BASE_LEVELS=JSON.parse(JSON.stringify(LEVELS));
 for(let i=0;i<LEVELS.length;i++){
  const l=JSON.parse(JSON.stringify(BASE_LEVELS[i]));LEVELS[i]=l;
- l.easy=true;l.softSky=true;l.easyNotes=['安全天花板','充气安全阀','更宽的操作范围'];
+ l.easy=true;l.softSky=true;l.leak=0;l.easyNotes=['安全天花板','充气安全阀','更宽的操作范围'];
  l.easyTuning={big:.45,rollTrigger:85,appleReach:44,seatReach:108,seatAir:.35,interaction:105,workReach:90,workSpeed:24,staticGain:1.1,staticDecay:.012,clingSpeed:145};
  l.goal.w+=35;
  // Widen floor tunnels without changing the floor or the room's route.
- for(const s of l.solids)if(s.y<=26&&s.h>330){s.h-=24;l.easyNotes.push('矮洞增高 24 像素');}
+ for(const s of l.solids)if(s.y<=26&&s.h>330){const cx=s.x+s.w/2,floor=Math.min(...l.solids.filter(q=>q.y>300&&q!==s&&cx>=q.x&&cx<=q.x+q.w).map(q=>q.y));s.h=Number.isFinite(floor)?Math.min(s.h,floor-70-s.y):s.h-24;l.easyNotes.push('矮洞可让鼓大的刺猬缩球通过');}
  for(const b of l.beds||[]){const center=b.x+b.w/2;b.w=Math.max(75,Math.round(b.w*.65));b.x=center-b.w/2;b.h=Math.round(b.h*.38);l.easyNotes.push('刺丛更短、更低');}
  for(const p of l.switches||[]){
   if(!p.type.startsWith('dog')){const center=p.x+p.w/2;p.w+=40;p.x=center-p.w/2;}
@@ -321,7 +323,7 @@ const sWin=()=>[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone('triangle',
 
 // Physical single-player keys map to the simulation's established action names.
 const PLAYER_KEYS={KeyA:'ArrowLeft',KeyD:'ArrowRight',Space:'ArrowUp',ArrowLeft:'KeyA',ArrowRight:'KeyD',ArrowUp:'Space'};
-function setPlayerHeld(code,source,on){setHeld(PLAYER_KEYS[code]||code,source,on);}
+function setPlayerHeld(code,source,on){if(code==='ArrowDown')return;setHeld(PLAYER_KEYS[code]||code,source,on);}
 const companion={enabled:true,level:-1,jumpDelay:0,jumpTime:0};
 function prepareCompanion(dt){
  if(companion.level!==idx){companion.level=idx;companion.jumpDelay=companion.jumpTime=0;}
@@ -362,7 +364,7 @@ const pressed=(...keys)=>keys.some(k=>just.has(k));
 function start(){started=true;paused=false;document.getElementById('pauseBtn').textContent='暂停 P';startEl.hidden=true;pauseEl.hidden=true;initAudio();stageEl.focus({preventScroll:true});}
 function togglePause(force){if(!started||win)return;paused=force??!paused;clearHeld();pauseEl.hidden=!paused;document.getElementById('pauseBtn').textContent=paused?'继续 P':'暂停 P';setJet(false);if(!paused){initAudio();stageEl.focus({preventScroll:true});}}
 function toggleSound(){muted=!muted;if(ac&&master)master.gain.value=muted?0:.32;document.getElementById('soundBtn').textContent=muted?'声音 关':'声音 开';document.getElementById('soundBtn').setAttribute('aria-pressed',String(!muted));}
-const gameKeys=['KeyA','KeyD','KeyW','KeyS','KeyE','KeyF','Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','ShiftLeft','ShiftRight','Slash','NumpadDivide','Digit0','Numpad0'];
+const gameKeys=['KeyA','KeyD','KeyW','KeyS','KeyE','KeyF','Space','ArrowLeft','ArrowRight','ArrowUp','ShiftLeft','ShiftRight','Slash','NumpadDivide','Digit0','Numpad0'];
 addEventListener('keydown',e=>{
  const k=e.code;if(gameKeys.includes(k))e.preventDefault();
  if(k==='KeyP'||k==='Escape'){if(!e.repeat)togglePause();return;}
@@ -442,7 +444,7 @@ function update(dt){
  if(pressed('KeyE')){ropeShort=!ropeShort;sGrab();}
  if(pressed('Slash','NumpadDivide'))interact();if(pressed('KeyF'))say('F 只操作附近物品；W 给狗气，Shift 滚压铜色机关。');
  updateTransfer(dt);updateDogTask(dt);
- const move=(held('ArrowRight')?1:0)-(held('ArrowLeft')?1:0),ix=move,dogIx=(held('KeyD')?1:0)-(held('KeyA')?1:0),inflate=held('KeyW'),deflate=held('KeyS');
+ const move=(held('ArrowRight')?1:0)-(held('ArrowLeft')?1:0),ix=move,dogIx=(held('KeyD')?1:0)-(held('KeyA')?1:0),inflate=held('KeyW')&&!held('KeyS'),deflate=held('KeyS')&&!held('KeyW');
  const shiftHeld=held('ShiftLeft','ShiftRight'),wasJet=hog.jet;
  const wantBall=shiftHeld&&hog.ground;
  if(wantBall&&!hog.ball){hog.ball=true;hog.y+=2*hogScale();sCurl();}
@@ -466,13 +468,11 @@ function update(dt){
  for(const p of switches)if(p.type==='hogRoll'&&!p.latched&&hog.ground&&hog.ball&&Math.abs(hog.vx)>(L.easyTuning?.rollTrigger??140)&&hog.x>p.x-3&&hog.x<p.x+p.w+3&&Math.abs(hog.y+hh-p.y)<5)pressSwitch(p);
  hog.blow=inflate&&!deflate;
  if(dog.state==='ok'){
-  if(inflate&&!deflate)setAir(L.easy?Math.max(dog.air,Math.min(.82,dog.air+.23*dt)):dog.air+.23*dt);
-  if(deflate&&!hog.returnAir)setAir(dog.air-.50*dt);
   if(hog.jet)setAir(dog.air-.06*dt);
   for(const z of heat)if(inRect(dog.x,dog.y,z))setAir(dog.air+z.k*dt);
   setAir(dog.air-(L.leak??.003)*dt);
   if(L.easy&&dog.air>.94){setAir(.94);dog.relief=.3;}else if(dog.air>1){pop('over');}
- }else if(inflate&&!deflate){hog.revive+=dt;if(hog.revive>.85)revive();}else hog.revive=Math.max(0,hog.revive-dt*1.5);
+ }else if(inflate&&!deflate){hog.revive+=dt;if(hog.revive>.85){hog.storedAir=Math.max(0,(hog.storedAir||0)-.12);setBloat(clamp(hog.storedAir*1.8,0,1));revive();}}else hog.revive=Math.max(0,hog.revive-dt*1.5);
  pumpClock-=dt;
  if(inflate&&!deflate&&pumpClock<=0){pumpClock=.32;noise(.12,.12,'bandpass',600,1200);const a=anchor();puff(a.x,a.y,2,'#fffaf5');}
  hog.jet=hog.jet&&dog.state==='ok'&&dog.air>.08;
@@ -480,7 +480,7 @@ function update(dt){
  if(hog.jet&&!wasJet)noise(.1,.12,'bandpass',650,1600);
  hog.jetClock-=dt;
  if(hog.jet&&hog.jetClock<=0){hog.jetClock=.025;for(let i=0;i<2;i++)parts.push({x:hog.x-hog.jetDir*22,y:hog.y+3+(Math.random()-.5)*5,vx:-hog.jetDir*(130+Math.random()*110)+hog.vx*.2,vy:(Math.random()-.5)*35,life:.2+Math.random()*.1,max:.3,col:i?'#d6edf2':'#fff5db',sz:3+Math.random()*3,rot:0,vr:0,round:true});}
- setJet(hog.jet||(deflate&&dog.state==='ok'&&dog.air>.02));
+ setJet(hog.jet);
  // The dog trails the walker; above the floating threshold it moves overhead.
  const flying=dog.state==='ok'&&dog.air>.38;
  const overhead=clamp((hog.y-dog.y-(dog.vy>15?150:55))/65,0,1);
@@ -519,7 +519,7 @@ function update(dt){
   if(d>ropeLen-2)hog.taut=true;if(d<=ropeLen||d<.001)break;
   const q=route[1],p=route[route.length-2],dn=Math.hypot(q.x-a.x,q.y-a.y)||1,hn=Math.hypot(p.x-hog.x,p.y-(hog.y-10))||1;
   const nx=(q.x-a.x)/dn,ny=(q.y-a.y)/dn,hx=(p.x-hog.x)/hn,hy=(p.y-(hog.y-10))/hn;
-  const wd=dock?0:(dog.state==='ok'?1:1.6),wh=1/(MH*(1+(hog.bloat||0)*4)),corr=Math.min(d-ropeLen,25)/(wd+wh);
+  const wd=dock?0:(dog.state==='ok'?1:1.6),wh=1/(MH*(1+(hog.bloat||0)*(L.easy ? .8 : 4))),corr=Math.min(d-ropeLen,25)/(wd+wh);
   dog.x+=nx*corr*wd;dog.y+=ny*corr*wd;hog.x+=hx*corr*wh;hog.y+=hy*corr*wh;
   const vr=-dog.vx*nx-dog.vy*ny-hog.vx*hx-hog.vy*hy;
   if(vr>0){const j=vr/(wd+wh);dog.vx+=nx*j*wd;dog.vy+=ny*j*wd;hog.vx+=hx*j*wh;hog.vy+=hy*j*wh;}
@@ -555,7 +555,7 @@ function update(dt){
 function syncHUD(){
  if(L?.memo&&memo){syncMemoHUD();return;}
  airMeter.value=dog.state==='ok'?clamp(dog.air,0,1):0;airText.textContent=`${Math.round(airMeter.value*100)}%`;
- stateText.textContent=win?'两位都到了！':hurt>0?'回蓝旗，重新接应':dog.state==='skin'?`${dog.lastPop} · W 吹回来`:noticeTime>0?interactNotice:hog.backflow?'倒灌中：狗变小，刺猬变大':hog.returnAir?'把气还给狗：刺猬缩小':dog.docked?`狗留在 ${device(dog.docked)?.letter} · / 叫回来`:dog.task?'狗正在行动 · W/S 调气量 · / 取消':hog.jet?'喷气中 · W 补气':hog.bloat>.05?`刺猬体型 ${Math.round(hog.bloat*100)}% · S 还气`:'A/D 控制刺猬 · 狗自动跟随 · ↓ 倒灌气';
+ stateText.textContent=win?'两位都到了！':hurt>0?'回蓝旗，重新接应':dog.state==='skin'?`${dog.lastPop} · W 吹回来`:noticeTime>0?interactNotice:hog.backflow?'倒灌中：狗变小，刺猬变大':hog.returnAir?'W 给狗气：刺猬缩小':dog.docked?`狗留在 ${device(dog.docked)?.letter} · / 叫回来`:dog.task?'狗正在行动 · W/S 调气量 · / 取消':hog.jet?'喷气中 · W 补气':hog.bloat>.05?`刺猬体型 ${Math.round(hog.bloat*100)}% · W 给狗气可缩小`:'A/D 控制刺猬 · W 给狗气 · S 给刺猬气';
  saveText.textContent=`${ropeShort?'短绳':'长绳'} · ${devicesSummary()}`;syncExperience();
 }
 function effects(dt){for(const p of parts){p.vy+=(p.round?-30:600)*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;p.rot+=p.vr*dt;}parts=parts.filter(p=>p.life>0);for(const t of texts){t.y-=26*dt;t.life-=dt;}texts=texts.filter(t=>t.life>0);shake=Math.max(0,shake-dt);}
@@ -584,9 +584,9 @@ function interact(){
  if(dog.task){dog.task=null;dog.taskTarget=null;dog.fContext=true;say('取消这次行动，狗回来跟随。');return;}
  const p=availableDogAction();
  if(p){dog.fContext=true;if(dog.state!=='ok'){say('先 W 把狗吹回来。');return;}if(ropeShort&&Math.hypot(p.x-hog.x,p.y-hog.y)>140){say('目标够得着，但绳子太短：E 放长，再按 /。');return;}
-  dog.task={id:p.id,step:0,clock:0};say(p.flatOK?'狗出发走高窗。到窄缝前用 S 放扁，风管会托着它。':'狗出发。你继续控制刺猬，W / S 仍能调它的气量。');return;
+  dog.task={id:p.id,step:0,clock:0};say(p.flatOK?'狗出发走高窗。到窄缝前按 S 收回气，让狗变瘪，风管会托着它。':'狗出发。你继续控制刺猬，W / S 仍能调它的气量。');return;
  }
- say('↓ 把狗的气给刺猬；S 把刺猬缩小。');
+ say('W 把气给狗；S 把狗的气还给刺猬。');
 }
 function updateDogTask(dt){
  dog.taskTarget=null;
@@ -600,11 +600,13 @@ function updateDogTask(dt){
 }
 function updateTransfer(dt){
  hog.backflow=false;hog.returnAir=false;
- if(held('Slash','NumpadDivide'))dog.fClock=(dog.fClock||0)+dt;else{dog.fClock=0;dog.fContext=false;}
- if(held('ArrowDown')&&dog.state==='ok'&&dog.air>.06&&(hog.bloat||0)<1){
-  const amount=Math.min(.28*dt,dog.air-.06,(1-(hog.bloat||0))/1.8);if(amount>0&&setBloat((hog.bloat||0)+amount*1.8)){setAir(dog.air-amount);hog.backflow=true;stats.transfer+=amount;}
+ const toDog=held('KeyW')&&!held('KeyS'),toHog=held('KeyS')&&!held('KeyW');
+ let stored=hog.storedAir??(hog.bloat||0)/1.8;
+ if(dog.state==='ok'){
+  if(toDog){const before=dog.air;setAir(L.easy?Math.max(before,Math.min(.82,before+.23*dt)):before+.23*dt);const amount=Math.max(0,dog.air-before),used=Math.min(stored,amount);stored-=used;hog.returnAir=used>0;}
+  if(toHog){const before=dog.air;setAir(Math.max(0,before-.34*dt));const amount=before-dog.air;stored+=amount;hog.backflow=amount>0;stats.transfer+=amount;}
  }
- if(held('KeyS')&&(hog.bloat||0)>0){const amount=Math.min(.8*dt,hog.bloat);setBloat(hog.bloat-amount);if(dog.state==='ok')setAir(dog.air+amount*.3);hog.returnAir=true;}
+ hog.storedAir=stored;setBloat(clamp(stored*1.8,0,1));
 }
 function devicesSummary(){const t=switches.find(p=>p.remaining>0);if(t)return `${t.letter} ${t.remaining.toFixed(1)} 秒`;if(dog.task)return'狗正在行动 · / 取消';if(hog.backflow)return`倒灌中 · 体型 ${Math.round((hog.bloat||0)*100)}%`;return switches.map(p=>`${p.letter}${p.on?'●':'○'}`).join('  ')||'风 / 温度 / 绳长';}
 function updateDevices(dt){
@@ -674,7 +676,7 @@ function memoDogAction(){
  if(dog.seatOptOut&&memo.stack){dog.seatOptOut=false;say('小狗准备重新上座，停稳等它靠近。');return;}
  if(dog.cling){dog.cling=null;dog.inv=.2;say('松开静电，重新受风和重力影响。');return;}
  const cling=nearestCling();if(dog.air<.16&&dog.charge>.08&&cling&&cling.d<60){dog.cling={path:cling.j,s:cling.s};dog.riding=false;dog.vx=dog.vy=0;say('贴住了。小狗会自己往上爬，/ 让它松开；电量会减少。');return;}
- memo.slashContext=false;say('↓ 把气给刺猬。狗会自己跟随；带电墙边按 / 让它贴住。');
+ memo.slashContext=false;say('S 把气还给刺猬。狗会自己跟随；带电墙边按 / 让它贴住。');
 }
 function memoPigAction(){
  memo.pigContext=false;
@@ -695,10 +697,9 @@ function memoTransfer(dt){
  const before=memoTotalAir();hog.blow=false;hog.backflow=false;hog.returnAir=false;memo.ventThrust=false;
  const pump=(L.pumps||[]).find(p=>Math.hypot(hog.x-p.x,hog.y-(p.y-15))<75);
  if(held('KeyF')&&memo.pigContext&&pump){const q=Math.min(.24*dt,Math.max(0,pump.cap-memoTotalAir()));hog.gas+=q;memo.noise=Math.max(memo.noise,.9);}
- if(held('KeyW')&&dog.state==='ok'){const q=Math.min(hog.gas,.28*dt,Math.max(0,(L.easy ? .82/dog.temp : 1.05)-dog.gas));hog.gas-=q;dog.gas+=q;hog.blow=q>0;if(q>0)memo.noise=Math.max(memo.noise,.8);}
+ if(held('KeyW')&&!held('KeyS')&&dog.state==='ok'){const q=Math.min(hog.gas,.28*dt,Math.max(0,(L.easy ? .82/dog.temp : 1.05)-dog.gas));hog.gas-=q;dog.gas+=q;hog.blow=q>0;if(q>0)memo.noise=Math.max(memo.noise,.8);}
  if(held('Slash','NumpadDivide'))memo.slashClock+=dt;else{memo.slashClock=0;memo.slashContext=false;memo.work=null;}
- if(held('ArrowDown')&&dog.state==='ok'){const q=Math.min(dog.gas,.33*dt,1-hog.gas);dog.gas-=q;hog.gas+=q;hog.backflow=q>0;}
- if(held('KeyS')&&dog.state==='ok'){const q=Math.min(dog.gas,.34*dt);dog.gas-=q;stats.spent+=q;memo.ventThrust=q>0;if(q>0)memo.noise=Math.max(memo.noise,.9);}
+ if(held('KeyS')&&!held('KeyW')&&dog.state==='ok'){const q=Math.min(dog.gas,.33*dt,1-hog.gas);dog.gas-=q;hog.gas+=q;hog.backflow=q>0;}
  if(dog.state==='skin'&&held('KeyW')&&hog.gas>.045){hog.revive+=dt;if(hog.revive>.7){dog.state='ok';dog.gas=Math.min(.12,hog.gas);hog.gas-=dog.gas;dog.inv=1;dog.lastPop='';hog.revive=0;}}
  const oldHalf=hogHalf();hog.bloat=clamp((hog.gas-.16)/.64,0,1);if(hog.ground)hog.y-=hogHalf()-oldHalf;
  let temp=1;for(const z of heat)if(inRect(dog.x,dog.y,z)&&(!z.until||!memoObj(z.until)?.done)&&(!z.when||memoObj(z.when)?.done))temp=z.temp??1;
@@ -985,12 +986,12 @@ function getRoomGuide(){
  const at=(x,y=440,w=60,h=45)=>({x,y,w,h});
  const task=(title,action,keys,who='hog',target=null,step=1,total=3)=>guide(title,action,keys,who,target,step,total);
  const exit=()=>task('往右走，到绿色旗子旁','按住 D 往右走。狗会自己跟着你；两位到旗子旁就过关。',['D'],'hog',at(L.goal.x+L.goal.w-24,L.goal.y+L.goal.h-40,55,80),3,3);
- const grow=()=>!experience.backflowReady?task('先按 W，把狗充到 80%','停下来，按住 W。气量到 80% 左右，松开 W，再看下一步。',['W'],'dog',at(dog.x,dog.y-30,75,80)):task('松开 W，按住 ↓ 鼓大刺猬','只按住向下方向键 ↓，把狗的气给刺猬。等提示变成走路后松开。',['↓'],'hog',at(hog.x,hog.y,85,85));
+ const grow=()=>!experience.backflowReady?task('先按 W，把狗充到 80%','停下来，按住 W。气量到 80% 左右，松开 W，再看下一步。',['W'],'dog',at(dog.x,dog.y-30,75,80)):task('松开 W，按住 S 鼓大刺猬','只按住S 键，把狗的气给刺猬。等提示变成走路后松开。',['S'],'hog',at(hog.x,hog.y,85,85));
  const apples=()=>!memo.stack?task('先捡地上的苹果','同时按住 Shift 和 D，滚到圈出的苹果旁。捡到以后松开两个键。',['Shift','D'],'hog',at(memo.apples[0]?.x??hog.x+60,445,35,35),1,L.practice?6:4):task('停下来，等狗坐上苹果','松开 A、D 和 Shift。狗会自己走过来、坐上苹果，不用按键。',[],'dog',at(hog.x,memoSeatY(),65,70),2,L.practice?6:4);
  if(win)return task('过关了！','点「下一关」继续，或点「选择关卡」回去练习。',[],'hog');
  if(hurt>0)return task('碰到危险了，马上回安全处','等一下，会自动重新开始。按 R 也可以立刻重来。',['R']);
  if(dog.state==='skin')return task('狗破了，先把它吹回来',L.memo&&hog.gas<.05?'按 R 重来。这次少放一点气，留些气救狗。':'停下来，按住 W，直到粉色小狗重新鼓起来。',['W'],'dog',at(dog.x,dog.y,65,50));
- if(dog.air>.89)return task('气有点满，先放一点','松开 W，按住 S。气量降到 80% 以下就松开；安全阀会帮你避免充爆。',['S'],'dog',at(dog.x,dog.y,75,80));
+ if(dog.air>.89)return task('气有点满，先还一点气','松开 W，按住 S，把气还给刺猬。狗的气量降到 80% 以下就松开；安全阀会帮你避免充爆。',['S'],'dog',at(dog.x,dog.y,75,80));
  if(L.practice){
   if(L.lesson==='move'){
    if(!memoObj('walkHog').done)return task('按 D，让刺猬走到圈里','你只负责棕色刺猬。按住 D 往右走，狗会自己跟上。',['D'],'hog',at((L.hogX??360)+(L.lessonWalk??75)+12),1,4);
@@ -999,11 +1000,10 @@ function getRoomGuide(){
    return{...exit(),step:4,total:4};
   }
   if(L.lesson==='air'){
-   if(!memoObj('give').done)return task('按住 W，把狗充大','按住 W。气量到 39% 就松开；画面下方能看到百分比。',['W'],'dog',at(dog.x,dog.y-40,70,75),1,5);
-   if(!memoObj('vent').done)return task('按住 S，把狗放小','先松开 W，再按住 S。气量降到 23% 就松开。',['S'],'dog',at(dog.x,dog.y,70,75),2,5);
-   if(!memoObj('return').done)return task('按住 ↓，把气还给刺猬','用键盘右边的向下方向键 ↓。狗会缩小，刺猬会鼓大。',['↓'],'hog',at(hog.x,hog.y,80,75),3,5);
-   if(!memoObj('reel').done)return task('按住数字 0，把绳子收短','按住数字键 0 一小会儿。两位靠近后松开，绳子会重新变长。',['0'],'hog',at((hog.x+dog.x)/2,(hog.y+dog.y)/2,70,70),4,5);
-   return{...exit(),step:5,total:5};
+   if(!memoObj('give').done)return task('按住 W，把气给小狗','按住 W。狗变大、刺猬变小；狗的气量到 39% 就松开。',['W'],'dog',at(dog.x,dog.y-40,70,75),1,4);
+   if(!memoObj('return').done)return task('按住 S，把气还给刺猬','松开 W，再按住 S。狗的气量到 10% 以下就松开；气都留在刺猬身上。',['S'],'hog',at(hog.x,hog.y,80,75),2,4);
+   if(!memoObj('reel').done)return task('按住数字 0，把绳子收短','按住数字键 0 一小会儿。两位靠近后松开，绳子会重新变长。',['0'],'hog',at((hog.x+dog.x)/2,(hog.y+dog.y)/2,70,70),3,4);
+   return{...exit(),step:4,total:4};
   }
   if(!memoObj('lamp').done){if(!memo.stack||!dog.riding)return apples();if(Math.abs(hog.x-725)>40)return task('按 D，把狗送到灯下面','按住 D 慢慢走，到圈出的灯下面停住。不要跳，也不要滚。',['D'],'hog',at(725),3,6);return task('停住，按住 / 关灯','松开 A 和 D，按住键盘的 /。灯下面的小条填满后松开。',['/'],'dog',at(725,378,55,60),4,6);}
   if(!memoObj('fridge').done){if(dog.riding)return task('按一下 /，让狗下来','灯已经关好了。按一下 / 让狗下座，再按 D 走向冰箱。',['/'],'dog',at(dog.x,dog.y,60,60),5,6);return task('按 D 走到冰箱旁，再按 F','先走到圈出的冰箱旁边，停住，按一下 F 开启冷气。',['D','F'],'hog',at(980,400,75,115),5,6);}
@@ -1012,8 +1012,8 @@ function getRoomGuide(){
  if(!L.memo){
   const pin=switches.find(p=>p.type==='hogRoll'&&!p.latched&&(!p.requires||p.requires.every(powered)));
   const p=switches.find(p=>p.type.startsWith('dog')&&!p.latched&&!switches.some(q=>q.latched&&q.requires?.includes(p.id))&&(!p.requires||p.requires.every(powered)));
-  if(dog.task)return task('狗正在去按粉色按钮',device(dog.task.id)?.flatOK&&dog.task.step>0?'按住 S，把狗放扁。狗会自己钻过上面的窄缝。':'先停住。狗会自己去按钮；暂时不要再按 /。',device(dog.task.id)?.flatOK&&dog.task.step>0?['S']:[],'dog',at(dog.taskTarget?.x??dog.x,dog.taskTarget?.y??dog.y,55,60));
-  const dock=device(dog.docked);if(dock&&(dog.air<(dock.minAir??.04)||dog.air>(dock.maxAir??1)))return task('先调整狗的气量，按钮才会通电',`只按住 ${dog.air>(dock.maxAir??1)?'S 放气':'W 充气'}，把气量调到 ${Math.round((dock.minAir??.12)*100)}%–${Math.round((dock.maxAir??1)*100)}% 之间。`,[dog.air>(dock.maxAir??1)?'S':'W'],'dog',at(dog.x,dog.y,70,75));
+  if(dog.task)return task('狗正在去按粉色按钮',device(dog.task.id)?.flatOK&&dog.task.step>0?'按住 S，把气还给刺猬，让狗变瘪。狗会自己钻过上面的窄缝。':'先停住。狗会自己去按钮；暂时不要再按 /。',device(dog.task.id)?.flatOK&&dog.task.step>0?['S']:[],'dog',at(dog.taskTarget?.x??dog.x,dog.taskTarget?.y??dog.y,55,60));
+  const dock=device(dog.docked);if(dock&&(dog.air<(dock.minAir??.04)||dog.air>(dock.maxAir??1)))return task('先调整狗的气量，按钮才会通电',`只按住 ${dog.air>(dock.maxAir??1)?'S 还气':'W 充气'}，把气量调到 ${Math.round((dock.minAir??.12)*100)}%–${Math.round((dock.maxAir??1)*100)}% 之间。`,[dog.air>(dock.maxAir??1)?'S':'W'],'dog',at(dog.x,dog.y,70,75));
   if(dog.docked&&pin)return task('狗撑着门，你滚到铜踏板上','同时按住 Shift 和 D，滚过圈出的铜色踏板。看到它亮绿灯就松开。',['Shift','D'],'hog',at(pin.x+pin.w/2,pin.y-8,pin.w+12,35),2,4);
   const sync=charges.find(q=>!q.done),plate=sync?.all.map(device).find(q=>q?.type==='hogPlate');
   if(dog.docked&&plate)return task('站到铜踏板中央，别动','按 D 走到圈出的铜盘中央，松开所有键，等进度条填满。',['D'],'hog',at(plate.x+plate.w/2,plate.y,plate.w,35));
@@ -1024,7 +1024,7 @@ function getRoomGuide(){
   const bed=(L.beds||[]).find(b=>hog.x<b.x+b.w+40&&hog.x>b.x-250);
   if(bed){if(hog.y+hogHalf()>bed.base-bed.h-12)return task('先停住，让狗把刺猬吊过刺尖','停在刺丛前。按住 0 收绳，再按 W 充气；刺猬的脚高过尖刺后松开 W。',['0','W'],'hog',at(hog.x,bed.base-bed.h-55,65,70));return task('保持高度，按 D 越过刺丛','继续按住 0，再按 D 往右。过完整片绿色刺丛后，再松开 0。',['0','D'],'hog',at(bed.x+bed.w/2,bed.base-bed.h-45,bed.w,70));}
   const tunnel=statics.find(q=>q.y<=26&&q.y+q.h>360&&hog.x<q.x+q.w&&hog.x>q.x-230);
-  if(tunnel)return task('把狗放扁，刺猬滚过矮洞','先按 S 把狗放到 0%，再按住 Shift 和 D 滚进洞。狗会跟上。',['S','Shift','D'],'hog',at(tunnel.x+tunnel.w/2,tunnel.y+tunnel.h+14,tunnel.w,30));
+  if(tunnel)return task('把狗放扁，刺猬滚过矮洞','先按 S 把狗的气收回，再按住 Shift 和 D，让刺猬缩球滚进洞。狗会跟上。',['S','Shift','D'],'hog',at(tunnel.x+tunnel.w/2,tunnel.y+tunnel.h+14,tunnel.w,30));
   if(pin&&Math.abs(pin.x-hog.x)<250)return task('滚过铜踏板，把门固定住','同时按住 Shift 和 D，滚过圈出的铜盘；亮绿灯后松开 Shift。',['Shift','D'],'hog',at(pin.x+pin.w/2,pin.y,pin.w,35));
   const wall=walls.find(q=>q.alive&&q.x-hog.x<230&&q.x>hog.x);
   if(wall){if(wall.heavy&&hog.bloat<(L.easyTuning?.big??.65))return grow();return task('Shift + D，滚动撞开这堵墙','同时按住 Shift 和 D，朝圈出的墙滚过去。',['Shift','D'],'hog',at(wall.x,Math.min(400,wall.y+wall.h-45),wall.w+15,85));}
@@ -1033,13 +1033,13 @@ function getRoomGuide(){
   return exit();
  }
  if(idx===8)return dog.riding?task('只按 D，慢慢驮狗过图钉','按住 D 往右走。不要跳，也不要按 Shift；狗会坐在苹果上。',['D'],'hog',at(1170),3,4):apples();
- if(idx===9){const lamp=memoObj('lamp');if(lamp.done){if(dog.riding)return task('按 / 让狗下来，再过右边矮洞','按一下 /。接着按 S 放气，按住 Shift 和 D 滚过矮洞。',['/'],'dog',at(dog.x,dog.y,60,60));return task('Shift + D，滚过右边的矮洞','狗保持小小的，自动跟着你。按住 Shift 和 D 从洞下通过。',['Shift','D'],'hog',at(1080,445,160,30));}if(memo.stack<lamp.apples)return task(`先捡 ${lamp.apples} 个苹果`,`同时按住 Shift 和 D，捡到 ${lamp.apples} 个苹果后松开 Shift；多捡一个也没关系。`,['Shift','D'],'hog',at(memo.apples[0]?.x??360,445,35,35));if(!dog.riding)return apples();if(Math.abs(hog.x-lamp.x)>40)return task('按 D，把狗送到灯下面','慢慢走到圈出的灯下面，松开 D 停住。不要跳或滚。',['D'],'hog',at(lamp.x));return task('停住，按住 / 拧掉灯泡','刺猬站稳以后，按住 /，直到灯下方的小进度条填满。',['/'],'dog',at(lamp.x,lamp.y,55,60));}
- if(idx===10){if(dog.air>.12)return task('按住 ↓，先把小狗放瘪','停下来，按住向下方向键 ↓。狗的气量到 12% 以下就松开；刺猬会同时鼓大。',['↓'],'hog',at(hog.x,hog.y,85,85));if(!dog.cling&&dog.charge<.15)return task('按 D 慢慢走，让狗蹭过紫色地毯','狗会自己跟着你，在紫色地毯上蹭出静电。先别跳。',['D'],'hog',at(400));if(!dog.cling&&(nearestCling()?.d??999)>55)return task('继续按 D，等狗走到灰墙脚下','慢慢往右走。等小狗跟到灰色墙旁边，再按 /。',['D'],'hog',at(575));if(!dog.cling)return task('按一下 /，让狗贴住灰色墙','到灰色墙脚附近，按一下 /。狗会自己往上爬。',['/'],'dog',at(450,410,40,75));return task('按 D，进入风里并落上右边台面','狗会自己沿墙爬。你按 D，让鼓大的刺猬借风上去。',['D'],'hog',at(880,215,80,70));}
- if(idx===11){if(hog.bloat<(L.easyTuning?.big??.65)&&!hog.plugged)return task('按住 ↓，先让刺猬鼓大','按住 ↓，直到刺猬鼓成大圆球。留一点气在狗身上。',['↓'],'hog',at(hog.x,hog.y,85,80));if(!memo.water.plugged&&memo.water.y>320)return task('走到排水口，再按 F 堵住','按 D 到圈出的排水口旁边，停住，按一下 F。',['D','F'],'hog',at(630,492,70,25));if(memo.water.plugged&&memo.water.y>190)return task('现在不要动，等水涨上去','松开所有键。刺猬正在堵水，狗会浮起来；水涨好后提示会变。',[],'hog',at(630,470,75,55));if(hog.plugged)return task('按一下 F，松开排水口','狗已往右边游。按 F 松开塞子，然后按 D 往右走。',['F'],'hog',at(630,470,75,55));return task('按 D，赶快上右边的平台','水正在退。按住 D 往右；刺猬上不去时，短按住 0 收绳。',['D','0'],'hog',at(1020,L.solids[1].y-30,100,65));}
- if(idx===12){const cage=memoObj('cage');if(!cage.done){if(hog.bloat<(L.easyTuning?.big??.65))return task('按 ↓，让刺猬的刺变长','按住 ↓ 把气给刺猬，等身体明显鼓大后松开。',['↓'],'hog',at(hog.x,hog.y,85,85));return task('走近鸟笼左边，按 F 扎气球锁','按 D 走到鸟笼左边圈出的空地，停住，按一下 F。',['D','F'],'hog',at(cage.x-65,440,60,55));}if(cage.key)return task('走到金钥匙旁，自动捡起来','等钥匙落地，按 D 走近它；不需要按 F。',['D'],'hog',at(cage.key.x,cage.key.y,45,30));if(!memoObj('exitlock').done)return task('带钥匙去门边，再按 F','按 D 到圈出的门锁旁，停住，按一下 F 开锁。',['D','F'],'hog',at(1120,420,50,75));return exit();}
- if(idx===13){if(dog.air>.04)return task('先按 ↓，把狗完全放扁','停在猫很远的地方，按住 ↓。狗的气量到 0% 就松手。',['↓'],'dog',at(dog.x,dog.y,65,55));return task('只按 D，轻轻走过睡猫旁边','不要跳、不要滚、不要充气。狗会安静地跟着你。',['D'],'hog',at(1200));}
+ if(idx===9){const lamp=memoObj('lamp');if(lamp.done){if(dog.riding)return task('按 / 让狗下来，再过右边矮洞','按一下 /。接着按 S 还气，按住 Shift 和 D 滚过矮洞。',['/'],'dog',at(dog.x,dog.y,60,60));return task('Shift + D，滚过右边的矮洞','狗保持小小的，自动跟着你。按住 Shift 和 D 从洞下通过。',['Shift','D'],'hog',at(1080,445,160,30));}if(memo.stack<lamp.apples)return task(`先捡 ${lamp.apples} 个苹果`,`同时按住 Shift 和 D，捡到 ${lamp.apples} 个苹果后松开 Shift；多捡一个也没关系。`,['Shift','D'],'hog',at(memo.apples[0]?.x??360,445,35,35));if(!dog.riding)return apples();if(Math.abs(hog.x-lamp.x)>40)return task('按 D，把狗送到灯下面','慢慢走到圈出的灯下面，松开 D 停住。不要跳或滚。',['D'],'hog',at(lamp.x));return task('停住，按住 / 拧掉灯泡','刺猬站稳以后，按住 /，直到灯下方的小进度条填满。',['/'],'dog',at(lamp.x,lamp.y,55,60));}
+ if(idx===10){if(dog.air>.12)return task('按住 S，先把小狗放瘪','停下来，按住S 键。狗的气量到 12% 以下就松开；刺猬会同时鼓大。',['S'],'hog',at(hog.x,hog.y,85,85));if(!dog.cling&&dog.charge<.15)return task('按 D 慢慢走，让狗蹭过紫色地毯','狗会自己跟着你，在紫色地毯上蹭出静电。先别跳。',['D'],'hog',at(400));if(!dog.cling&&(nearestCling()?.d??999)>55)return task('继续按 D，等狗走到灰墙脚下','慢慢往右走。等小狗跟到灰色墙旁边，再按 /。',['D'],'hog',at(575));if(!dog.cling)return task('按一下 /，让狗贴住灰色墙','到灰色墙脚附近，按一下 /。狗会自己往上爬。',['/'],'dog',at(450,410,40,75));return task('按 D，进入风里并落上右边台面','狗会自己沿墙爬。你按 D，让鼓大的刺猬借风上去。',['D'],'hog',at(880,215,80,70));}
+ if(idx===11){if(hog.bloat<(L.easyTuning?.big??.65)&&!hog.plugged)return task('按住 S，先让刺猬鼓大','按住 S，直到刺猬鼓成大圆球。留一点气在狗身上。',['S'],'hog',at(hog.x,hog.y,85,80));if(!memo.water.plugged&&memo.water.y>320)return task('走到排水口，再按 F 堵住','按 D 到圈出的排水口旁边，停住，按一下 F。',['D','F'],'hog',at(630,492,70,25));if(memo.water.plugged&&memo.water.y>190)return task('现在不要动，等水涨上去','松开所有键。刺猬正在堵水，狗会浮起来；水涨好后提示会变。',[],'hog',at(630,470,75,55));if(hog.plugged)return task('按一下 F，松开排水口','狗已往右边游。按 F 松开塞子，然后按 D 往右走。',['F'],'hog',at(630,470,75,55));return task('按 D，赶快上右边的平台','水正在退。按住 D 往右；刺猬上不去时，短按住 0 收绳。',['D','0'],'hog',at(1020,L.solids[1].y-30,100,65));}
+ if(idx===12){const cage=memoObj('cage');if(!cage.done){if(hog.bloat<(L.easyTuning?.big??.65))return task('按 S，让刺猬的刺变长','按住 S 把气给刺猬，等身体明显鼓大后松开。',['S'],'hog',at(hog.x,hog.y,85,85));return task('走近鸟笼左边，按 F 扎气球锁','按 D 走到鸟笼左边圈出的空地，停住，按一下 F。',['D','F'],'hog',at(cage.x-65,440,60,55));}if(cage.key)return task('走到金钥匙旁，自动捡起来','等钥匙落地，按 D 走近它；不需要按 F。',['D'],'hog',at(cage.key.x,cage.key.y,45,30));if(!memoObj('exitlock').done)return task('带钥匙去门边，再按 F','按 D 到圈出的门锁旁，停住，按一下 F 开锁。',['D','F'],'hog',at(1120,420,50,75));return exit();}
+ if(idx===13){if(dog.air>.04)return task('先按 S，把狗完全放扁','停在猫很远的地方，按住 S。狗的气量到 0% 就松手。',['S'],'dog',at(dog.x,dog.y,65,55));return task('只按 D，轻轻走过睡猫旁边','不要跳、不要滚、不要充气。狗会安静地跟着你。',['D'],'hog',at(1200));}
  if(idx===14){const x=memo.rail.x,next=(L.railHazards||[]).find(q=>q.x+q.w>x-(L.easy?90:20));if(memo.rail.done)return task('按 S 把狗放小，再按 D 下平台','先按 S 放到 40% 以下，再按 D 往右走。',['S','D'],'hog',at(1560,430,95,50));const reel=next&&next.y<100;return task(reel?'按住 0，让两位靠拢':'松开 0，让两位上下分开',reel?'按住数字 0：狗下降、刺猬上升。完全穿过这组障碍后，再松开。':'松开数字 0：狗上升、刺猬下降。滑轮会自己往前走。',reel?['0']:['松开 0'],'hog',next?at(next.x+next.w/2,280,next.w+12,120):null);}
- if(idx===15){if(!memoObj('fridge').done)return task('先到冰箱旁，按 F 开冷气','按 D 走到圈出的冰箱旁边，停住，按一下 F。',['D','F'],'hog',at(430,380,80,120));if(!memo.water.frozen)return task('等一下，让水面结冰','先松开按键。蓝色水面变成实心冰板以后，提示会变。',[],'hog',at(790,400,430,20));if(hog.x<1040)return task('D + 空格，跳到冰面上','走到冰边，同时按 D 和空格跳过去。狗会自己跟着跳。',['D','Space'],'hog',at(650,400,100,30));return task('先按 ↓ 缩小狗，再滚过烤箱下方','按住 ↓ 把狗的气给刺猬；狗变小后，按住 Shift 和 D 通过矮洞。',['↓','Shift','D'],'hog',at(1230,350,175,65));}
+ if(idx===15){if(!memoObj('fridge').done)return task('先到冰箱旁，按 F 开冷气','按 D 走到圈出的冰箱旁边，停住，按一下 F。',['D','F'],'hog',at(430,380,80,120));if(!memo.water.frozen)return task('等一下，让水面结冰','先松开按键。蓝色水面变成实心冰板以后，提示会变。',[],'hog',at(790,400,430,20));if(hog.x<1040)return task('D + 空格，跳到冰面上','走到冰边，同时按 D 和空格跳过去。狗会自己跟着跳。',['D','Space'],'hog',at(650,400,100,30));return task('先按 S 缩小狗，再滚过烤箱下方','按住 S 把狗的气给刺猬；狗变小后，按住 Shift 和 D 通过矮洞。',['S','Shift','D'],'hog',at(1230,350,175,65));}
  return exit();
 }
 function updateExperience(dt){
@@ -1047,7 +1047,7 @@ function updateExperience(dt){
  if(L.practice){
   const mark=id=>{const p=memoObj(id);if(p)p.done=true;};
   if(L.lesson==='move'){if(held('ArrowLeft','ArrowRight'))experience.walkHog+=Math.abs(hog.vx)*dt;if(held('KeyA','KeyD'))experience.walkDog+=Math.abs(dog.vx)*dt;if(experience.walkHog>(L.lessonWalk??75)){mark('walkHog');mark('walkDog');}if(memoObj('walkHog').done&&experience.walkDog>70)mark('walkDog');if(memoObj('walkDog').done&&pressed('ArrowUp'))experience.jumpSeen=true;if(experience.jumpSeen&&hog.ground)mark('jumpHog');if(memoObj('jumpHog').done&&hog.ball&&Math.abs(hog.vx)>80)mark('jumpDog');}
-  if(L.lesson==='air'){experience.peakDog=Math.max(experience.peakDog,dog.gas);if(dog.gas>(L.lessonGive??.46))mark('give');if(memoObj('give').done&&held('KeyS')&&dog.gas<(L.lessonVent??.28))mark('vent');if(memoObj('vent').done&&held('ArrowDown')&&dog.gas<.09)mark('return');if(memoObj('return').done&&held('Digit0','Numpad0')&&ropeLen<(L.lessonReel??145))mark('reel');}
+  if(L.lesson==='air'){experience.peakDog=Math.max(experience.peakDog,dog.gas);if(dog.gas>(L.lessonGive??.46))mark('give');if(memoObj('give').done&&held('KeyS')&&dog.gas<.1){mark('vent');mark('return');}if(memoObj('return').done&&held('Digit0','Numpad0')&&ropeLen<(L.lessonReel??145))mark('reel');}
  }
  syncExperience();
 }
@@ -1129,13 +1129,13 @@ function hint(){
  if(hurt>0)return hurtReason==='timeout'?'接力超时。回到蓝旗，先安排位置，再让狗出发。':'两位都怕刺，回蓝旗再试一次。';
  if(dog.state==='skin')return`${dog.lastPop}。W 沿气管把它重新吹起来。`;
  if(dog.blocked>0)return'这里太窄：S 放扁狗，再让它钻过去。';
- if(dog.air>.90)return'快撑爆了！S 放气，或按住 ↓ 把气给刺猬。';
- if(hog.backflow)return'倒灌中：狗变小、刺猬变重。松开 / 保留体型，S 把气还给狗。';
- if(hog.returnAir)return'把气还给狗，刺猬正在缩小。继续 S 才会给狗放气。';
+ if(dog.air>.90)return'快撑爆了！按住 S，把气还给刺猬。';
+ if(hog.backflow)return'倒灌中：狗变小、刺猬变重。松开 S 保留体型，W 把气给狗。';
+ if(hog.returnAir)return'把气还给狗，刺猬正在缩小。继续 W，狗会变大，刺猬会缩小。';
  if(noticeTime>0)return interactNotice;
  if(dog.docked)return device(dog.docked)?.on?'狗正在留守。你去接管机关；/ 叫狗回来。':'气量不合适，W / S 调整；/ 叫回来。';
  if(dog.task){const p=device(dog.task.id);return p.flatOK?'狗走高处，你走下面。到窄窗用 S 放扁，别急着收短绳。':'狗正在行动。W / S 调气量，E 调绳长；/ 取消。';}
- if(hog.bloat>.65)return'巨大刺猬更重：能压重机关、撞厚墙。S 还气才能钻矮洞。';
+ if(hog.bloat>.65)return'巨大刺猬更重：能压重机关、撞厚墙。按 Shift 缩球滚过矮洞，W 能让刺猬变小。';
  if(hog.jet)return'喷气消耗狗的气量；A / D 转向，W 补气。';
  return classicControlHint(currentZone().hint);
 }
